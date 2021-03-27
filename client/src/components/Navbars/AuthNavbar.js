@@ -1,6 +1,6 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 // reactstrap components
 import {
   UncontrolledCollapse,
@@ -15,6 +15,59 @@ import {
 } from "reactstrap";
 
 const AdminNavbar = () => {
+
+  const location = useLocation();
+
+  var navItem = "";
+
+  var loc = location.pathname
+
+  console.log(loc.toString())
+
+  if (loc === "/auth/admin/login") {
+    console.log(location.pathname)
+    navItem = <NavLink
+      className="nav-link-icon"
+      to="/auth/admin/register"
+      tag={Link}
+    >
+      <i className="ni ni-circle-08" />
+      <span className="nav-link-inner--text">Register</span>
+    </NavLink>
+  }
+  else if (loc === "/auth/admin/register") {
+    navItem = <NavLink
+      className="nav-link-icon"
+      to="/auth/admin/login"
+      tag={Link}
+    >
+      <i className="ni ni-circle-08" />
+      <span className="nav-link-inner--text">Login</span>
+    </NavLink>
+  }
+  else if (loc === "/auth/student/login") {
+    navItem = <NavLink
+      className="nav-link-icon"
+      to="/auth/student/register"
+      tag={Link}
+    >
+      <i className="ni ni-circle-08" />
+      <span className="nav-link-inner--text">Register</span>
+    </NavLink>
+  }
+  else {
+    navItem = <NavLink
+      className="nav-link-icon"
+      to="/auth/student/login"
+      tag={Link}
+    >
+      <i className="ni ni-circle-08" />
+      <span className="nav-link-inner--text">Login</span>
+    </NavLink>
+  }
+
+  console.log(navItem)
+
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -54,22 +107,9 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link-icon" to="/" tag={Link}>
-                  <i className="ni ni-planet" />
-                  <span className="nav-link-inner--text">Dashboard</span>
-                </NavLink>
+                {navItem}
               </NavItem>
-              <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  to="/auth/admin/register"
-                  tag={Link}
-                >
-                  <i className="ni ni-circle-08" />
-                  <span className="nav-link-inner--text">Register</span>
-                </NavLink>
-              </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 <NavLink className="nav-link-icon" to="/auth/admin/login" tag={Link}>
                   <i className="ni ni-key-25" />
                   <span className="nav-link-inner--text">Login</span>
@@ -84,7 +124,7 @@ const AdminNavbar = () => {
                   <i className="ni ni-single-02" />
                   <span className="nav-link-inner--text">Profile</span>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </Nav>
           </UncontrolledCollapse>
         </Container>

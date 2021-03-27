@@ -9,6 +9,10 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
 
+import Loginnew from "views/admin/Login.js"
+import Register from "views/admin/Register.js"
+
+
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -48,15 +52,6 @@ const Auth = (props) => {
         <div className="header bg-gradient-info py-7 py-lg-8">
           <Container>
             <div className="header-body text-center mb-7">
-              <Row className="justify-content-center">
-                <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome!</h1>
-                  <p className="text-lead text-light">
-                    Use these awesome forms to login or create new account in
-                    your project for free.
-                  </p>
-                </Col>
-              </Row>
             </div>
           </Container>
           <div className="separator separator-bottom separator-skew zindex-100">
@@ -79,8 +74,10 @@ const Auth = (props) => {
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
             <Switch>
-              {getRoutes(routes)}
-              <Redirect from="*" to="/admin/auth/login" />
+              {/* {getRoutes(routes)} */}
+              <Route exact path={"/auth/admin/register"} component={Register}/> 
+              <Route path={"/auth/admin/login"} component={Loginnew} />  
+              {/* <Redirect from="*" to="/admin/auth/login" /> */}
             </Switch>
           </Row>
         </Container>
