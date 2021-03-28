@@ -24,6 +24,8 @@ exports.getProfile = async (req, res) => {
 exports.registerAdmin = async (req, res) => {
     const newAdmin = req.body;
 
+    var admin;
+
     var validate = false;
 
     if (!newAdmin.name || !newAdmin.email || !newAdmin.password) {
@@ -47,11 +49,26 @@ exports.registerAdmin = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(newAdmin.password, salt)
 
-        const admin = new Admin({
-            name: newAdmin.name,
-            email: newAdmin.email,
-            password: hashedPassword
-        })
+        const adCount  =  await Admin.find({})
+
+        if(adCount.length > 1)
+        {
+            admin = new Admin({
+                name: newAdmin.name,
+                email: newAdmin.email,
+                password: hashedPassword,
+                is_verified: false
+            })
+        }
+        else
+        {
+            admin = new Admin({
+                name: newAdmin.name,
+                email: newAdmin.email,
+                password: hashedPassword,
+                is_verified: true
+            })
+        }
 
         admin
             .save()
