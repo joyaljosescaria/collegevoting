@@ -1,5 +1,7 @@
-import React , {useState} from "react";
-import { Link  , Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import { adminLogin } from '../../actions/adminAuth';
 
 // reactstrap components
 import {
@@ -17,12 +19,23 @@ import {
   Col,
 } from "reactstrap";
 
-const Login = () => {
+const Login = (props) => {
 
-  const [login, setLogin] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [show, setShow] = useState(false)
 
-  if(login)
-  {
+  useEffect(() => {
+    setError(props.adminAuth.error)
+  }, [props.adminAuth.error])
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    props.adminLogin(email, password);
+  }
+
+  if (props.adminAuth.isAuthenticated) {
     return <Redirect to="/admin/index" />
   }
 
@@ -32,9 +45,14 @@ const Login = () => {
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <h2 style={{color:"#8898aa"}}>Login</h2>
+              <h2 style={{ color: "#8898aa" }}>Login</h2>
             </div>
-            <Form role="form">
+
+            <div className="text-gray-100 text-center mb-3 font-bold">
+              {error ? <span className="text-xs rounded font-semibold inline-block py-1 px-2 mt-2  text-red-600  bg-red-200  last:mr-0 mr-1" style={{ color: '#fffafaf2', background: '#ff0000a6' }}>{error}</span> : <h1 style={{ color: '#e2e8f0' }}></h1>}
+            </div>
+
+            <Form role="form" onSubmit={handleSubmit}>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -46,6 +64,7 @@ const Login = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
+                    onChange={e => { setEmail(e.target.value) }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -58,14 +77,16 @@ const Login = () => {
                   </InputGroupAddon>
                   <Input
                     placeholder="Password"
-                    type="password"
+                    type={show ? "text" : "password"}
                     autoComplete="new-password"
+                    onChange={e => setPassword(e.target.value)}
                   />
+                  <button type="button" style={{ backgroundColor: "white", border: "0" }} onClick={e => setShow(!show)} className="buton"><i className="fas fa-eye"></i></button>
                 </InputGroup>
               </FormGroup>
-              
+
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={() => setLogin(true)}>
+                <Button className="my-4" color="primary" type="submit">
                   Sign in
                 </Button>
               </div>
@@ -97,4 +118,8 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+  adminAuth: state.adminAuth,
+});
+
+export default connect(mapStateToProps, { adminLogin })(Login)

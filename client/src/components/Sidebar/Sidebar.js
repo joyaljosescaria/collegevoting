@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
-// nodejs library to set properties for components
+import { NavLink as NavLinkRRD, Link, Redirect } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { connect } from 'react-redux';
+import { adminLogout } from '../../actions/adminAuth';
 
 // reactstrap components
 import {
@@ -160,7 +161,7 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+              <DropdownItem href="#pablo" onClick={props.adminLogout}>
                 <i className="ni ni-user-run" />
                 <span>Logout</span>
               </DropdownItem>
@@ -275,4 +276,9 @@ Sidebar.propTypes = {
   }),
 };
 
-export default Sidebar;
+
+const mapStateToProps = (state) => ({
+  adminAuth: state.adminAuth,
+});
+
+export default connect(mapStateToProps, { adminLogout })(Sidebar)
