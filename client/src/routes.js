@@ -9,8 +9,8 @@ import Icons from "views/examples/Icons.js";
 
 var routes = [
   {
-    path: "/index",
-    name: "Dashboard",
+    path: "/students",
+    name: "Students",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",

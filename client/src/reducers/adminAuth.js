@@ -5,7 +5,10 @@ import {
   ADMIN_LOGOUT_SUCCESS,
   ADMIN_LOADED,
   ADMIN_LOADING,
-  ADMIN_AUTH_ERROR
+  ADMIN_AUTH_ERROR,
+  ADMIN_STUDENTS_LOADING,
+  ADMIN_STUDENTS_LOADED,
+  ADMIN_STUDENTS_LOAD_ERROR,
 
 } from '../actions/types';
 
@@ -15,7 +18,7 @@ const initialState = {
   isLoading: false,
   name: localStorage.getItem('username'),
   id: localStorage.getItem('id'),
-  err: null,
+  isAdminStudentsLoaded: false,
 };
 
 

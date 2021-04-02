@@ -29,7 +29,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <BrowserRouter>
           <Switch>
-            <Route path="/admin" component={(props) => <AdminLayout {...props} />} />
+            <PrivateRoute path="/admin" component={(props) => <AdminLayout {...props} />} />
             <Route path="/auth/admin" component={(props) => <AuthLayout {...props} />} />
             <Route path="/student" render={(props) => <StudentLayout {...props} />} />
             <Route path="/auth/student" render={(props) => <StudentAuthLayout {...props} />} />

@@ -14,11 +14,17 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import Loginnew from "views/admin/Login.js"
-import Student from "views/admin/Student.js"
+import Index from "views/Index.js";
+import Profile from "views/examples/Profile.js";
+import Maps from "views/examples/Maps.js";
+import Register from "views/examples/Register.js";
+import Login from "views/examples/Login.js";
+import Tables from "views/examples/Tables.js";
+import Icons from "views/examples/Icons.js";
 
 import routes from "routes.js";
 
-const Admin = (props) => {
+const Admin1 = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -29,22 +35,7 @@ const Admin = (props) => {
     props.loadAdmin();
   }, [location]);
 
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component= {prop.component}
-            key={key}
-            exact
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
+ 
 
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
@@ -80,10 +71,11 @@ const Admin = (props) => {
           brandText={getBrandText(props.location.pathname)}
         />
         <Switch>
-          {getRoutes(routes)}
+          {/* {getRoutes(routes)} */}
           {/* <Redirect from="*" to="/admin/index" /> */}
           <Route path="/login/new" render={(props) => <Loginnew {...props} />} />
-          <Route path="/admin/students/:studentId" render={(props) => <Student {...props} />} />
+          <PrivateRoute path="/admin/index" component={(props) => <Index {...props} />} />
+          <PrivateRoute path="/admin/icons" component={(props) => <Icons {...props} />} />
         </Switch>
         <Container fluid>
           <AdminFooter />
@@ -97,4 +89,4 @@ const mapStateToProps = (state) => ({
   adminAuth: state.adminAuth,
 });
 
-export default connect(mapStateToProps, { loadAdmin })(Admin)
+export default connect(mapStateToProps, { loadAdmin })(Admin1)

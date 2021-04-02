@@ -9,6 +9,7 @@ const isAdmin = require("../middlewares/isAdmin.js")
 // Students 
 router.get('/students' , auth , isAdmin , admin.getAllStudents ) // GET all students ✅
 router.get('/unverified' , auth , isAdmin , admin.getUnverified) // Get all unverified students ✅
+router.get('/student/:studentId' , auth , isAdmin , admin.getaStudent) // GET a student
 
 // Student Verification
 router.put('/verifystudent/:studentId' , auth , isAdmin , admin.verifyStudent) // Verify a student ✅

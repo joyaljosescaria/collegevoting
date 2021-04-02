@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { loadAdmin } from '../actions/adminAuth';
 
+import store from '../store';
 
 const PrivateRoute = ({component: Component, ...rest}) => {
-
 
   const {isAuthenticated} = rest;
 

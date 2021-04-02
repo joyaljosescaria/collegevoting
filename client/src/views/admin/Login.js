@@ -36,7 +36,7 @@ const Login = (props) => {
   }
 
   if (props.adminAuth.isAuthenticated) {
-    return <Redirect to="/admin/index" />
+    return <Redirect to="/admin/students" />
   }
 
   return (

@@ -110,7 +110,7 @@ exports.adminLogin = async (req, res) => {
                     const user_id = user[0]._id;
                     token = jwt.sign({ user_id }, jwtKey, {
                         algorithm: "HS256",
-                        expiresIn: "12000"
+                        expiresIn: "24h"
                     })
 
                     res.status(200).json({ "message": "Logged in", "name": user[0].name, "id": user[0]._id, "token": token })

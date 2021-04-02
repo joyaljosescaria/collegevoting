@@ -12,8 +12,19 @@ const transport = require("../helpers/emailhelper")
 // Get all students 
 exports.getAllStudents = async (req, res) => {
     try {
-        const students = await Student.find({}).populate({ path: "course_id", select: "_id course" }).lean();
-        res.status(200).json(students)
+        const students = await Student.find({is_active:true} , 'name is_verified course_id profile_pic batch_year_count _id').populate({ path: "course_id", select: "_id course" }).lean();
+        res.status(200).json({students})
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Get a Student
+
+exports.getaStudent = async (req, res) => {
+    try {
+        const student = await Student.find({_id:req.params.studentId}).populate({ path: "course_id", select: "_id course" }).lean();
+        res.status(200).json({student})
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

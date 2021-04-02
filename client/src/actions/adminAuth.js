@@ -6,7 +6,10 @@ import {
   ADMIN_LOGOUT_SUCCESS,
   ADMIN_LOADED,
   ADMIN_LOADING,
-  ADMIN_AUTH_ERROR
+  ADMIN_AUTH_ERROR,
+  ADMIN_STUDENTS_LOADING,
+  ADMIN_STUDENTS_LOADED,
+  ADMIN_STUDENTS_LOAD_ERROR,
 
 } from './types';
 
@@ -57,6 +60,26 @@ export const loadAdmin = () => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_AUTH_ERROR,
+      });
+    });
+};
+
+export const loadAdminStudents = () => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: ADMIN_STUDENTS_LOADING });
+
+  axios
+    .get('/admin/students', tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_STUDENTS_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_STUDENTS_LOAD_ERROR,
       });
     });
 };

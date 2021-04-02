@@ -25,15 +25,7 @@ const AdminNavbar = () => {
   console.log(loc.toString())
 
   if (loc === "/auth/admin/login") {
-    console.log(location.pathname)
-    navItem = <NavLink
-      className="nav-link-icon"
-      to="/auth/admin/register"
-      tag={Link}
-    >
-      <i className="ni ni-circle-08" />
-      <span className="nav-link-inner--text">Register</span>
-    </NavLink>
+    navItem = ""
   }
   else if (loc === "/auth/admin/register") {
     navItem = <NavLink
