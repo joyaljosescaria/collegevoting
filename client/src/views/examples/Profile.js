@@ -50,7 +50,7 @@ const Profile = () => {
                     onClick={(e) => e.preventDefault()}
                     size="sm"
                   >
-                    Connect
+                    Approve
                   </Button>
                   <Button
                     className="float-right"
