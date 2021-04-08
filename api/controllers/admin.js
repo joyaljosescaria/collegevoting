@@ -23,7 +23,7 @@ exports.getAllStudents = async (req, res) => {
 
 exports.getaStudent = async (req, res) => {
     try {
-        const student = await Student.find({_id:req.params.studentId}).populate({ path: "course_id", select: "_id course" }).lean();
+        const student = await Student.findById({_id:req.params.studentId}).populate({ path: "course_id", select: "_id course" }).lean();
         res.status(200).json({student})
     } catch (err) {
         res.status(500).json({ error: err.message })

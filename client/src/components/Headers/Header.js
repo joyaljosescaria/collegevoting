@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import { loadAdminStudents } from '../../actions/admin';
+import { loadAdminStudents , loadAdminStudent } from '../../actions/admin';
 import { Link } from "react-router-dom";
 
 // reactstrap components
@@ -11,6 +11,10 @@ const Header = (props) => {
   useEffect(() => {
     props.loadAdminStudents()
   }, [loadAdminStudents])
+
+  const callStudent = (studentId) => {
+    props.loadAdminStudent(studentId)
+  }
 
   return (
     <>
@@ -48,7 +52,7 @@ const Header = (props) => {
                             </div>
                           </Col>
                           </Row>
-                          <Link to={`/admin/students/${student._id}`}><button type="button" class="mt-4 btn-block btn btn-primary">View Student</button></Link>
+                          <Link to={`/admin/students/${student._id}`}><button onClick={(e) => callStudent(student._id)} type="button" class="mt-4 btn-block btn btn-primary">View Student</button></Link>
                         </CardBody>
                       </Card>
                     </Col>))
@@ -66,4 +70,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, { loadAdminStudents })(Header)
+export default connect(mapStateToProps, { loadAdminStudents , loadAdminStudent})(Header)
