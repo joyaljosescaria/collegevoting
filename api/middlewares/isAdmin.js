@@ -11,7 +11,7 @@ const isAdmin = async (req, res, next) =>{
             next()
         }
         else{
-            res.status(403).json("Acces Denied")
+            res.status(403).json("Access Denied")
         }
     } catch (err) {
         res.status(500).json({error:err.message})

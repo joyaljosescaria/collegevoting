@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import { loadAdminStudents , loadAdminStudent } from '../../actions/admin';
+import { loadAdminUnverifiedStudents , loadAdminStudent } from '../../actions/admin';
 import { Link } from "react-router-dom";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-const Unverified = (props) => {
+const Header = (props) => {
 
   useEffect(() => {
-    props.loadAdminStudents()
-  }, [loadAdminStudents])
+    props.loadAdminUnverifiedStudents() 
+  }, [loadAdminUnverifiedStudents])
 
   const callStudent = (studentId) => {
     props.loadAdminStudent(studentId)
@@ -24,8 +24,8 @@ const Unverified = (props) => {
             {/* Card stats */}
             <Row>
               {
-                !props.admin.students ? "Loading" :
-                  props.admin.students.map((student) => (
+                !props.admin.unverified ? "Loading" :
+                  props.admin.unverified.map((student) => (
                     <Col key={student._id} lg="12" xl="6" sm="6">
                       <Card className="card-stats mb-4 mb-xl-4">
                         <CardBody>
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, { loadAdminStudents , loadAdminStudent})(Unverified)
+export default connect(mapStateToProps, { loadAdminUnverifiedStudents , loadAdminStudent})(Header)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import Skeleton from '@yisheng90/react-loading';
+import { Redirect } from "react-router-dom";
 
 // import { loadAdminStudents , loadAdminStudent } from '../../actions/admin';
 // import { Link } from "react-router-dom";
@@ -22,9 +23,14 @@ import {
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import ResponsivePlayer from "components/Video/VideoPlayer.js"
+import VerifyModal from "components/Modals/VerifyModal";
 
 
 const Student = (props) => {
+
+  if (props.admin.isAdminStudentUnVerified || props.admin.isAdminStudentVerified) {
+    return <Redirect to="/admin/students" />
+  }
 
   return (
     <>
@@ -50,15 +56,7 @@ const Student = (props) => {
               </Row>
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    {props.admin.student.is_verified ? "Unverify" : "Verify"}
-                  </Button>
+                  <VerifyModal />
                   <Button
                     className="float-right"
                     color="danger"

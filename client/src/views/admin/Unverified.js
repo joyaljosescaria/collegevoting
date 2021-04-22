@@ -22,14 +22,13 @@ import {
 } from "reactstrap";
 
 
-
-import Header from "components/Headers/Header";
+import Unverified from "components/Headers/Unverified";
 
 const Index = (props) => {
   
   return (
     <>
-      <Header/>
+      <Unverified />
       
     </>
   );

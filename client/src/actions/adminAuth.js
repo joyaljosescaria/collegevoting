@@ -98,6 +98,7 @@ export const adminLogout = () => (dispatch) => {
 export const tokenConfig = (getState) => {
   // Get token from state
   const token = getState().adminAuth.token;
+  console.log(token)
 
   // Headers
   const config = {

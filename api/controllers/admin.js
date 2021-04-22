@@ -34,7 +34,7 @@ exports.getaStudent = async (req, res) => {
 exports.getUnverified = async (req, res) => {
     try {
         const unverified = await Student.find({ is_verified: false }).populate({ path: "course_id", select: "_id course" }).lean();
-        res.status(200).json(unverified)
+        res.status(200).json({unverified})
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -43,7 +43,7 @@ exports.getUnverified = async (req, res) => {
 // Get student verified
 exports.verifyStudent = async (req, res) => {
     const student = req.params.studentId
-
+    
     try {
 
         const findStudent = await Student.find({ _id: student })
@@ -168,7 +168,7 @@ exports.getAllCourse = async (req, res) => {
     try {
 
         const getAllCourse = await Course.find({})
-        res.status(200).json(getAllCourse)
+        res.status(200).json({getAllCourse})
 
     } catch (err) {
         res.status(500).json({ error: err.message })

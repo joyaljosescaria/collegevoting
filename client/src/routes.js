@@ -1,10 +1,10 @@
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
+import Courses from "views/admin/Courses.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+import Unverified from "views/admin/Unverified.js";
 
 
 var routes = [
@@ -16,17 +16,17 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/unverified",
+    name: "Unverified",
     icon: "ni ni-planet text-blue",
-    component: Icons,
+    component: Unverified, 
     layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "Maps",
+    path: "/courses",
+    name: "Courses",
     icon: "ni ni-pin-3 text-orange",
-    component: Maps,
+    component: Courses,
     layout: "/admin",
   },
   {
