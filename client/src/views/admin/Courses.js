@@ -16,6 +16,9 @@ import {
 } from "reactstrap";
 
 import HeaderSpace from "components/Headers/HeaderSpace.js";
+import DeleteCourseModal from "components/Modals/DeleteCourseModal";
+import AddCourseModal from "components/Modals/AddCourseModal";
+import EditCourseModal from "components/Modals/EditCourseModal";
 
 
 
@@ -23,8 +26,23 @@ const Courses = (props) => {
 
   useEffect(() => {
     props.getAllCourse() 
-  }, [getAllCourse])
+  }, [getAllCourse , props.admin.isAdminCourseDeleted , props.admin.isAdminCourseAdded  ,props.admin.isAdminCourseEdited])
 
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen(prevState => !prevState);
+
+  const getDate = (date) => {
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var date  = new Date(date);
+
+    const fdate = date.toLocaleDateString("en-US", options);
+    return fdate;
+  }
+
+  const triggerScrollCallbacks = () =>
+    window.scrollBy(0, 1)
+    window.scrollBy(0, -1)
 
   return (
     <>
@@ -37,7 +55,7 @@ const Courses = (props) => {
               <CardHeader className="border-0 bg-transparent">
                 <div className="d-flex justify-content-between">
                   <h3 className="mb-0 text-white">Courses</h3>
-                  <div className="btn btn-sm btn-primary">Add Course</div>
+                  <AddCourseModal/>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-dark table-flush" responsive>
@@ -60,7 +78,7 @@ const Courses = (props) => {
                         </Media>
                       </Media>
                     </th>
-                    <td>{course.created_at}</td>
+                    <td>{getDate(course.created_at)}</td>
                     <td className="text-right">
                       <UncontrolledDropdown>
                         <DropdownToggle
@@ -69,23 +87,13 @@ const Courses = (props) => {
                           role="button"
                           size="sm"
                           color=""
-                          onClick={(e) => e.preventDefault()}
+                          onClick={triggerScrollCallbacks}
                         >
                           <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-arrow" right>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Edit 
-                          </DropdownItem>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Delete
-                          </DropdownItem>
+                        <DropdownMenu className="dropdown-menu-arrow" left persist>
+                          <EditCourseModal id={course._id} course={course.course}/>
+                          <DeleteCourseModal courseId={course._id}/>
                         </DropdownMenu>
                       </UncontrolledDropdown>
                     </td>

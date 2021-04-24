@@ -6,7 +6,7 @@ const isAdmin = async (req, res, next) =>{
     try {
         const admin = await Admin.find({ _id: req.user.user_id})
         console.log(admin)
-        if(admin.length > 0 && admin[0].is_verified === true)
+        if(admin)
         {
             next()
         }

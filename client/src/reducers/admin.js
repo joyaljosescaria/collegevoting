@@ -17,6 +17,15 @@ import {
     ADMIN_COURSES_LOADING,
     ADMIN_COURSES_LOADED,
     ADMIN_COURSES_LOAD_ERROR,
+    ADMIN_COURSE_DELETEING,
+    ADMIN_COURSE_DELETED,
+    ADMIN_COURSE_DELETE_ERROR,
+    ADMIN_COURSE_ADDING,
+    ADMIN_COURSE_ADDED,
+    ADMIN_COURSE_ADD_ERROR,
+    ADMIN_COURSE_EDITING,
+    ADMIN_COURSE_EDITED,
+    ADMIN_COURSE_EDIT_ERROR,
 
 } from '../actions/types';
 
@@ -33,6 +42,12 @@ const initialState = {
     isUnverifiedStudentLoaded: false,
     isAdminCoursesLoading: false,
     isAdminCoursesLoaded: false,
+    isAdminCourseDeleting: false,
+    isAdminCourseDeleted: false,
+    isAdminCourseAdding: false,
+    isAdminCourseAdded: false,
+    isAdminCourseEditing: false,
+    isAdminCourseEdited: false,
 };
 
 
@@ -57,6 +72,9 @@ export default function (state = initialState, action) {
         case ADMIN_STUDENT_UNVERIFY_ERROR:
         case ADMIN_UNSTUDENTS_LOAD_ERROR:
         case ADMIN_COURSES_LOAD_ERROR:
+        case ADMIN_COURSE_DELETE_ERROR:
+        case ADMIN_COURSE_ADD_ERROR:
+        case ADMIN_COURSE_EDIT_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -129,6 +147,48 @@ export default function (state = initialState, action) {
                 ...state,
                 isAdminCoursesLoading: false,
                 isAdminCoursesLoaded: true,
+                ...action.payload
+            }
+        case ADMIN_COURSE_DELETEING:
+            return {
+                ...state,
+                isAdminCourseDeleting: true,
+                isAdminCourseDeleted: false,
+                ...action.payload
+            }
+        case ADMIN_COURSE_DELETED:
+            return {
+                ...state,
+                isAdminCourseDeleting: false,
+                isAdminCourseDeleted: true,
+                ...action.payload
+            }
+        case ADMIN_COURSE_ADDING:
+            return {
+                ...state,
+                isAdminCourseAdded: false,
+                isAdminCourseAdding: true,
+                ...action.payload
+            }
+        case ADMIN_COURSE_ADDED:
+            return {
+                ...state,
+                isAdminCourseAdded: true,
+                isAdminCourseAdding: false,
+                ...action.payload
+            }
+        case ADMIN_COURSE_EDITING:
+            return {
+                ...state,
+                isAdminCourseEdited: false,
+                isAdminCourseEditing: true,
+                ...action.payload
+            }
+        case ADMIN_COURSE_EDITED:
+            return {
+                ...state,
+                isAdminCourseEdited: true,
+                isAdminCourseEditing: false,
                 ...action.payload
             }
 

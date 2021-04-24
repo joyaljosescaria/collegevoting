@@ -19,6 +19,15 @@ import {
   ADMIN_COURSES_LOADING,
   ADMIN_COURSES_LOADED,
   ADMIN_COURSES_LOAD_ERROR,
+  ADMIN_COURSE_DELETEING,
+  ADMIN_COURSE_DELETED,
+  ADMIN_COURSE_DELETE_ERROR,
+  ADMIN_COURSE_ADDING,
+  ADMIN_COURSE_ADDED,
+  ADMIN_COURSE_ADD_ERROR,
+  ADMIN_COURSE_EDITING,
+  ADMIN_COURSE_EDITED,
+  ADMIN_COURSE_EDIT_ERROR,
 
 } from './types';
 
@@ -148,6 +157,71 @@ export const getAllCourse = () => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_COURSES_LOAD_ERROR,
+      });
+    });
+}
+
+// Delete a course
+export const deleteACourse = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_COURSE_DELETEING });
+
+  axios
+    .delete(`/admin/courses/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_COURSE_DELETED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_COURSE_DELETE_ERROR,
+      });
+    });
+}
+
+// Edit a course
+export const editACourse = (id, course) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_COURSE_EDITING });
+
+  const body = JSON.stringify({ course })
+
+  axios
+    .put(`/admin/courses/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_COURSE_EDITED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_COURSE_EDIT_ERROR,
+      });
+    });
+}
+
+
+// Add a course
+export const addACourse = (course) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_COURSE_ADDING });
+
+  const body = JSON.stringify({ course })
+
+  axios
+    .post(`/admin/courses`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_COURSE_ADDED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_COURSE_ADD_ERROR,
       });
     });
 }

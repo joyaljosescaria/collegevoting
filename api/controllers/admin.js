@@ -155,7 +155,11 @@ exports.editCourse = async (req, res) => {
 //Delete Course
 exports.deleteCourse = async (req, res) => {
     try {
-        const removeCourse = await Course.remove({ _id: req.params.courseId })
+        const course = {
+            is_active: false
+        }
+
+        const removeCourse = await Course.updateOne({ _id: req.params.courseId }, course)
 
         res.status(200).json({ message: "Course deleted" })
     } catch (err) {
@@ -167,7 +171,7 @@ exports.deleteCourse = async (req, res) => {
 exports.getAllCourse = async (req, res) => {
     try {
 
-        const getAllCourse = await Course.find({})
+        const getAllCourse = await Course.find({is_active:true})
         res.status(200).json({getAllCourse})
 
     } catch (err) {
