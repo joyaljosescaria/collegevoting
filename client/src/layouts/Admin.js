@@ -17,6 +17,7 @@ import Loginnew from "views/admin/Login.js"
 import Student from "views/admin/Student.js"
 
 import routes from "routes.js";
+import Positions from "views/admin/Positions";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -84,6 +85,7 @@ const Admin = (props) => {
           {/* <Redirect from="*" to="/admin/index" /> */}
           <Route path="/login/new" render={(props) => <Loginnew {...props} />} />
           <Route path="/admin/students/:studentId" render={(props) => <Student {...props} />} />
+          <Route path="/admin/election/:electionId/positions" render={(props) => <Positions {...props} />} />
         </Switch>
         <Container fluid>
           <AdminFooter />

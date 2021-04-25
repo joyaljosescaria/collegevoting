@@ -40,6 +40,18 @@ import {
   ADMIN_ELECTION_DELETING,
   ADMIN_ELECTION_DELETED,
   ADMIN_ELECTION_DELETE_ERROR,
+  ADMIN_POSITION_ADDING,
+  ADMIN_POSITION_ADDED,
+  ADMIN_POSITION_ADD_ERROR,
+  ADMIN_POSITION_EDITING,
+  ADMIN_POSITION_EDITED,
+  ADMIN_POSITION_EDIT_ERROR,
+  ADMIN_POSITION_DELETING,
+  ADMIN_POSITION_DELETED,
+  ADMIN_POSITION_DELETE_ERROR,
+  ADMIN_POSITION_LOADING,
+  ADMIN_POSITION_LOADED,
+  ADMIN_POSITION_LOAD_ERROR,
 
 } from './types';
 
@@ -240,10 +252,10 @@ export const addACourse = (course) => (dispatch, getState) => {
 
 // Add Election
 
-export const addElection = (election , date) => (dispatch, getState) => {
+export const addElection = (election, date) => (dispatch, getState) => {
   dispatch({ type: ADMIN_ELECTION_ADDING });
 
-  const body = JSON.stringify({ election , date })
+  const body = JSON.stringify({ election, date })
 
   axios
     .post(`/admin/elections`, body, tokenConfig(getState))
@@ -263,10 +275,10 @@ export const addElection = (election , date) => (dispatch, getState) => {
 
 // Edit Election
 
-export const editElection = (election , date , id) => (dispatch, getState) => {
+export const editElection = (election, date, id) => (dispatch, getState) => {
   dispatch({ type: ADMIN_ELECTION_EDITING });
 
-  const body = JSON.stringify({ election , date })
+  const body = JSON.stringify({ election, date })
 
   axios
     .put(`/admin/elections/${id}`, body, tokenConfig(getState))
@@ -322,6 +334,94 @@ export const deleteElection = (id) => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_ELECTION_DELETE_ERROR,
+      });
+    });
+}
+
+// Load Positions
+
+export const loadPositions = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_POSITION_LOADING });
+
+  axios
+    .get(`/admin/election/position/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_POSITION_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_POSITION_LOAD_ERROR,
+      });
+    });
+}
+
+// Edit Positions
+
+export const editPosition = (position, batch_year_count, course_id, election_id, id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_POSITION_EDITING });
+
+  const body = JSON.stringify({ position, batch_year_count, course_id, election_id })
+
+  axios
+    .put(`/admin/election/position/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_POSITION_EDITED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_POSITION_EDIT_ERROR,
+      });
+    });
+}
+
+// Add Positions
+
+export const addPosition = (position, batch_year_count, course_id, election_id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_POSITION_ADDING });
+
+  const body = JSON.stringify({ position, batch_year_count, course_id, election_id })
+
+  axios
+    .post(`/admin/election/position`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_POSITION_ADDED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_POSITION_ADD_ERROR,
+      });
+    });
+}
+
+// Delete Positions
+
+export const deletePosition = (positionId , electionId) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_POSITION_DELETING });
+
+  axios
+    .delete(`/admin/election/position/${positionId}/${electionId}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_POSITION_DELETED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_POSITION_DELETE_ERROR,
       });
     });
 }

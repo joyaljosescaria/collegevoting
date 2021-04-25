@@ -38,6 +38,18 @@ import {
     ADMIN_ELECTION_DELETING,
     ADMIN_ELECTION_DELETED,
     ADMIN_ELECTION_DELETE_ERROR,
+    ADMIN_POSITION_ADDING,
+    ADMIN_POSITION_ADDED,
+    ADMIN_POSITION_ADD_ERROR,
+    ADMIN_POSITION_EDITING,
+    ADMIN_POSITION_EDITED,
+    ADMIN_POSITION_EDIT_ERROR,
+    ADMIN_POSITION_DELETING,
+    ADMIN_POSITION_DELETED,
+    ADMIN_POSITION_DELETE_ERROR,
+    ADMIN_POSITION_LOADING,
+    ADMIN_POSITION_LOADED,
+    ADMIN_POSITION_LOAD_ERROR,
 
 } from '../actions/types';
 
@@ -68,6 +80,14 @@ const initialState = {
     isAdminElectionLoaded: false,
     isAdminElectionDeleted: false,
     isAdminElectionDeleting: false,
+    isAdminPositionsLoading: false,
+    isAdminPositionsLoaded: false,
+    isAdminPositionDeleting: false,
+    isAdminPositionDeleted: false,
+    isAdminPositionEditing: false,
+    isAdminPositionEdited: false,
+    isAdminPositionAdding: false,
+    isAdminPositionAdded: false,
 
 };
 
@@ -100,6 +120,10 @@ export default function (state = initialState, action) {
         case ADMIN_ELECTION_EDIT_ERROR:
         case ADMIN_ELECTION_LOAD_ERROR:
         case ADMIN_ELECTION_DELETE_ERROR:
+        case ADMIN_POSITION_ADD_ERROR:
+        case ADMIN_POSITION_EDIT_ERROR:
+        case ADMIN_POSITION_DELETE_ERROR:
+        case ADMIN_POSITION_LOAD_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -216,60 +240,116 @@ export default function (state = initialState, action) {
                 isAdminCourseEditing: false,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_ADDING:
-            return{
+        case ADMIN_ELECTION_ADDING:
+            return {
                 ...state,
                 isAdminElectionAdded: false,
                 isAdminElectionAdding: true,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_ADDED:
-            return{
+        case ADMIN_ELECTION_ADDED:
+            return {
                 ...state,
                 isAdminElectionAdded: true,
                 isAdminElectionAdding: false,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_EDITING:
-            return{
+        case ADMIN_ELECTION_EDITING:
+            return {
                 ...state,
                 isAdminElectionEditing: true,
                 isAdminElectionEdited: false,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_EDITED:
-            return{
+        case ADMIN_ELECTION_EDITED:
+            return {
                 ...state,
                 isAdminElectionEditing: false,
                 isAdminElectionEdited: true,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_LOADING:
-            return{
+        case ADMIN_ELECTION_LOADING:
+            return {
                 ...state,
                 isAdminElectionLoading: true,
                 isAdminElectionLoaded: false,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_LOADED:
-            return{
+        case ADMIN_ELECTION_LOADED:
+            return {
                 ...state,
                 isAdminElectionLoading: false,
                 isAdminElectionLoaded: true,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_DELETING:
-            return{
+        case ADMIN_ELECTION_DELETING:
+            return {
                 ...state,
                 isAdminElectionDeleting: true,
                 isAdminElectionDeleted: false,
                 ...action.payload
             }
-        case  ADMIN_ELECTION_DELETED:
-            return{
+        case ADMIN_ELECTION_DELETED:
+            return {
                 ...state,
                 isAdminElectionDeleting: false,
                 isAdminElectionDeleted: true,
+                ...action.payload
+            }
+        case ADMIN_POSITION_ADDING:
+            return {
+                ...state,
+                isAdminPositionAdding: true,
+                isAdminPositionAdded: false,
+                ...action.payload
+            }
+        case ADMIN_POSITION_ADDED:
+            return {
+                ...state,
+                isAdminPositionAdding: false,
+                isAdminPositionAdded: true,
+                ...action.payload
+            }
+        case ADMIN_POSITION_EDITING:
+            return {
+                ...state,
+                isAdminPositionEditing: true,
+                isAdminPositionEdited: false,
+                ...action.payload
+            }
+        case ADMIN_POSITION_EDITED:
+            return {
+                ...state,
+                isAdminPositionEditing: false,
+                isAdminPositionEdited: true,
+                ...action.payload
+            }
+        case ADMIN_POSITION_DELETING:
+            return {
+                ...state,
+                isAdminPositionDeleting: true,
+                isAdminPositionDeleted: false,
+                ...action.payload
+            }
+        case ADMIN_POSITION_DELETED:
+            return {
+                ...state,
+                isAdminPositionDeleting: false,
+                isAdminPositionDeleted: true,
+                ...action.payload
+            }
+        case ADMIN_POSITION_LOADING:
+            return {
+                ...state,
+                isAdminPositionsLoading: true,
+                isAdminPositionsLoaded: false,
+                ...action.payload
+            }
+        case ADMIN_POSITION_LOADED:
+            return {
+                ...state,
+                isAdminPositionsLoading: false,
+                isAdminPositionsLoaded: true,
                 ...action.payload
             }
 

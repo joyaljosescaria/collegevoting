@@ -29,7 +29,7 @@ router.put('/elections/:electionId' , auth , isAdmin , admin.editElection) //Edi
 router.delete('/elections/:electionId' , auth , isAdmin , admin.deleteElection) //Delete Election ✅
 
 // Election Positions
-router.get('/election/position' , auth , isAdmin , admin.getAllPositions) //Get all positions ✅
+router.get('/election/position/:electionId' , auth , isAdmin , admin.getAllPositions) //Get all positions ✅
 router.post('/election/position' , auth , isAdmin , admin.createElectionPosition) //Create election positions ✅
 router.put('/election/position/:positionId' , auth , isAdmin , admin.editElectionPosition) //Edit election positions ✅
 router.delete('/election/position/:positionId/:electionId' , auth , isAdmin , admin.deleteElectionPositions) //Delete election position ✅

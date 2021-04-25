@@ -12,8 +12,8 @@ const transport = require("../helpers/emailhelper")
 // Get all students 
 exports.getAllStudents = async (req, res) => {
     try {
-        const students = await Student.find({is_active:true} , 'name is_verified course_id profile_pic batch_year_count _id').populate({ path: "course_id", select: "_id course" }).lean();
-        res.status(200).json({students})
+        const students = await Student.find({ is_active: true }, 'name is_verified course_id profile_pic batch_year_count _id').populate({ path: "course_id", select: "_id course" }).lean();
+        res.status(200).json({ students })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -23,8 +23,8 @@ exports.getAllStudents = async (req, res) => {
 
 exports.getaStudent = async (req, res) => {
     try {
-        const student = await Student.findById({_id:req.params.studentId}).populate({ path: "course_id", select: "_id course" }).lean();
-        res.status(200).json({student})
+        const student = await Student.findById({ _id: req.params.studentId }).populate({ path: "course_id", select: "_id course" }).lean();
+        res.status(200).json({ student })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -34,7 +34,7 @@ exports.getaStudent = async (req, res) => {
 exports.getUnverified = async (req, res) => {
     try {
         const unverified = await Student.find({ is_verified: false }).populate({ path: "course_id", select: "_id course" }).lean();
-        res.status(200).json({unverified})
+        res.status(200).json({ unverified })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -43,7 +43,7 @@ exports.getUnverified = async (req, res) => {
 // Get student verified
 exports.verifyStudent = async (req, res) => {
     const student = req.params.studentId
-    
+
     try {
 
         const findStudent = await Student.find({ _id: student })
@@ -171,8 +171,8 @@ exports.deleteCourse = async (req, res) => {
 exports.getAllCourse = async (req, res) => {
     try {
 
-        const getAllCourse = await Course.find({is_active:true})
-        res.status(200).json({getAllCourse})
+        const getAllCourse = await Course.find({ is_active: true })
+        res.status(200).json({ getAllCourse })
 
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -228,7 +228,7 @@ exports.getAllElection = async (req, res) => {
     try {
 
         const getAllElection = await Election.find({}).populate('Position')
-        res.status(200).json({getAllElection})
+        res.status(200).json({ getAllElection })
 
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -265,7 +265,7 @@ exports.createElectionPosition = async (req, res) => {
 
         const saveNewPosition = await newPosition.save()
 
-        const updatePosition = await Election.updateOne({ _id: req.body.electionId },{ "$push": { "positions": saveNewPosition._id } })
+        const updatePosition = await Election.updateOne({ _id: req.body.electionId }, { "$push": { "positions": saveNewPosition._id } })
 
         const getCourseId = await Course.findOne({ 'course': 'All' })
 
@@ -349,8 +349,8 @@ exports.editElectionPosition = async (req, res) => {
 
 exports.getAllPositions = async (req, res) => {
     try {
-        const positions = await Position.find({}).populate({ path: "election_id", select: "_id election" }).lean();
-        res.status(200).json(positions)
+        const positions = await Position.find({ election_id: req.params.electionId }).populate({ path: "course_id", select: "_id course" }).lean();
+        res.status(200).json({ positions })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -360,12 +360,12 @@ exports.getAllPositions = async (req, res) => {
 
 exports.deleteElectionPositions = async (req, res) => {
     try {
-        const findElection = await Election.findOne({ _id: req.params.electionId})
+        const findElection = await Election.findOne({ _id: req.params.electionId })
         const deleteElectionPos = await findElection.positions.remove(req.params.positionId)
         const updatePos = await findElection.save()
         console.log(deleteElectionPos)
-        const deleteStudentPositions = await StudentPosition.deleteMany({position_id: req.params.positionId})
-        const deletePosition = await Position.deleteOne({ _id: req.params.positionId})
+        const deleteStudentPositions = await StudentPosition.deleteMany({ position_id: req.params.positionId })
+        const deletePosition = await Position.deleteOne({ _id: req.params.positionId })
 
         res.status(200).json({ message: "Position deleted" })
     } catch (err) {
