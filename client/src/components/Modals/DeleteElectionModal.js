@@ -2,61 +2,41 @@ import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import {
-    Button,
-    DropdownItem,
-    FormGroup,
-    InputGroup,
-    Input,
-} from 'reactstrap'
-import { editACourse } from '../../actions/admin';
+import { DropdownItem  , Button } from 'reactstrap'
+import { deleteElection } from '../../actions/admin';
 
 
-function EditCourseModal(props) {
+function DeleteElectionModal(props) {
 
     const [open, setOpen] = useState(false);
-    const [course, setCourse] = useState('')
 
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        props.editACourse(props.id, course)
-    }
 
     return (
         <div>
             <DropdownItem
                 onClick={onOpenModal}
             >
-                Edit
+                Delete
             </DropdownItem>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Edit Course</h2>
-                <FormGroup>
-                    <InputGroup className="input-group-alternative">
-                        <Input
-                            placeholder="Course"
-                            type="text"
-                            defaultValue={props.course}
-                            onChange={e => setCourse(e.target.value)}
-                            style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
-                        />
-                    </InputGroup>
-                </FormGroup>
+                <h2 className="text-center">Delete Election</h2>
+                <p>
+                    Are you sure you want to delete the Election?
+                </p>
                 <div className="text-center">
                     <Button
                         className="mr-4"
                         color="success"
                         href="#pablo"
                         size="sm"
-                        onClick={(e) => {
-                            handleSubmit(e)
+                        onClick={() => {
+                            props.deleteElection(props.electionId);
                             onCloseModal()
                         }}
                     >
-                        Update Course
+                        Delete
                     </Button>
                     <Button
                         className="mr-4"
@@ -77,4 +57,4 @@ const mapStateToProps = (state) => ({
     admin: state.admin,
 });
 
-export default connect(mapStateToProps, { editACourse })(EditCourseModal)
+export default connect(mapStateToProps, { deleteElection })(DeleteElectionModal)

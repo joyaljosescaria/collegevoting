@@ -1,6 +1,6 @@
 import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
 import Courses from "views/admin/Courses.js";
+import Election from "views/admin/Election.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
@@ -30,10 +30,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
+    path: "/election",
+    name: "Election",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
+    component: Election,
     layout: "/admin",
   },
   {

@@ -4,44 +4,49 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import {
     Button,
-    DropdownItem,
     FormGroup,
     InputGroup,
     Input,
 } from 'reactstrap'
-import { editACourse } from '../../actions/admin';
+import { addElection } from '../../actions/admin';
 
 
-function EditCourseModal(props) {
+function AddElectionModal(props) {
 
     const [open, setOpen] = useState(false);
-    const [course, setCourse] = useState('')
+    const [election, setElection] = useState('')
+    const [date , setDate] = useState('')
 
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.editACourse(props.id, course)
+        props.addElection(election , date)
     }
 
     return (
         <div>
-            <DropdownItem
-                onClick={onOpenModal}
-            >
-                Edit
-            </DropdownItem>
+            <div className="btn btn-sm btn-primary" onClick={onOpenModal}>Add Election</div>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Edit Course</h2>
+                <h2 className="text-center">Add Course</h2>
+                <FormGroup>
+                    <InputGroup className="input-group-alternative">
+                        <Input
+                            placeholder="Election"
+                            type="text"
+                            onChange={e => setElection(e.target.value)}
+                            style={{width:"15rem" , border:"1px solid  #4d90fea3"}}
+                        />
+                    </InputGroup>
+                </FormGroup>
                 <FormGroup>
                     <InputGroup className="input-group-alternative">
                         <Input
                             placeholder="Course"
-                            type="text"
-                            defaultValue={props.course}
-                            onChange={e => setCourse(e.target.value)}
-                            style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
+                            type="date"
+                            onChange={e => setDate(e.target.value)}
+                            style={{width:"15rem" , border:"1px solid  #4d90fea3"}}
                         />
                     </InputGroup>
                 </FormGroup>
@@ -56,7 +61,7 @@ function EditCourseModal(props) {
                             onCloseModal()
                         }}
                     >
-                        Update Course
+                        Add Election
                     </Button>
                     <Button
                         className="mr-4"
@@ -77,4 +82,4 @@ const mapStateToProps = (state) => ({
     admin: state.admin,
 });
 
-export default connect(mapStateToProps, { editACourse })(EditCourseModal)
+export default connect(mapStateToProps, { addElection })(AddElectionModal)

@@ -9,20 +9,23 @@ import {
     InputGroup,
     Input,
 } from 'reactstrap'
-import { editACourse } from '../../actions/admin';
+import { editElection } from '../../actions/admin';
 
 
-function EditCourseModal(props) {
+function EditElectionModal(props) {
 
     const [open, setOpen] = useState(false);
-    const [course, setCourse] = useState('')
+    const [election, setElection] = useState(props.election)
+    const [date , setDate] = useState(props.date);
+
+    const [tye , setTye] = useState('text')
 
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.editACourse(props.id, course)
+        props.editElection(election , date , props.id)
     }
 
     return (
@@ -33,14 +36,26 @@ function EditCourseModal(props) {
                 Edit
             </DropdownItem>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Edit Course</h2>
+                <h2 className="text-center">Edit Election</h2>
                 <FormGroup>
                     <InputGroup className="input-group-alternative">
                         <Input
-                            placeholder="Course"
+                            placeholder="Election"
                             type="text"
-                            defaultValue={props.course}
-                            onChange={e => setCourse(e.target.value)}
+                            defaultValue={props.election}
+                            onChange={e => setElection(e.target.value)}
+                            style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
+                        />
+                    </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                    <InputGroup className="input-group-alternative">
+                        <Input
+                            placeholder="Date"
+                            type= {tye}
+                            onClick= {e=> setTye('date')}
+                            defaultValue={props.date.split('T')[0]}
+                            onChange={e => setDate(e.target.value)}
                             style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
                         />
                     </InputGroup>
@@ -56,7 +71,7 @@ function EditCourseModal(props) {
                             onCloseModal()
                         }}
                     >
-                        Update Course
+                        Update Election
                     </Button>
                     <Button
                         className="mr-4"
@@ -77,4 +92,4 @@ const mapStateToProps = (state) => ({
     admin: state.admin,
 });
 
-export default connect(mapStateToProps, { editACourse })(EditCourseModal)
+export default connect(mapStateToProps, { editElection })(EditElectionModal)

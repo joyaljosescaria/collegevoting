@@ -228,7 +228,7 @@ exports.getAllElection = async (req, res) => {
     try {
 
         const getAllElection = await Election.find({}).populate('Position')
-        res.status(200).json(getAllElection)
+        res.status(200).json({getAllElection})
 
     } catch (err) {
         res.status(500).json({ error: err.message })

@@ -28,6 +28,18 @@ import {
   ADMIN_COURSE_EDITING,
   ADMIN_COURSE_EDITED,
   ADMIN_COURSE_EDIT_ERROR,
+  ADMIN_ELECTION_ADDING,
+  ADMIN_ELECTION_ADDED,
+  ADMIN_ELECTION_ADD_ERROR,
+  ADMIN_ELECTION_EDITING,
+  ADMIN_ELECTION_EDITED,
+  ADMIN_ELECTION_EDIT_ERROR,
+  ADMIN_ELECTION_LOADING,
+  ADMIN_ELECTION_LOADED,
+  ADMIN_ELECTION_LOAD_ERROR,
+  ADMIN_ELECTION_DELETING,
+  ADMIN_ELECTION_DELETED,
+  ADMIN_ELECTION_DELETE_ERROR,
 
 } from './types';
 
@@ -222,6 +234,94 @@ export const addACourse = (course) => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_COURSE_ADD_ERROR,
+      });
+    });
+}
+
+// Add Election
+
+export const addElection = (election , date) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_ELECTION_ADDING });
+
+  const body = JSON.stringify({ election , date })
+
+  axios
+    .post(`/admin/elections`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_ELECTION_ADDED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_ELECTION_ADD_ERROR,
+      });
+    });
+}
+
+// Edit Election
+
+export const editElection = (election , date , id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_ELECTION_EDITING });
+
+  const body = JSON.stringify({ election , date })
+
+  axios
+    .put(`/admin/elections/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_ELECTION_EDITED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_ELECTION_EDIT_ERROR,
+      });
+    });
+}
+
+// Load Elections
+
+export const loadElections = () => (dispatch, getState) => {
+  dispatch({ type: ADMIN_ELECTION_LOADING });
+
+  axios
+    .get(`/admin/elections`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_ELECTION_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_ELECTION_LOAD_ERROR,
+      });
+    });
+}
+
+// Delete Election
+
+export const deleteElection = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_ELECTION_DELETING });
+
+  axios
+    .delete(`/admin/elections/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_ELECTION_DELETED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_ELECTION_DELETE_ERROR,
       });
     });
 }
