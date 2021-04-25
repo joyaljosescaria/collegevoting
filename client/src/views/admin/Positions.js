@@ -17,18 +17,17 @@ import {
 } from "reactstrap";
 
 import HeaderSpace from "components/Headers/HeaderSpace.js";
-import AddElectionModal from "components/Modals/AddElectionModal";
-import DeleteElectionModal from "components/Modals/DeleteElectionModal";
-import EditElectionModal from "components/Modals/EditElectionModal";
+import AddPositionModal from "components/Modals/AddPositionModal";
 
 
 
 const Election = (props) => {
 
-  let { id } = useParams();
+  var { electionId } = useParams();
+  console.log(electionId)
 
   useEffect(() => {
-    props.loadPositions(id)
+    props.loadPositions(electionId)
   }, [loadPositions , props.admin.isAdminPositionAdded, props.admin.isAdminPositionDeleted, props.admin.isAdminPositionEdited])
 
 
@@ -55,7 +54,7 @@ const Election = (props) => {
               <CardHeader className="border-0 bg-transparent">
                 <div className="d-flex justify-content-between">
                   <h3 className="mb-0 text-white">Positions</h3>
-                  <AddElectionModal />
+                  <AddPositionModal electionId={electionId}/>
                 </div>
               </CardHeader>
               <Table className="align-items-center table-dark table-flush" responsive>
