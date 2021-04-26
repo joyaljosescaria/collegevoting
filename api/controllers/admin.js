@@ -1,6 +1,7 @@
 var moment = require('moment');
 const mongoose = require("mongoose");
 const Admin = require("../models/admin");
+const Candidate = require("../models/candidate");
 const Student = require("../models/student");
 const Election = require("../models/election");
 const Course = require("../models/course");
@@ -365,9 +366,21 @@ exports.deleteElectionPositions = async (req, res) => {
         const updatePos = await findElection.save()
         console.log(deleteElectionPos)
         const deleteStudentPositions = await StudentPosition.deleteMany({ position_id: req.params.positionId })
+        const deleteCandidate = await Candidate.deleteMany({ position_id: req.params.positionId})
         const deletePosition = await Position.deleteOne({ _id: req.params.positionId })
 
         res.status(200).json({ message: "Position deleted" })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Get all Candidates
+
+exports.getAllCandidates = async (req, res) => {
+    try {
+        const findCandidates = await Candidate.find({election_id: req.params.electionId}).populate({ path: "position_id", select: "_id position" }).populate({path: "student_id" , select: "_id name profile_pic"}).lean();
+        res.status(200).json({findCandidates})
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

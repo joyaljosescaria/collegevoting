@@ -361,10 +361,10 @@ export const loadPositions = (id) => (dispatch, getState) => {
 
 // Edit Positions
 
-export const editPosition = (position, batch_year_count, course_id, election_id, id) => (dispatch, getState) => {
+export const editPosition = (position, batch_year_count, course_id, electionId, id) => (dispatch, getState) => {
   dispatch({ type: ADMIN_POSITION_EDITING });
 
-  const body = JSON.stringify({ position, batch_year_count, course_id, election_id })
+  const body = JSON.stringify({ position, batch_year_count, course_id, electionId })
 
   axios
     .put(`/admin/election/position/${id}`, body, tokenConfig(getState))

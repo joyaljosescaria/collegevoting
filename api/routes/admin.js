@@ -34,5 +34,8 @@ router.post('/election/position' , auth , isAdmin , admin.createElectionPosition
 router.put('/election/position/:positionId' , auth , isAdmin , admin.editElectionPosition) //Edit election positions ✅
 router.delete('/election/position/:positionId/:electionId' , auth , isAdmin , admin.deleteElectionPositions) //Delete election position ✅
 
+// Candidates
+router.get('/candidates/:electionId' , auth , isAdmin , admin.getAllCandidates) //Get all candidates ✅
+
 
 module.exports = router;

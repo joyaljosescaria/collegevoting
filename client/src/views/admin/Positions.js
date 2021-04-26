@@ -18,13 +18,12 @@ import {
 
 import HeaderSpace from "components/Headers/HeaderSpace.js";
 import AddPositionModal from "components/Modals/AddPositionModal";
+import EditPositionModal from "components/Modals/EditPositionModal";
+import DeletePositionModal from "components/Modals/DeletePositionModal";
 
-
-
-const Election = (props) => {
+const Position = (props) => {
 
   var { electionId } = useParams();
-  console.log(electionId)
 
   useEffect(() => {
     props.loadPositions(electionId)
@@ -78,7 +77,7 @@ const Election = (props) => {
                           </Media>
                         </Media>
                       </th>
-                      <td>{getDate(position.course_id.course)}</td>
+                      <td>{position.course_id.course}</td>
                       <td>{position.batch_year_count}</td>
                       <td className="text-right">
                         <UncontrolledDropdown>
@@ -93,11 +92,8 @@ const Election = (props) => {
                             <i className="fas fa-ellipsis-v" />
                           </DropdownToggle>
                           <DropdownMenu className="dropdown-menu-arrow" left persist>
-                            {/* <DeleteElectionModal electionId={election._id} />
-                            <EditElectionModal id={election._id} election={election.election} date={election.date} />
-                            <DropdownItem>
-                              <Link to={`/admin/election/${election._id}/positions`} style={{color:"black"}}>View Positions</Link>
-                            </DropdownItem> */}
+                            <EditPositionModal electionId={electionId} course={position.course_id._id} batch={position.batch_year_count} position={position.position} positionId={position._id}/>
+                            <DeletePositionModal electionId={electionId} positionId={position._id}/>
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>
@@ -117,4 +113,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, { loadPositions })(Election)
+export default connect(mapStateToProps, { loadPositions })(Position)
