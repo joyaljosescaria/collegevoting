@@ -52,6 +52,18 @@ import {
   ADMIN_POSITION_LOADING,
   ADMIN_POSITION_LOADED,
   ADMIN_POSITION_LOAD_ERROR,
+  ADMIN_CANDIDATE_LOADING,
+  ADMIN_CANDIDATE_LOADED,
+  ADMIN_CANDIDATE_LOAD_ERROR,
+  ADMIN_CANDIDATES_LOADING,
+  ADMIN_CANDIDATES_LOADED,
+  ADMIN_CANDIDATES_LOAD_ERROR,
+  ADMIN_CANDIDATE_VERIFYING,
+  ADMIN_CANDIDATE_VERIFIED,
+  ADMIN_CANDIDATE_VERIFY_ERROR,
+  ADMIN_CANDIDATE_UNVERIFYING,
+  ADMIN_CANDIDATE_UNVERIFIED,
+  ADMIN_CANDIDATE_UNVERIFY_ERROR,
 
 } from './types';
 
@@ -386,7 +398,7 @@ export const editPosition = (position, batch_year_count, course_id, electionId, 
 
 export const addPosition = (position, batch_year_count, course_id, electionId) => (dispatch, getState) => {
   dispatch({ type: ADMIN_POSITION_ADDING });
-  
+
   const body = JSON.stringify({ position, batch_year_count, course_id, electionId })
 
   axios
@@ -407,7 +419,7 @@ export const addPosition = (position, batch_year_count, course_id, electionId) =
 
 // Delete Positions
 
-export const deletePosition = (positionId , electionId) => (dispatch, getState) => {
+export const deletePosition = (positionId, electionId) => (dispatch, getState) => {
   dispatch({ type: ADMIN_POSITION_DELETING });
 
   axios
@@ -422,6 +434,95 @@ export const deletePosition = (positionId , electionId) => (dispatch, getState) 
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_POSITION_DELETE_ERROR,
+      });
+    });
+}
+
+// Load Candidates
+
+export const loadCandidates = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_CANDIDATES_LOADING });
+
+  axios
+    .get(`/admin/candidates/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_CANDIDATES_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_CANDIDATES_LOAD_ERROR,
+      });
+    });
+}
+
+// Load Candidate 
+
+export const loadCandidate = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_CANDIDATE_LOADING });
+
+  axios
+    .get(`/admin/candidate/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_CANDIDATE_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_CANDIDATE_LOAD_ERROR,
+      });
+    });
+}
+
+
+// Accept Candidate
+
+export const acceptCandidate = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_CANDIDATE_VERIFYING });
+
+  const body = JSON.stringify({})
+
+  axios
+    .put(`/admin/candidate/accept/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_CANDIDATE_VERIFIED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_CANDIDATE_VERIFY_ERROR,
+      });
+    });
+}
+
+// Reject Candidate
+
+export const rejectCandidate = (id , reason) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_CANDIDATE_UNVERIFYING });
+
+  const body = JSON.stringify({reason})
+
+  axios
+    .put(`/admin/candidate/reject/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_CANDIDATE_UNVERIFIED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_CANDIDATE_UNVERIFY_ERROR,
       });
     });
 }

@@ -97,6 +97,9 @@ const Election = (props) => {
                             <DropdownItem>
                               <Link to={`/admin/election/${election._id}/positions`} style={{color:"black"}} >View Positions</Link>
                             </DropdownItem>
+                            <DropdownItem>
+                              <Link to={`/admin/election/${election._id}/candidate`} style={{color:"black"}} >View Candidates</Link>
+                            </DropdownItem>
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>

@@ -50,6 +50,18 @@ import {
     ADMIN_POSITION_LOADING,
     ADMIN_POSITION_LOADED,
     ADMIN_POSITION_LOAD_ERROR,
+    ADMIN_CANDIDATE_LOADING,
+    ADMIN_CANDIDATE_LOADED,
+    ADMIN_CANDIDATE_LOAD_ERROR,
+    ADMIN_CANDIDATES_LOADING,
+    ADMIN_CANDIDATES_LOADED,
+    ADMIN_CANDIDATES_LOAD_ERROR,
+    ADMIN_CANDIDATE_VERIFYING,
+    ADMIN_CANDIDATE_VERIFIED,
+    ADMIN_CANDIDATE_VERIFY_ERROR,
+    ADMIN_CANDIDATE_UNVERIFYING,
+    ADMIN_CANDIDATE_UNVERIFIED,
+    ADMIN_CANDIDATE_UNVERIFY_ERROR,
 
 } from '../actions/types';
 
@@ -88,6 +100,14 @@ const initialState = {
     isAdminPositionEdited: false,
     isAdminPositionAdding: false,
     isAdminPositionAdded: false,
+    isAdminCandidateLoading: false,
+    isAdminCandidateLoaded: false,
+    isAdminCandidatesLoading: false,
+    isAdminCandidatesLoaded: false,
+    isAdminCandidateVerifying: false,
+    isAdminCandidateVerified: false,
+    isAdminCandidateUnVerifying: false,
+    isAdminCandidateUnVerified: false,
 
 };
 
@@ -124,6 +144,10 @@ export default function (state = initialState, action) {
         case ADMIN_POSITION_EDIT_ERROR:
         case ADMIN_POSITION_DELETE_ERROR:
         case ADMIN_POSITION_LOAD_ERROR:
+        case ADMIN_CANDIDATE_LOAD_ERROR:
+        case ADMIN_CANDIDATES_LOAD_ERROR:
+        case ADMIN_CANDIDATE_VERIFY_ERROR:
+        case ADMIN_CANDIDATE_UNVERIFY_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -350,6 +374,62 @@ export default function (state = initialState, action) {
                 ...state,
                 isAdminPositionsLoading: false,
                 isAdminPositionsLoaded: true,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_LOADING:
+            return {
+                ...state,
+                isAdminCandidateLoading: true,
+                isAdminCandidateLoaded: false,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_LOADED:
+            return {
+                ...state,
+                isAdminCandidateLoading: false,
+                isAdminCandidateLoaded: true,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATES_LOADING:
+            return {
+                ...state,
+                isAdminCandidatesLoading: true,
+                isAdminCandidatesLoaded: false,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATES_LOADED:
+            return {
+                ...state,
+                isAdminCandidatesLoading: false,
+                isAdminCandidatesLoaded: true,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_VERIFYING:
+            return {
+                ...state,
+                isAdminCandidateVerifying: true,
+                isAdminCandidateVerified: false,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_VERIFIED:
+            return {
+                ...state,
+                isAdminCandidateVerifying: false,
+                isAdminCandidateVerified: true,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_UNVERIFYING:
+            return {
+                ...state,
+                isAdminCandidateUnVerifying: true,
+                isAdminCandidateUnVerified: false,
+                ...action.payload
+            }
+        case ADMIN_CANDIDATE_UNVERIFIED:
+            return {
+                ...state,
+                isAdminCandidateUnVerifying: false,
+                isAdminCandidateUnVerified: true,
                 ...action.payload
             }
 

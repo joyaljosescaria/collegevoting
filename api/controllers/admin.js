@@ -366,7 +366,7 @@ exports.deleteElectionPositions = async (req, res) => {
         const updatePos = await findElection.save()
         console.log(deleteElectionPos)
         const deleteStudentPositions = await StudentPosition.deleteMany({ position_id: req.params.positionId })
-        const deleteCandidate = await Candidate.deleteMany({ position_id: req.params.positionId})
+        const deleteCandidate = await Candidate.deleteMany({ position_id: req.params.positionId })
         const deletePosition = await Position.deleteOne({ _id: req.params.positionId })
 
         res.status(200).json({ message: "Position deleted" })
@@ -379,8 +379,68 @@ exports.deleteElectionPositions = async (req, res) => {
 
 exports.getAllCandidates = async (req, res) => {
     try {
-        const findCandidates = await Candidate.find({election_id: req.params.electionId}).populate({ path: "position_id", select: "_id position" }).populate({path: "student_id" , select: "_id name profile_pic"}).lean();
-        res.status(200).json({findCandidates})
+        const findCandidates = await Candidate.find({ election_id: req.params.electionId }).populate({ path: "position_id", select: "_id position" }).populate({ path: "student_id", select: "_id name profile_pic" }).lean();
+        res.status(200).json({ findCandidates })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Verify candidate
+
+exports.acceptCandidates = async (req, res) => {
+    try {
+
+        candidate = {
+            is_verified: true
+        }
+
+        const acceptCandidate = await Candidate.updateOne({ _id: req.params.candidateId }, candidate);
+        res.status(200).json({ acceptCandidate })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Deverify Candidate
+
+exports.rejectCandidates = async (req, res) => {
+    try {
+
+        candidate = {
+            is_verified: false,
+            rejection_reason: req.body.reason
+        }
+
+        const acceptCandidate = await Candidate.updateOne({ _id: req.params.candidateId }, candidate);
+
+        const message = {
+            from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
+            to: 'alphonseksebastian1@gmail.com',         // List of recipients
+            subject: 'Rejected Nomination', // Subject line
+            html: `Your nomination <h1>${random}</h1> has been rejected due to ${req.body.reason}` // Plain text body
+        };
+        transport.getSmpt().sendMail(message, function (err, info) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(info);
+            }
+        })
+
+        res.status(200).json({ acceptCandidate })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// get a candidate
+
+exports.getACandidate = async (req, res) => {
+    console.log(req.params.candidateId)
+    try {
+        const findCandidate = await Candidate.find({ _id: req.params.candidateId }).populate({ path: "position_id", select: "_id position" }).populate({ path: "student_id", select: "_id name profile_pic" }).lean();
+        res.status(200).json({ findCandidate })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

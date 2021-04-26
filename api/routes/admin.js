@@ -36,6 +36,8 @@ router.delete('/election/position/:positionId/:electionId' , auth , isAdmin , ad
 
 // Candidates
 router.get('/candidates/:electionId' , auth , isAdmin , admin.getAllCandidates) //Get all candidates ✅
-
+router.get('/candidate/:candidateId' , auth ,  isAdmin , admin.getACandidate) //Get a candidate
+router.put('/candidate/accept/:candidateId' , auth , isAdmin , admin.acceptCandidates) //Verify candidate
+router.put('/candidate/reject/:candidateId' , auth , isAdmin , admin.rejectCandidates) //Reject candidate
 
 module.exports = router;
