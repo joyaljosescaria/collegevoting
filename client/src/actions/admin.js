@@ -64,6 +64,15 @@ import {
   ADMIN_CANDIDATE_UNVERIFYING,
   ADMIN_CANDIDATE_UNVERIFIED,
   ADMIN_CANDIDATE_UNVERIFY_ERROR,
+  ADMIN_ELECTION_STARTING,
+  ADMIN_ELECTION_STATRTED,
+  ADMIN_ELECTION_START_ERROR,
+  ADMIN_STUDENT_DELETING,
+  ADMIN_STUDENT_DELETED,
+  ADMIN_STUDENT_DELETE_ERROR,
+  ADMIN_BATCH_UPDATING,
+  ADMIN_BATCH_UPDATED,
+  ADMIN_BATCH_UPDATE_ERROR,
 
 } from './types';
 
@@ -506,10 +515,10 @@ export const acceptCandidate = (id) => (dispatch, getState) => {
 
 // Reject Candidate
 
-export const rejectCandidate = (id , reason) => (dispatch, getState) => {
+export const rejectCandidate = (id) => (dispatch, getState) => {
   dispatch({ type: ADMIN_CANDIDATE_UNVERIFYING });
 
-  const body = JSON.stringify({reason})
+  const body = JSON.stringify({})
 
   axios
     .put(`/admin/candidate/reject/${id}`, body, tokenConfig(getState))
@@ -523,6 +532,74 @@ export const rejectCandidate = (id , reason) => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_CANDIDATE_UNVERIFY_ERROR,
+      });
+    });
+}
+
+// Start Election
+
+export const startElection = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_ELECTION_STARTING });
+
+  const body = JSON.stringify({})
+
+  axios
+    .put(`/admin/election/start/${id}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_ELECTION_STATRTED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_ELECTION_START_ERROR,
+      });
+    });
+}
+
+// Delete Student
+
+export const deleteStudent = (id) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_STUDENT_DELETING });
+
+  axios
+    .delete(`/admin/student/delete/${id}`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_STUDENT_DELETED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_STUDENT_DELETE_ERROR,
+      });
+    });
+}
+
+
+// Delete Student
+
+export const updateBatch = () => (dispatch, getState) => {
+  dispatch({ type: ADMIN_BATCH_UPDATING });
+
+  const body = JSON.stringify({})
+
+  axios
+    .put(`/admin/student/updatebatch/`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_BATCH_UPDATED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_BATCH_UPDATE_ERROR,
       });
     });
 }

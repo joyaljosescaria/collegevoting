@@ -5,7 +5,7 @@ const isAdmin = async (req, res, next) =>{
 
     try {
         const admin = await Admin.find({ _id: req.user.user_id})
-        console.log(admin)
+        
         if(admin)
         {
             next()

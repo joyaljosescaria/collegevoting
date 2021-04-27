@@ -59,7 +59,7 @@ exports.verifyStudent = async (req, res) => {
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-                to: 'alphonseksebastian1@gmail.com',         // List of recipients
+                to: findStudent[0].email,         // List of recipients
                 subject: 'Verification Completed', // Subject line
                 html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
             };
@@ -99,7 +99,7 @@ exports.unVerifyStudent = async (req, res) => {
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-                to: 'alphonseksebastian1@gmail.com',         // List of recipients
+                to: findStudent[0].email,         // List of recipients
                 subject: 'Profile Unverified', // Subject line
                 html: `${findStudent[0].name} your profile has an error. Please verify and try again. Reason : ${reason} .` // Plain text body
             };
@@ -409,16 +409,19 @@ exports.rejectCandidates = async (req, res) => {
 
         candidate = {
             is_verified: false,
-            rejection_reason: req.body.reason
+            rejected: true
         }
 
+        const getEmail = await Candidate.find({_id: req.params.candidateId}).populate({ path: "student_id", select: "_id email" })
         const acceptCandidate = await Candidate.updateOne({ _id: req.params.candidateId }, candidate);
+
+        const email = getEmail[0].student_id.email
 
         const message = {
             from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-            to: 'alphonseksebastian1@gmail.com',         // List of recipients
+            to: email,         // List of recipients
             subject: 'Rejected Nomination', // Subject line
-            html: `Your nomination <h1>${random}</h1> has been rejected due to ${req.body.reason}` // Plain text body
+            html: `Your nomination has been rejected .` // Plain text body
         };
         transport.getSmpt().sendMail(message, function (err, info) {
             if (err) {
@@ -437,11 +440,66 @@ exports.rejectCandidates = async (req, res) => {
 // get a candidate
 
 exports.getACandidate = async (req, res) => {
-    console.log(req.params.candidateId)
     try {
-        const findCandidate = await Candidate.find({ _id: req.params.candidateId }).populate({ path: "position_id", select: "_id position" }).populate({ path: "student_id", select: "_id name profile_pic" }).lean();
+        const findCandidate = await Candidate.find({ _id: req.params.candidateId }).populate({ path: "position_id", select: "_id position" }).populate({ path: "student_id", select: "_id name profile_pic had_candidate", populate: { path: 'course_id', select: 'course' } }).lean();
         res.status(200).json({ findCandidate })
     } catch (err) {
         res.status(500).json({ error: err.message })
+    }
+}
+
+// Start Election
+
+exports.startElection = async (req, res) => {
+    try {
+
+        const getElection = await Election.findById(req.params.electionId, 'started')
+
+        election = {
+            started: !getElection.started
+        }
+
+        const startElection = await Election.updateOne({ _id: req.params.electionId }, election);
+
+        res.status(200).json(startElection)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Delete Student
+
+exports.deleteStudent = async (req, res) => {
+    try {
+        data = {
+            is_active: false
+        }
+
+        const deleteStudent = await Student.updateOne({ _id: req.params.studentId }, data)
+        res.status(200).json({ deleteStudent })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Update Batch 
+
+exports.updateBatch = async (req, res) => {
+    try {
+        const deleteElection = await Election.deleteMany({})
+        const deleteElectionPos = await Position.deleteMany({})
+        const deleteStdPos = await StudentPosition.deleteMany({})
+        const deleteCandidate = await Candidate.deleteMany({})
+
+        for (let i = 1; i < 4; i++) {
+            const updateBatch = await Student.updateMany({batch_year_count: i} , {batch_year_count : Number(i)+1});
+        }
+
+        const deleteBatch = await Student.updateMany({batch_year_count: i} , {is_active:false});
+
+        res.status(200).json({message:"Batch Updated"})
+
+    } catch (err) {
+
     }
 }

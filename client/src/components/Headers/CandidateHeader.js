@@ -5,16 +5,13 @@ import { Link } from "react-router-dom";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import ViewCandidateModal from "components/Modals/ViewCandidateModal";
 
 const CandidateHearder = (props) => {
 
   useEffect(() => {
     props.loadCandidates(props.electionId)
-  }, [loadCandidates])
-
-  const callStudent = (candidateId) => {
-    props.loadCandidate(candidateId)
-  }
+  }, [loadCandidates , props.admin.isAdminCandidateUnVerified , props.admin.isAdminCandidateVerified])
 
   return (
     <>
@@ -52,7 +49,7 @@ const CandidateHearder = (props) => {
                             </div>
                           </Col>
                           </Row>
-                          <Link to={`/admin/candidate/${candidate._id}`}><button onClick={(e) => callStudent(candidate._id)} type="button" class="mt-4 btn-block btn btn-primary">View Candidate</button></Link>
+                          <ViewCandidateModal candidateId={candidate._id}/>
                         </CardBody>
                       </Card>
                     </Col>))

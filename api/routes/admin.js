@@ -27,6 +27,7 @@ router.post('/elections' , auth , isAdmin , admin.createElection) //Create elect
 router.get('/elections/:electionId' , auth , isAdmin , admin.getElection) //Get an election ✅
 router.put('/elections/:electionId' , auth , isAdmin , admin.editElection) //Edit elections ✅
 router.delete('/elections/:electionId' , auth , isAdmin , admin.deleteElection) //Delete Election ✅
+router.put('/election/start/:electionId' , auth , isAdmin , admin.startElection) //Start an election 
 
 // Election Positions
 router.get('/election/position/:electionId' , auth , isAdmin , admin.getAllPositions) //Get all positions ✅
@@ -39,5 +40,11 @@ router.get('/candidates/:electionId' , auth , isAdmin , admin.getAllCandidates) 
 router.get('/candidate/:candidateId' , auth ,  isAdmin , admin.getACandidate) //Get a candidate
 router.put('/candidate/accept/:candidateId' , auth , isAdmin , admin.acceptCandidates) //Verify candidate
 router.put('/candidate/reject/:candidateId' , auth , isAdmin , admin.rejectCandidates) //Reject candidate
+
+// Delete Student
+router.delete('/student/delete/:studentId' , auth , isAdmin , admin.deleteStudent) //Delete Student
+
+// Update Batch and Delete Batch 
+router.put('/student/updatebatch' , auth , isAdmin , admin.updateBatch) //Update Batch
 
 module.exports = router;

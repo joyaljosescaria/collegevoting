@@ -24,11 +24,12 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 import ResponsivePlayer from "components/Video/VideoPlayer.js"
 import VerifyModal from "components/Modals/VerifyModal";
+import DeleteStudentModal from "components/Modals/DeleteStudentModal";
 
 
 const Student = (props) => {
 
-  if (props.admin.isAdminStudentUnVerified || props.admin.isAdminStudentVerified) {
+  if (props.admin.isAdminStudentUnVerified || props.admin.isAdminStudentVerified || props.admin.isAdminStudentDeleted) {
     return <Redirect to="/admin/students" />
   }
 
@@ -57,15 +58,7 @@ const Student = (props) => {
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
                   <VerifyModal />
-                  <Button
-                    className="float-right"
-                    color="danger"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Delete
-                  </Button>
+                  <DeleteStudentModal studentId={props.admin.student._id}/>
                 </div>
               </CardHeader>
               <CardBody className="pt-0 pt-md-4">

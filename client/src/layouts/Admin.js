@@ -19,7 +19,6 @@ import Student from "views/admin/Student.js"
 import routes from "routes.js";
 import Positions from "views/admin/Positions";
 import Candidates from "views/admin/Candidates";
-import OneCandidate from "views/admin/Candidate";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -89,7 +88,6 @@ const Admin = (props) => {
           <Route path="/admin/students/:studentId" render={(props) => <Student {...props} />} />
           <Route path="/admin/election/:electionId/positions" render={(props) => <Positions {...props} />} />
           <Route path="/admin/election/:electionId/candidate" exact render={(props) => <Candidates {...props} />} />
-          <Route path="/admin/candidate/:candidateId" render={(props) => <OneCandidate {...props} />} />
         </Switch>
         <Container fluid>
           <AdminFooter />

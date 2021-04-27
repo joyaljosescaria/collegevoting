@@ -62,6 +62,15 @@ import {
     ADMIN_CANDIDATE_UNVERIFYING,
     ADMIN_CANDIDATE_UNVERIFIED,
     ADMIN_CANDIDATE_UNVERIFY_ERROR,
+    ADMIN_ELECTION_STARTING,
+    ADMIN_ELECTION_STATRTED,
+    ADMIN_ELECTION_START_ERROR,
+    ADMIN_STUDENT_DELETING,
+    ADMIN_STUDENT_DELETED,
+    ADMIN_STUDENT_DELETE_ERROR,
+    ADMIN_BATCH_UPDATING,
+    ADMIN_BATCH_UPDATED,
+    ADMIN_BATCH_UPDATE_ERROR,
 
 } from '../actions/types';
 
@@ -108,6 +117,12 @@ const initialState = {
     isAdminCandidateVerified: false,
     isAdminCandidateUnVerifying: false,
     isAdminCandidateUnVerified: false,
+    isAdminElectionStarting: false,
+    isAdminElectionStarted: false,
+    isAdminStudentDeleteing: false,
+    isAdminStudentDeleted: false,
+    isAdminBatchUpdating: false,
+    isAdminBatchUpdated: false,
 
 };
 
@@ -148,6 +163,9 @@ export default function (state = initialState, action) {
         case ADMIN_CANDIDATES_LOAD_ERROR:
         case ADMIN_CANDIDATE_VERIFY_ERROR:
         case ADMIN_CANDIDATE_UNVERIFY_ERROR:
+        case ADMIN_ELECTION_START_ERROR:
+        case ADMIN_STUDENT_DELETE_ERROR:
+        case ADMIN_BATCH_UPDATE_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -430,6 +448,48 @@ export default function (state = initialState, action) {
                 ...state,
                 isAdminCandidateUnVerifying: false,
                 isAdminCandidateUnVerified: true,
+                ...action.payload
+            }
+        case ADMIN_ELECTION_STARTING:
+            return {
+                ...state,
+                isAdminElectionStarting: true,
+                isAdminElectionStarted: false,
+                ...action.payload
+            }
+        case ADMIN_ELECTION_STATRTED:
+            return {
+                ...state,
+                isAdminElectionStarting: false,
+                isAdminElectionStarted: true,
+                ...action.payload
+            }
+        case ADMIN_STUDENT_DELETING:
+            return {
+                ...state,
+                isAdminStudentDeleted:false,
+                isAdminStudentDeleting:true,
+                ...action.payload
+            }
+        case ADMIN_STUDENT_DELETED:
+            return {
+                ...state,
+                isAdminStudentDeleted:true,
+                isAdminStudentDeleting:false,
+                ...action.payload
+            }
+        case ADMIN_BATCH_UPDATING:
+            return {
+                ...state,
+                isAdminBatchUpdated: false,
+                isAdminBatchUpdating: true,
+                ...action.payload
+            }
+        case ADMIN_BATCH_UPDATED:
+            return {
+                ...state,
+                isAdminBatchUpdated: true,
+                isAdminBatchUpdating: false,
                 ...action.payload
             }
 

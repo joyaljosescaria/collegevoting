@@ -20,6 +20,7 @@ import HeaderSpace from "components/Headers/HeaderSpace.js";
 import AddElectionModal from "components/Modals/AddElectionModal";
 import DeleteElectionModal from "components/Modals/DeleteElectionModal";
 import EditElectionModal from "components/Modals/EditElectionModal";
+import StartElectionModal from "components/Modals/StartElectionModal";
 
 
 
@@ -27,7 +28,7 @@ const Election = (props) => {
 
   useEffect(() => {
     props.loadElections()
-  }, [loadElections, props.admin.isAdminElectionAdded, props.admin.isAdminElectionDeleted, props.admin.isAdminElectionEdited])
+  }, [loadElections, props.admin.isAdminElectionAdded, props.admin.isAdminElectionDeleted, props.admin.isAdminElectionEdited , props.admin.isAdminElectionStarted])
 
 
   const getDate = (date) => {
@@ -100,6 +101,7 @@ const Election = (props) => {
                             <DropdownItem>
                               <Link to={`/admin/election/${election._id}/candidate`} style={{color:"black"}} >View Candidates</Link>
                             </DropdownItem>
+                            <StartElectionModal electionId={election._id} started={election.started}/>
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>

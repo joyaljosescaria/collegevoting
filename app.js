@@ -9,6 +9,7 @@ const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 const adminAuthRoutes = require("./api/routes/admin-auth");
 const adminRoutes = require("./api/routes/admin");
+const studentRoutes = require("./api/routes/student");
 
 mongoose.connect(
   process.env.MONGO_DB_URL,
@@ -48,6 +49,7 @@ app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 app.use("/admin/auth", adminAuthRoutes);
 app.use("/admin", adminRoutes);
+app.use("/student", studentRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
