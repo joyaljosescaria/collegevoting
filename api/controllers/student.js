@@ -13,7 +13,8 @@ const Course = require("../models/course");
 const Position = require("../models/electionPosition");
 const StudentPosition = require("../models/studentPosition");
 
-const transport = require("../helpers/emailhelper")
+const transport = require("../helpers/emailhelper");
+const { rawListeners } = require('../models/admin');
 
 
 // Get the profile of student 
@@ -56,3 +57,21 @@ exports.registerStudent = async (req, res) => {
 
     }
 }
+
+// Submit Nomination
+
+exports.nomination = async (req,res) =>{
+    try {
+        const nomination = {
+            student_id: req.user.user_id,
+            position_id: req.body.position,
+            election_id: req.body.election
+        }
+        const saveNomination = await nomination.save()
+        res.status(200).json({saveNomination})
+    } catch (err) {
+        res.status(500).json({ error: err.message})
+    }
+}
+
+

@@ -25,7 +25,7 @@ function UpdateBatchModal(props) {
                 Update Batch
             </Button>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Delete Course</h2>
+                <h2 className="text-center">Update Batch</h2>
                 <p className="text-center">
                     Are you sure you want to update the batch? 
                     <br/>
