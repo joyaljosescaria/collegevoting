@@ -37,8 +37,8 @@ function VerifyModal(props) {
                         size="sm"
                         onClick={() => {
                             props.admin.student.is_verified ?
-                            props.unverifyStudent(props.admin.student._id) :
-                            props.verifyStudent(props.admin.student._id)
+                            props.unverifyStudent(props.admin.student._id , props.course_id , props.batch_year_count) :
+                            props.verifyStudent(props.admin.student._id , props.course_id , props.batch_year_count)
                         }}
                     >
                         {props.admin.student.is_verified ? "Unverify" : "Verify"}

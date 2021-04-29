@@ -11,7 +11,7 @@ const studentSchema = mongoose.Schema({
     pass_added_time : { type: Date },
     profile_pic: { type: String  , required: true},
     id_card: { type: String , required: true},
-    id_card_selfi : { type: String , required: true },
+    id_card_selfi : { type: String },
     is_active : { type: Boolean , required: true , default: true},
     is_verified : { type: Boolean , required: true, default: false },
     not_verify_reason : { type: String}

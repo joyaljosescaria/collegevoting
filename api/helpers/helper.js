@@ -2,10 +2,13 @@ var moment = require('moment');
 
 
 exports.otpLessThanTenMinute = (otptime) => {
+    console.log(moment(otptime).isBefore(moment().subtract(10, 'minute')))
+
+    console.log(otptime.toString())
     return moment(otptime).isBefore(moment().subtract(10, 'minute'));
 }
 
-function generatePassword(passwordLength) {
+exports.generatePassword = (passwordLength) => {
     var numberChars = "0123456789";
     var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var lowerChars = "abcdefghijklmnopqrstuvwxyz";

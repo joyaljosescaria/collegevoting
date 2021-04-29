@@ -57,7 +57,7 @@ const Student = (props) => {
               </Row>
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
-                  <VerifyModal />
+                  <VerifyModal course_id={props.admin.course_id} batch_year_count={props.admin.batch_year_count} />
                   <DeleteStudentModal studentId={props.admin.student._id}/>
                 </div>
               </CardHeader>

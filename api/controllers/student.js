@@ -14,7 +14,8 @@ const Position = require("../models/electionPosition");
 const StudentPosition = require("../models/studentPosition");
 
 const transport = require("../helpers/emailhelper");
-const { rawListeners } = require('../models/admin');
+
+const jwtKey = process.env.JWT_KEY
 
 
 // Get the profile of student 
@@ -30,17 +31,15 @@ exports.getStudent = async (req, res) => {
 // Register Student 
 exports.registerStudent = async (req, res) => {
     const newStudent = req.body
+    const newFile = req.files
     var validate = false;
-    var id_card = '';
-    var id_card_s = '';
-    var profile_pic = ''
 
     try {
-        if (!newStudent.name || !newStudent.email || !newStudent.course_id || !newStudent.batch_year_count || !newStudent.profile_pic || !newStudent.id_card || !newStudent.id_card_selfi) {
+        if (!newStudent.name || !newStudent.email || !newStudent.course_id || !newStudent.batch_year_count || !newFile.profile_pic || !newFile.id_card || !newFile.id_card_selfi) {
             res.status(400).json({ error: "Please provide the details" });
         }
 
-        if (validate.validateEmail(newStudent.email)) {
+        if (validated.validateEmail(newStudent.email)) {
             validate = true;
         }
         else {
@@ -48,12 +47,71 @@ exports.registerStudent = async (req, res) => {
         }
 
         if (validate) {
+            var profile_pic =  newFile.profile_pic;
+            var id_card =  newFile.id_card;
+            var id_card_s =  await newFile.id_card_selfi;
 
+            console.log(id_card_s)
+
+            profile_pic.mv('./uploads/profilepic' + profile_pic.name);
+            id_card.mv('./uploads/idcard' + id_card.name);
+            id_card_s.mv('./uploads/selfi' + id_card_s.name);
+
+            function randomNumber(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            const unique_id = randomNumber(100001 , 999999)
+
+
+            var student = new Student({
+                profile_pic: profile_pic.name,
+                id_card: id_card.name,
+                id_card_selfi: id_card_s.name,
+                name: newStudent.name,
+                course_id: newStudent.course_id,
+                unique_id : unique_id.toString(),
+                batch_year_count : newStudent.batch_year_count,
+                email : newStudent.email,
+            })
+
+
+            student
+            .save()
+            .then(result => {
+                res.status(201).json({
+                    message: "Student Registerd Succesfully",
+                    admin: {
+                        name: result.name,
+                        email: result.email,
+                        _id: result._id,
+                    }
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err.message
+                });
+            });
+
+            const message = {
+                from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
+                to: newStudent.email,         // List of recipients
+                subject: 'Account Created', // Subject line
+                html: `${newStudent.name} , your account has been created. Here is your unique ID ${unique_id}.` // Plain text body
+            };
+            transport.getSmpt().sendMail(message, function (err, info) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(info);
+                }
+            });
         }
 
 
     } catch (err) {
-
+        res.status(400).json({error: err.message})
     }
 }
 
@@ -61,13 +119,26 @@ exports.registerStudent = async (req, res) => {
 
 exports.nomination = async (req, res) => {
     try {
-        const nomination = {
-            student_id: req.user.user_id,
-            position_id: req.body.position,
-            election_id: req.body.election
+        const getStudent = await Student.findById(req.user.user_id).select('had_candidate ')
+        if(getStudent.had_candidate)
+        {
+            res.status(500).json({error: 'You have been participated once .'})
         }
-        const saveNomination = await nomination.save()
-        res.status(200).json({ saveNomination })
+        else{
+            const nomination = new Candidate({
+                student_id: req.user.user_id,
+                position_id: req.body.position,
+                election_id: req.body.election
+            })
+    
+            data = {
+                had_candidate: true,
+            }
+            const saveNomination = await nomination.save()
+            const update = await Student.updateOne({_id: req.user.user_id} , data)
+            res.status(200).json({ saveNomination })
+        }
+        
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -76,15 +147,15 @@ exports.nomination = async (req, res) => {
 
 // login
 
-exports.studentlogin = async (req, res) => {
+exports.studentLogin1 = async (req, res) => {
     try {
         if (!req.body.email || !req.body.unique_id) {
             res.status(400).json({ error: "Please provide the credentials" })
         }
-        const login = await email.find({ email: req.body.email}).select(' email unique_id')
-        if(login[0].email===req.body.email){
-            if(login[0].unique_id ===req.body.unique_id)
-            {
+        const login = await Student.find({ unique_id: req.body.unique_id }).select(' email unique_id')
+
+        if (login[0].email === req.body.email) {
+            if (login[0].unique_id === req.body.unique_id) {
                 const password = helper.generatePassword(8)
 
                 const salt = await bcrypt.genSalt(10)
@@ -94,7 +165,7 @@ exports.studentlogin = async (req, res) => {
                     from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
                     to: login[0].email,         // List of recipients
                     subject: 'Password for Login', // Subject line
-                    html: `Use <h1>${password}</h1> to login.` // Plain text body
+                    html: `Use <h1>${password}</h1> to login. Password is only valid for 10 minutes.` // Plain text body
                 };
                 transport.getSmpt().sendMail(message, function (err, info) {
                     if (err) {
@@ -109,19 +180,80 @@ exports.studentlogin = async (req, res) => {
                     pass_added_time: Date.now()
                 }
 
-                const saveLogin = await data.save()
+                const saveLogin = await Student.updateOne({unique_id: login[0].unique_id} , data)
 
-                res.status(200).json({ message:"Password sent successfully"})
+                res.status(200).json({ message: "Password sent successfully" })
             }
         }
-        else
-        {
-            res.status(403).json({ error: "provide correct credentials"})
+        else {
+            res.status(403).json({ error: "provide correct credentials" })
         }
 
-        
-
-    } catch (error) {
+    } catch (err) {
         res.status(400).json({ error: err.message })
+    }
+}
+
+// Student Loging 2
+
+exports.studentLogin2 = async (req, res) => {
+    try {
+        if (!req.body.email || !req.body.password) {
+            res.status(400).json({ error: "Please provide the credentials" })
+        }
+
+        const getStudent = await Student.find({ email: req.body.email }).select('email password pass_added_time' )
+        
+        if (!helper.otpLessThanTenMinute(getStudent[0].pass_added_time)) {
+            
+            if (getStudent[0].email === req.body.email) {
+                if (compPass = await bcrypt.compare(req.body.password, getStudent[0].password)) {
+                    const user_id = getStudent[0]._id;
+                    token = jwt.sign({ user_id }, jwtKey, {
+                        algorithm: "HS256",
+                        expiresIn: "24h"
+                    })
+                    res.status(200).json({ token: token, _id: getStudent[0]._id })
+                }
+                else{
+                    res.status(404).json({ error: "Not Found"})
+                }
+            }
+            else{
+                res.status(404).json({ error: "Not Found"})
+            }
+        }
+        else {
+            res.status(403).json({ error: "OTP Expired" })
+        }
+
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// cast vote
+
+exports.castVote = async (req, res) => {
+    try {
+        const anyElection = await Election.find({started:true})
+        if(anyElection.length > 0)
+        {
+            var elections = []
+            anyElection.map(e =>{
+                elections.push(e._id)
+            })
+
+            var positions = [];
+
+            elections.map(async e =>{
+                var position = await StudentPosition.find({election_id:e , student_id: req.user.user_id})
+                positions.push(position._id)
+            })
+
+            res.status(200).json(positions)
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message })
     }
 }

@@ -34,7 +34,7 @@ exports.getaStudent = async (req, res) => {
 // Get all unverified students
 exports.getUnverified = async (req, res) => {
     try {
-        const unverified = await Student.find({ is_verified: false }).populate({ path: "course_id", select: "_id course" }).lean();
+        const unverified = await Student.find({ is_verified: false , is_active: true }).populate({ path: "course_id", select: "_id course" }).lean();
         res.status(200).json({ unverified })
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -44,7 +44,7 @@ exports.getUnverified = async (req, res) => {
 // Get student verified
 exports.verifyStudent = async (req, res) => {
     const student = req.params.studentId
-
+    var pos = []
     try {
 
         const findStudent = await Student.find({ _id: student })
@@ -54,6 +54,29 @@ exports.verifyStudent = async (req, res) => {
             }
 
             const verifyStudent = await Student.updateOne({ _id: student }, data)
+
+            var positions = [];
+
+            const getAll = await Course.find({ course: "All" })
+
+            const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
+            getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+            const getPos2 = await Position.find({ batch_year_count: req.body.batch_year_count })
+            getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+            const getPos3 = await Position.find({ course_id: req.params.course_id })
+            getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+
+            if (positions.length > 0) {
+                positions.map(posi => {
+                    var sobj = {};
+                    sobj['student_id'] = req.body.student_id,
+                    sobj['position_id'] = posi.id,
+                    sobj['election_id'] = posi.electionId
+                    pos.push(sobj)
+                })
+
+                const insertPosition = await StudentPosition.insertMany(pos)
+            }
 
             res.status(200).json({ message: "Student Verified" })
 
@@ -286,6 +309,7 @@ exports.createElectionPosition = async (req, res) => {
                 var sobj = {};
                 sobj['student_id'] = student._id
                 sobj['position_id'] = saveNewPosition._id
+                sobj['election_id'] = req.body.electionId
                 students.push(sobj)
             })
 
@@ -333,6 +357,7 @@ exports.editElectionPosition = async (req, res) => {
                 var sobj = {};
                 sobj['student_id'] = student._id
                 sobj['position_id'] = req.params.positionId
+                sobj['election_id'] = req.body.electionId
                 students.push(sobj)
             })
 
@@ -412,7 +437,7 @@ exports.rejectCandidates = async (req, res) => {
             rejected: true
         }
 
-        const getEmail = await Candidate.find({_id: req.params.candidateId}).populate({ path: "student_id", select: "_id email" })
+        const getEmail = await Candidate.find({ _id: req.params.candidateId }).populate({ path: "student_id", select: "_id email" })
         const acceptCandidate = await Candidate.updateOne({ _id: req.params.candidateId }, candidate);
 
         const email = getEmail[0].student_id.email
@@ -428,6 +453,7 @@ exports.rejectCandidates = async (req, res) => {
                 console.log(err)
             } else {
                 console.log(info);
+                
             }
         })
 
@@ -491,15 +517,16 @@ exports.updateBatch = async (req, res) => {
         const deleteStdPos = await StudentPosition.deleteMany({})
         const deleteCandidate = await Candidate.deleteMany({})
 
-        for (let i = 1; i < 4; i++) {
-            const updateBatch = await Student.updateMany({batch_year_count: i} , {batch_year_count : Number(i)+1});
-        }
+        const updateBatch = await Student.updateMany({ batch_year_count: 1 }, { batch_year_count: 2 });
+        const updateBatch1 = await Student.updateMany({ batch_year_count: 2 }, { batch_year_count: 3 });
+        const updateBatch2 = await Student.updateMany({ batch_year_count: 3 }, { batch_year_count: 4 });
 
-        const deleteBatch = await Student.updateMany({batch_year_count: i} , {is_active:false});
+        const deleteBatch = await Student.updateMany({ batch_year_count: 4 }, { is_active: false });
 
-        res.status(200).json({message:"Batch Updated"})
+        res.status(200).json({ message: "Batch Updated" })
 
     } catch (err) {
 
     }
 }
+
