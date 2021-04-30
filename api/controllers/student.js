@@ -153,8 +153,8 @@ exports.studentLogin1 = async (req, res) => {
         }
         const login = await Student.find({ unique_id: req.body.unique_id }).select(' email unique_id is_active is_verified')
 
-        if(!login[0].is_active && !login[0].is_verified) {
-            res.status(403).json({ error:"You can't login ."})
+        if (!login[0].is_active && !login[0].is_verified) {
+            res.status(403).json({ error: "You can't login ." })
         }
 
         if (login[0].email === req.body.email) {
@@ -241,6 +241,8 @@ exports.studentLogin2 = async (req, res) => {
 exports.castVote = async (req, res) => {
     var posi = new Array()
     var posi1 = new Array()
+    var candidate = new Array()
+    var cand = {}
 
     try {
         const anyElection = await Election.find({ started: true })
@@ -251,32 +253,28 @@ exports.castVote = async (req, res) => {
             })
 
 
-            for(let i=0; i<elections.length ; i++) {
+            for (let i = 0; i < elections.length; i++) {
                 const position = await StudentPosition.find({ election_id: elections[i], student_id: req.user.user_id })
                 position.map(pos => {
                     posi.push(pos.position_id)
                 })
                 posi1 = posi
-                console.log(posi)
             }
 
 
             var candidates = {}
 
-            posi.map(async (position , index) => {
-                console.log(position)
-                var candidate = await Candidate.find({ position_id: position }).populate({ path: 'student_id', select: 'name' }).populate({ path: 'course_id', select: 'course' }).populate({ path: 'election_id', select: 'election' })
-                candidate.map(c => {
-                    console.log(c)
-                    candidates["pos"+index] : [
-                        {
-                            "name":"Joyal"
-                        }
-                    ]
-                })
-            })
+            for(let k= 0 ; k <posi.length ; k++) {
+                var candi = await Candidate.find({ position_id: posi[k] }).populate({ path: 'student_id', select: 'name' }).populate({ path: 'course_id', select: 'course' }).populate({ path: 'election_id', select: 'election' })
+                cand[k] = []
+                for (let i = 0; i < candi.length; i++) {
+                    cand[k].push(candi[i])
+                }
+                candidate.push(cand[k])
+                console.log(cand[k])
+            }
 
-            res.status(200).json({ candidates })
+            res.status(200).json({ candidate })
         }
     } catch (err) {
         res.status(500).json({ error: err.message })
