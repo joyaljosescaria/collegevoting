@@ -110,7 +110,7 @@ const Login1 = (props) => {
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
-              <Link to='/auth/student/login'><small>Create new account</small></Link>
+              <Link to='/auth/student/register'><small>Create new account</small></Link>
             </a>
           </Col>
         </Row>

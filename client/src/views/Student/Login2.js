@@ -41,7 +41,7 @@ const Login2 = (props) => {
   }
 
   return (
-    </>
+    <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
@@ -108,7 +108,8 @@ const Login2 = (props) => {
                   Sign in
                 </Button>
               </div>
-           </CardBody>
+            </Form>
+          </CardBody>
         </Card>
         <Row className="mt-3">
           <Col xs="6">

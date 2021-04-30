@@ -23,7 +23,7 @@ import { tokenConfig } from './studentAuth'
 
 // get course
 
-export const getCourse = () => (dispatch) => {
+export const getCourse = () => (dispatch , getState) => {
 
     dispatch({ type: STUDENT_COURSE_SELECTING });
 
@@ -49,7 +49,7 @@ export const getCourse = () => (dispatch) => {
 };
 
 // Get election 
-export const getElection = () => (dispatch) => {
+export const getElection = () => (dispatch , getState) => {
 
     dispatch({ type: STUDENT_ELECTION_SELECTING });
 
@@ -57,7 +57,7 @@ export const getElection = () => (dispatch) => {
     // const body = JSON.stringify({ email, unique_id });
 
     axios
-        .post('/student/election', tokenConfig(getState))
+        .get('/student/election', tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({
@@ -75,7 +75,7 @@ export const getElection = () => (dispatch) => {
 };
 
 // Get Position 
-export const getPositions = () => (dispatch) => {
+export const getPositions = () => (dispatch , getState) => {
 
     dispatch({ type: STUDENT_POSITION_SELECTING });
 
@@ -101,7 +101,7 @@ export const getPositions = () => (dispatch) => {
 };
 
 // Send Nomination 
-export const sendNomination = (position , election ) => (dispatch) => {
+export const sendNomination = (position , election ) => (dispatch , getState) => {
 
     dispatch({ type: STUDENT_NOMINATION_ADDING });
 
@@ -127,7 +127,7 @@ export const sendNomination = (position , election ) => (dispatch) => {
 };
 
 //  student canidate
-export const loadCanidate = () => (dispatch) => {
+export const loadCanidate = () => (dispatch , getState) => {
 
     dispatch({ type: STUDENT_CANDIDATE_LOADING });
 

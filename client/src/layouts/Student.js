@@ -3,12 +3,13 @@ import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import StudentNavbar from "components/Navbars/StudentNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import { connect } from 'react-redux';
 
 import { loadStudent } from '../actions/studentAuth';
+import { getElection } from '../actions/student';
 
 import Loginnew from "views/admin/Login.js"
 
@@ -27,12 +28,12 @@ const Student = (props) => {
         document.scrollingElement.scrollTop = 0;
         mainContent.current.scrollTop = 0;
         props.loadStudent();
+        // props.getElection();
     }, [location]);
 
     const getroutes = (sroutes) => {
         return sroutes.map((prop, key) => {
             if (prop.layout === "/student") {
-                console.log(prop.path)
                 return (
                     <Route
                         path={prop.layout + prop.path}
@@ -76,7 +77,7 @@ const Student = (props) => {
                 }}
             />
             <div className="main-content" ref={mainContent}>
-                <AdminNavbar
+                <StudentNavbar
                     {...props}
                     brandText={getBrandText(props.location.pathname)}
                 />
@@ -96,6 +97,7 @@ const Student = (props) => {
 
 const mapStateToProps = (state) => ({
     studentAuth: state.studentAuth,
+    student: state.student
 });
 
-export default connect(mapStateToProps, { loadStudent })(Student)
+export default connect(mapStateToProps, { loadStudent, getElection })(Student)

@@ -158,7 +158,7 @@ exports.getCourse = async (req, res) => {
 
 exports.getElection = async (req, res) => {
     try {
-        const getElection = await Course.find({})
+        const getElection = await Election.find({nomination: true})
         res.status(200).json({getElection})
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -169,7 +169,7 @@ exports.getElection = async (req, res) => {
 
 exports.getPositions = async (req, res) => {
     try {
-        const getPositions = await Course.find({})
+        const getPositions = await Position.find({})
         res.status(200).json({getPositions})
     } catch (err) {
         res.status(500).json({ error: err.message })
