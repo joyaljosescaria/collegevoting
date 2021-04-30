@@ -11,6 +11,8 @@ router.post('/register' , student.registerStudent) //register
 router.post('/loginpre' , student.studentLogin1) //Login 1
 router.post('/login' , student.studentLogin2) //Login 2
 router.put('/cast' , auth, student.castVote) //Cast vote
-
+router.get('/course' , auth, student.getCourse) //Cast vote
+router.get('/position' , auth, student.getPositions) //Cast position
+router.get('/election' , auth, student.getElection) //Cast election
 
 module.exports = router;

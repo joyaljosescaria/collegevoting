@@ -6,6 +6,9 @@ import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import { connect } from 'react-redux';
+
+import { loadStudent } from '../actions/studentAuth';
 
 import Loginnew from "views/admin/Login.js"
 
@@ -23,6 +26,7 @@ const Student = (props) => {
         document.documentElement.scrollTop = 0;
         document.scrollingElement.scrollTop = 0;
         mainContent.current.scrollTop = 0;
+        props.loadStudent();
     }, [location]);
 
     const getroutes = (sroutes) => {
@@ -41,6 +45,11 @@ const Student = (props) => {
             }
         });
     };
+
+    if (!props.studentAuth.isAuthenticated) {
+        console.log("No token")
+        return <Redirect to="/auth/student/loginpre" />
+    }
 
     const getBrandText = (path) => {
         for (let i = 0; i < sroutes.length; i++) {
@@ -85,4 +94,8 @@ const Student = (props) => {
     );
 };
 
-export default Student;
+const mapStateToProps = (state) => ({
+    studentAuth: state.studentAuth,
+});
+
+export default connect(mapStateToProps, { loadStudent })(Student)

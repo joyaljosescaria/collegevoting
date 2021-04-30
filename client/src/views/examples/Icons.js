@@ -29,13 +29,13 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
+import HeaderSpace from "components/Headers/HeaderSpace.js";
 
 const Icons = () => {
   const [copiedText, setCopiedText] = useState();
   return (
     <>
-      <Header />
+      <HeaderSpace />
       {/* Page content */}
       <Container className="mt--7" fluid>
         {/* Table */}

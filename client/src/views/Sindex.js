@@ -29,9 +29,9 @@ import {
   chartExample2,
 } from "variables/charts.js";
 
-import Header from "components/Headers/Header.js";
+import HeaderSpace from "components/Headers/HeaderSpace.js";
 
-const Index = (props) => {
+const Sindex = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
@@ -46,7 +46,7 @@ const Index = (props) => {
   };
   return (
     <>
-      <Header />
+      <HeaderSpace />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -318,4 +318,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default Sindex;

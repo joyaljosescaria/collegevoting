@@ -1,4 +1,4 @@
-import Index from "views/Index.js";
+import Sindex from "views/Sindex.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
@@ -11,19 +11,19 @@ var sroutes = [
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
+    component: Sindex,
     layout: "/student",
   },
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/election",
+    name: "Election",
     icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/student",
   },
   {
-    path: "/maps",
-    name: "Maps",
+    path: "/nomination",
+    name: "Nomination",
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/student",
@@ -42,20 +42,20 @@ var sroutes = [
     component: Tables,
     layout: "/student",
   },
-  {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
-    component: Login,
-    layout: "/auth/student",
-  },
-  {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth/student",
-  },
+  // {
+  //   path: "/login",
+  //   name: "Login",
+  //   icon: "ni ni-key-25 text-info",
+  //   component: Login,
+  //   layout: "/auth/student",
+  // },
+  // {
+  //   path: "/register",
+  //   name: "Register",
+  //   icon: "ni ni-circle-08 text-pink",
+  //   component: Register,
+  //   layout: "/auth/student",
+  // },
 ];
 
 export default sroutes;

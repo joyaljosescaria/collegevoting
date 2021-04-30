@@ -18,6 +18,7 @@ import StudentLayout from "layouts/Student.js";
 import StudentAuthLayout from "layouts/StudentAuth.js";
 
 import PrivateRoute from "../src/common/privateRoutes"
+import PrivateRouteS from "../src/common/privateRoutesS"
 
 
 export default class App extends React.Component {
@@ -32,7 +33,7 @@ export default class App extends React.Component {
           <Switch>
             <PrivateRoute path="/admin" component={(props) => <AdminLayout {...props} />} />
             <Route path="/auth/admin" component={(props) => <AuthLayout {...props} />} />
-            <Route path="/student" render={(props) => <StudentLayout {...props} />} />
+            <PrivateRouteS path="/student" component={(props) => <StudentLayout {...props} />} />
             <Route path="/auth/student" render={(props) => <StudentAuthLayout {...props} />} />
             {/* <Redirect from="/" to="/admin/index" /> */}
           </Switch>

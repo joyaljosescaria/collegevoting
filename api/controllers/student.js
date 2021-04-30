@@ -121,7 +121,7 @@ exports.nomination = async (req, res) => {
     try {
         const getStudent = await Student.findById(req.user.user_id).select('had_candidate ')
         if (getStudent.had_candidate) {
-            res.status(500).json({ error: 'You have been participated once .' })
+            res.status(500).json({ error: 'You have been participated in election once .' })
         }
         else {
             const nomination = new Candidate({
@@ -143,6 +143,38 @@ exports.nomination = async (req, res) => {
     }
 }
 
+// Get course 
+
+exports.getCourse = async (req, res) => {
+    try {
+        const getCourse = await Course.find({})
+        res.status(200).json({getCourse})
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Get Election
+
+exports.getElection = async (req, res) => {
+    try {
+        const getElection = await Course.find({})
+        res.status(200).json({getElection})
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// Get Position
+
+exports.getPositions = async (req, res) => {
+    try {
+        const getPositions = await Course.find({})
+        res.status(200).json({getPositions})
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
 
 // login
 

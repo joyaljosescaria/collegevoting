@@ -9,6 +9,10 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 
 import sroutes from "sroutes.js";
 
+import Loginpre from "views/Student/Login1.js"
+import Login2 from "views/Student/Login2.js"
+import Register from "views/admin/Register.js"
+
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -44,10 +48,10 @@ const Auth = (props) => {
   return (
     <>
       <div className="main-content" ref={mainContent}>
-        <AuthNavbar />
+        {/* <AuthNavbar /> */}
         <div className="header bg-gradient-info py-7 py-lg-8">
           <Container>
-            <div className="header-body text-center mb-7">
+            {/* <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
                   <h1 className="text-white">Welcome!</h1>
@@ -57,7 +61,7 @@ const Auth = (props) => {
                   </p>
                 </Col>
               </Row>
-            </div>
+            </div> */}
           </Container>
           <div className="separator separator-bottom separator-skew zindex-100">
             <svg
@@ -80,7 +84,8 @@ const Auth = (props) => {
           <Row className="justify-content-center">
             <Switch>
               {getsroutes(sroutes)}
-              <Redirect from="*" to="/student/auth/login" />
+              <Route exact path={"/auth/student/loginpre"} component={Loginpre}/> 
+              <Route exact path={"/auth/student/login"} component={Login2}/> 
             </Switch>
           </Row>
         </Container>
