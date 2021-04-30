@@ -47,9 +47,9 @@ exports.registerStudent = async (req, res) => {
         }
 
         if (validate) {
-            var profile_pic =  newFile.profile_pic;
-            var id_card =  newFile.id_card;
-            var id_card_s =  await newFile.id_card_selfi;
+            var profile_pic = newFile.profile_pic;
+            var id_card = newFile.id_card;
+            var id_card_s = await newFile.id_card_selfi;
 
             console.log(id_card_s)
 
@@ -61,7 +61,7 @@ exports.registerStudent = async (req, res) => {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
-            const unique_id = randomNumber(100001 , 999999)
+            const unique_id = randomNumber(100001, 999999)
 
 
             var student = new Student({
@@ -70,29 +70,29 @@ exports.registerStudent = async (req, res) => {
                 id_card_selfi: id_card_s.name,
                 name: newStudent.name,
                 course_id: newStudent.course_id,
-                unique_id : unique_id.toString(),
-                batch_year_count : newStudent.batch_year_count,
-                email : newStudent.email,
+                unique_id: unique_id.toString(),
+                batch_year_count: newStudent.batch_year_count,
+                email: newStudent.email,
             })
 
 
             student
-            .save()
-            .then(result => {
-                res.status(201).json({
-                    message: "Student Registerd Succesfully",
-                    admin: {
-                        name: result.name,
-                        email: result.email,
-                        _id: result._id,
-                    }
+                .save()
+                .then(result => {
+                    res.status(201).json({
+                        message: "Student Registerd Succesfully",
+                        admin: {
+                            name: result.name,
+                            email: result.email,
+                            _id: result._id,
+                        }
+                    });
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        error: err.message
+                    });
                 });
-            })
-            .catch(err => {
-                res.status(500).json({
-                    error: err.message
-                });
-            });
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
@@ -111,7 +111,7 @@ exports.registerStudent = async (req, res) => {
 
 
     } catch (err) {
-        res.status(400).json({error: err.message})
+        res.status(400).json({ error: err.message })
     }
 }
 
@@ -120,25 +120,24 @@ exports.registerStudent = async (req, res) => {
 exports.nomination = async (req, res) => {
     try {
         const getStudent = await Student.findById(req.user.user_id).select('had_candidate ')
-        if(getStudent.had_candidate)
-        {
-            res.status(500).json({error: 'You have been participated once .'})
+        if (getStudent.had_candidate) {
+            res.status(500).json({ error: 'You have been participated once .' })
         }
-        else{
+        else {
             const nomination = new Candidate({
                 student_id: req.user.user_id,
                 position_id: req.body.position,
                 election_id: req.body.election
             })
-    
+
             data = {
                 had_candidate: true,
             }
             const saveNomination = await nomination.save()
-            const update = await Student.updateOne({_id: req.user.user_id} , data)
+            const update = await Student.updateOne({ _id: req.user.user_id }, data)
             res.status(200).json({ saveNomination })
         }
-        
+
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -152,7 +151,11 @@ exports.studentLogin1 = async (req, res) => {
         if (!req.body.email || !req.body.unique_id) {
             res.status(400).json({ error: "Please provide the credentials" })
         }
-        const login = await Student.find({ unique_id: req.body.unique_id }).select(' email unique_id')
+        const login = await Student.find({ unique_id: req.body.unique_id }).select(' email unique_id is_active is_verified')
+
+        if(!login[0].is_active && !login[0].is_verified) {
+            res.status(403).json({ error:"You can't login ."})
+        }
 
         if (login[0].email === req.body.email) {
             if (login[0].unique_id === req.body.unique_id) {
@@ -180,7 +183,7 @@ exports.studentLogin1 = async (req, res) => {
                     pass_added_time: Date.now()
                 }
 
-                const saveLogin = await Student.updateOne({unique_id: login[0].unique_id} , data)
+                const saveLogin = await Student.updateOne({ unique_id: login[0].unique_id }, data)
 
                 res.status(200).json({ message: "Password sent successfully" })
             }
@@ -202,10 +205,11 @@ exports.studentLogin2 = async (req, res) => {
             res.status(400).json({ error: "Please provide the credentials" })
         }
 
-        const getStudent = await Student.find({ email: req.body.email }).select('email password pass_added_time' )
-        
+        const getStudent = await Student.find({ unique_id: req.body.unique_id }).select('email password pass_added_time')
+        console.log(getStudent)
+
         if (!helper.otpLessThanTenMinute(getStudent[0].pass_added_time)) {
-            
+
             if (getStudent[0].email === req.body.email) {
                 if (compPass = await bcrypt.compare(req.body.password, getStudent[0].password)) {
                     const user_id = getStudent[0]._id;
@@ -215,12 +219,12 @@ exports.studentLogin2 = async (req, res) => {
                     })
                     res.status(200).json({ token: token, _id: getStudent[0]._id })
                 }
-                else{
-                    res.status(404).json({ error: "Not Found"})
+                else {
+                    res.status(404).json({ error: "Not Found" })
                 }
             }
-            else{
-                res.status(404).json({ error: "Not Found"})
+            else {
+                res.status(404).json({ error: "Not Found" })
             }
         }
         else {
@@ -235,23 +239,44 @@ exports.studentLogin2 = async (req, res) => {
 // cast vote
 
 exports.castVote = async (req, res) => {
+    var posi = new Array()
+    var posi1 = new Array()
+
     try {
-        const anyElection = await Election.find({started:true})
-        if(anyElection.length > 0)
-        {
+        const anyElection = await Election.find({ started: true })
+        if (anyElection.length > 0) {
             var elections = []
-            anyElection.map(e =>{
+            anyElection.map(e => {
                 elections.push(e._id)
             })
 
-            var positions = [];
 
-            elections.map(async e =>{
-                var position = await StudentPosition.find({election_id:e , student_id: req.user.user_id})
-                positions.push(position._id)
+            for(let i=0; i<elections.length ; i++) {
+                const position = await StudentPosition.find({ election_id: elections[i], student_id: req.user.user_id })
+                position.map(pos => {
+                    posi.push(pos.position_id)
+                })
+                posi1 = posi
+                console.log(posi)
+            }
+
+
+            var candidates = {}
+
+            posi.map(async (position , index) => {
+                console.log(position)
+                var candidate = await Candidate.find({ position_id: position }).populate({ path: 'student_id', select: 'name' }).populate({ path: 'course_id', select: 'course' }).populate({ path: 'election_id', select: 'election' })
+                candidate.map(c => {
+                    console.log(c)
+                    candidates["pos"+index] : [
+                        {
+                            "name":"Joyal"
+                        }
+                    ]
+                })
             })
 
-            res.status(200).json(positions)
+            res.status(200).json({ candidates })
         }
     } catch (err) {
         res.status(500).json({ error: err.message })

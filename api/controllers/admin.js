@@ -66,33 +66,39 @@ exports.verifyStudent = async (req, res) => {
             const getPos3 = await Position.find({ course_id: req.params.course_id })
             getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
 
+            // const getPositions = await Position.find({ batch_year_count: 0 , course_id: getAll[0]._id  , batch_year_count: req.body.batch_year_count , course_id: req.body.course_id})
+
+            // console.log(getPositions)
+
             if (positions.length > 0) {
                 positions.map(posi => {
                     var sobj = {};
-                    sobj['student_id'] = req.body.student_id,
+                    sobj['student_id'] = student,
                     sobj['position_id'] = posi.id,
                     sobj['election_id'] = posi.electionId
                     pos.push(sobj)
                 })
+
+                console.log({pos})
 
                 const insertPosition = await StudentPosition.insertMany(pos)
             }
 
             res.status(200).json({ message: "Student Verified" })
 
-            const message = {
-                from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-                to: findStudent[0].email,         // List of recipients
-                subject: 'Verification Completed', // Subject line
-                html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
-            };
-            transport.getSmpt().sendMail(message, function (err, info) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log(info);
-                }
-            });
+            // const message = {
+            //     from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
+            //     to: findStudent[0].email,         // List of recipients
+            //     subject: 'Verification Completed', // Subject line
+            //     html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
+            // };
+            // transport.getSmpt().sendMail(message, function (err, info) {
+            //     if (err) {
+            //         console.log(err)
+            //     } else {
+            //         console.log(info);
+            //     }
+            // });
 
         }
         else
@@ -118,7 +124,7 @@ exports.unVerifyStudent = async (req, res) => {
             }
 
             const unVerifyStudent = await Student.updateOne({ _id: student }, data)
-            console.log(await Student.find({ _id: student }))
+            const deleteStudentPos = await StudentPosition.deleteMany({student_id: req.params.studentId})
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address

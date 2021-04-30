@@ -141,10 +141,10 @@ export const loadAdminStudent = (studentId) => (dispatch, getState) => {
 }
 
 // verify student
-export const verifyStudent = (studentId) => (dispatch, getState) => {
+export const verifyStudent = (studentId , course_id , batch_year_count ) => (dispatch, getState) => {
   dispatch({ type: ADMIN_STUDENT_VERIFYING });
 
-  const body = JSON.stringify({})
+  const body = JSON.stringify({course_id , batch_year_count})
 
   axios
     .put(`/admin/verifystudent/${studentId}`, body, tokenConfig(getState))

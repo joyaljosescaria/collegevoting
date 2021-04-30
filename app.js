@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 require('dotenv').config()
 
@@ -30,7 +31,7 @@ app.use(bodyParser.json());
 app.use(fileUpload({
   createParentPath: true
 }));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
