@@ -19,13 +19,13 @@ mongoose.connect(
 );
 mongoose.Promise = global.Promise;
 
-const makePassword = async (email) => {
+const makePassword = async () => {
     const salt = await bcrypt.genSalt(10)
-    const password = faker.internet.password()
+    const password = "mypassword"
     const hashedPassword = await bcrypt.hash(password, salt)
-    console.log(`Password for email: ${email} is ${password}`)
     return hashedPassword
 }
+
 
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -69,7 +69,7 @@ const seedAdmin = async () => {
             const admin = new Admin({
                 name: faker.name.findName(),
                 email: email,
-                password: await makePassword(email)
+                password: await makePassword()
             })
 
             const admin1 = await admin.save()
@@ -91,7 +91,7 @@ const seedCandidate = async () => {
             const candidate = new Candidate({
                 student_id: student[0]._id,
                 election_id: election[0]._id,
-                position_id: position[0]._id
+                position_id: position[0]._id,
             })
             const candidate1 = await candidate.save()
             console.log(`Candidate seeded successfully ✌`)
@@ -128,9 +128,11 @@ const seedStudentPosition = async () => {
         for (let i = 0; i < 10; i++) {
             const student = await Student.aggregate([{ $sample: { size: 1 } }])
             const position = await ElectionPosition.aggregate([{ $sample: { size: 1 } }])
+            const election = await Election.aggregate([{ $sample: { size: 1 } }])
             const stuPos = new StudentPosition({
                 student_id : student[0]._id,
-                position_id : position[0]._id
+                position_id : position[0]._id,
+                election_id: election[0]._id,
             })
             const stuPos1 = await stuPos.save()
             console.log(`StudentPosition seeded successfully ✌`)
