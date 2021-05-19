@@ -48,7 +48,7 @@ const Header = (props) => {
                             </div>
                           <Col className="col-auto">
                             <div className="rounded-circle ">
-                              <img src={student.profile_pic} className="rounded-circle shadow-lg" style={{ width: '50px', height: '50px' }} />
+                              <img src={`http://localhost:5000/uploads/${student.profile_pic}`} className="rounded-circle shadow-lg" style={{ width: '50px', height: '50px' }} />
                             </div>
                           </Col>
                           </Row>

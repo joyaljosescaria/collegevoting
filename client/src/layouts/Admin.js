@@ -90,7 +90,7 @@ const Admin = (props) => {
           <Route path="/admin/election/:electionId/candidate" exact render={(props) => <Candidates {...props} />} />
         </Switch>
         <Container fluid>
-          <AdminFooter />
+          {/* <AdminFooter /> */}
         </Container>
       </div>
     </>

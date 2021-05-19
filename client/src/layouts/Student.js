@@ -88,7 +88,7 @@ const Student = (props) => {
                     <Route path="/login/new" render={(props) => <Loginnew {...props} />} />
                 </Switch>
                 <Container fluid>
-                    <AdminFooter />
+                    {/* <AdminFooter /> */}
                 </Container>
             </div>
         </>

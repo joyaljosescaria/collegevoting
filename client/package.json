@@ -60,6 +60,7 @@
     "react-copy-to-clipboard": "5.0.3",
     "react-datetime": "3.0.4",
     "react-dom": "17.0.1",
+    "react-donut-chart": "^1.1.8",
     "react-player": "^2.9.0",
     "react-redux": "^7.2.3",
     "react-router-dom": "5.2.0",

@@ -86,11 +86,12 @@ const Auth = (props) => {
               {getsroutes(sroutes)}
               <Route exact path={"/auth/student/loginpre"} component={Loginpre}/> 
               <Route exact path={"/auth/student/login"} component={Login2}/> 
+              <Route exact path={"/auth/student/register"} component={Register}/> 
             </Switch>
           </Row>
         </Container>
       </div>
-      <AuthFooter />
+      {/* <AuthFooter /> */}
     </>
   );
 };

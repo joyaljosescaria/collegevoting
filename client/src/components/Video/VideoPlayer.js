@@ -10,6 +10,9 @@ const ResponsivePlayer = (props) => {
                 url={props.url}
                 width='100%'
                 height='100%'
+                playing={true}
+                controls={true}
+                stopOnUnmount={false}
             />
         </div>
     )

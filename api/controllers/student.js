@@ -34,6 +34,8 @@ exports.registerStudent = async (req, res) => {
     const newFile = req.files
     var validate = false;
 
+    console.log(newStudent)
+
     try {
         if (!newStudent.name || !newStudent.email || !newStudent.course_id || !newStudent.batch_year_count || !newFile.profile_pic || !newFile.id_card || !newFile.id_card_selfi) {
             res.status(400).json({ error: "Please provide the details" });
@@ -49,13 +51,13 @@ exports.registerStudent = async (req, res) => {
         if (validate) {
             var profile_pic = newFile.profile_pic;
             var id_card = newFile.id_card;
-            var id_card_s = await newFile.id_card_selfi;
+            var id_card_s =  newFile.id_card_selfi;
 
             console.log(id_card_s)
 
-            profile_pic.mv('./uploads/profilepic' + profile_pic.name);
-            id_card.mv('./uploads/idcard' + id_card.name);
-            id_card_s.mv('./uploads/selfi' + id_card_s.name);
+            profile_pic.mv('./uploads/' + profile_pic.name);
+            id_card.mv('./uploads/' + id_card.name);
+            id_card_s.mv('./uploads/' + id_card_s.name);
 
             function randomNumber(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -193,6 +195,8 @@ exports.studentLogin1 = async (req, res) => {
             if (login[0].unique_id === req.body.unique_id) {
                 const password = helper.generatePassword(8)
 
+                console.log(password)
+                
                 const salt = await bcrypt.genSalt(10)
                 const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -237,7 +241,7 @@ exports.studentLogin2 = async (req, res) => {
             res.status(400).json({ error: "Please provide the credentials" })
         }
 
-        const getStudent = await Student.find({ unique_id: req.body.unique_id }).select('email password pass_added_time')
+        const getStudent = await Student.find({ unique_id: req.body.unique_id }).select('email password pass_added_time name')
         console.log(getStudent)
 
         if (!helper.otpLessThanTenMinute(getStudent[0].pass_added_time)) {
@@ -249,7 +253,7 @@ exports.studentLogin2 = async (req, res) => {
                         algorithm: "HS256",
                         expiresIn: "24h"
                     })
-                    res.status(200).json({ token: token, _id: getStudent[0]._id })
+                    res.status(200).json({ token: token, _id: getStudent[0]._id , name:getStudent[0].name})
                 }
                 else {
                     res.status(404).json({ error: "Not Found" })
@@ -286,7 +290,7 @@ exports.castVote = async (req, res) => {
 
 
             for (let i = 0; i < elections.length; i++) {
-                const position = await StudentPosition.find({ election_id: elections[i], student_id: req.user.user_id })
+                const position = await StudentPosition.find({ election_id: elections[i], student_id: req.user.user_id , isVoted:false })
                 position.map(pos => {
                     posi.push(pos.position_id)
                 })
@@ -297,7 +301,7 @@ exports.castVote = async (req, res) => {
             var candidates = {}
 
             for(let k= 0 ; k <posi.length ; k++) {
-                var candi = await Candidate.find({ position_id: posi[k] }).populate({ path: 'student_id', select: 'name' }).populate({ path: 'course_id', select: 'course' }).populate({ path: 'election_id', select: 'election' })
+                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' })
                 cand[k] = []
                 for (let i = 0; i < candi.length; i++) {
                     cand[k].push(candi[i])
@@ -308,6 +312,24 @@ exports.castVote = async (req, res) => {
 
             res.status(200).json({ candidate })
         }
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.addVote = async (req, res) => {
+    try {
+        const getVotesCont = await Candidate.find({student_id:req.params.studentId , position_id:req.params.positionId}).select('votes')
+        console.log(getVotesCont)
+        data = {
+            votes: Number(getVotesCont[0].votes)+1
+        }
+        const addVote = await Candidate.updateOne({student_id:req.params.studentId , position_id:req.params.positionId} , data)
+        data1 = {
+            isVoted: true
+        }
+        const setVoted = await StudentPosition.updateOne({student_id:req.params.studentId , position_id:req.params.positionId} , data1)
+        res.status(200).json({message:"Voted"})
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

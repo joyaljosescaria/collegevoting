@@ -16,14 +16,20 @@ import {
     STUDENT_CANDIDATE_LOADING,
     STUDENT_CANDIDATE_LOADED,
     STUDENT_CANDIDATE_LOAD_ERROR,
-   
+    STUDENT_VOTE_ADDING,
+    STUDENT_VOTE_ADDED,
+    STUDENT_VOTE_ADD_ERROR,
+    STUDENT_QUOTES_LOADING,
+    STUDENT_QUOTES_LOADED,
+    STUDENT_QUOTES_LOAD_ERROR,
+
 } from './types';
 
 import { tokenConfig } from './studentAuth'
 
 // get course
 
-export const getCourse = () => (dispatch , getState) => {
+export const getCourse = () => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_COURSE_SELECTING });
 
@@ -31,7 +37,7 @@ export const getCourse = () => (dispatch , getState) => {
     // const body = JSON.stringify({ email, unique_id });
 
     axios
-        .post('/student/course', tokenConfig(getState))
+        .get('/student/course', tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({
@@ -49,7 +55,7 @@ export const getCourse = () => (dispatch , getState) => {
 };
 
 // Get election 
-export const getElection = () => (dispatch , getState) => {
+export const getElection = () => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_ELECTION_SELECTING });
 
@@ -75,7 +81,7 @@ export const getElection = () => (dispatch , getState) => {
 };
 
 // Get Position 
-export const getPositions = () => (dispatch , getState) => {
+export const getPositions = () => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_POSITION_SELECTING });
 
@@ -83,7 +89,7 @@ export const getPositions = () => (dispatch , getState) => {
     // const body = JSON.stringify({ email, unique_id });
 
     axios
-        .post('/student/position', tokenConfig(getState))
+        .get('/student/position', tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({
@@ -101,15 +107,15 @@ export const getPositions = () => (dispatch , getState) => {
 };
 
 // Send Nomination 
-export const sendNomination = (position , election ) => (dispatch , getState) => {
+export const sendNomination = (position, election) => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_NOMINATION_ADDING });
 
     // Request Body
-    const body = JSON.stringify({ position , election });
+    const body = JSON.stringify({ position, election });
 
     axios
-        .post('/student/position', body , tokenConfig(getState))
+        .post('/student/nomination', body, tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({
@@ -127,15 +133,14 @@ export const sendNomination = (position , election ) => (dispatch , getState) =>
 };
 
 //  student canidate
-export const loadCanidate = () => (dispatch , getState) => {
+export const loadCanidate = () => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_CANDIDATE_LOADING });
 
     // Request Body
-    const body = JSON.stringify({});
 
     axios
-        .put('/student/cast', body , tokenConfig(getState))
+        .get('/student/cast', tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({
@@ -152,3 +157,58 @@ export const loadCanidate = () => (dispatch , getState) => {
         });
 };
 
+// Add Vote 
+
+export const addVote = (student, position) => (dispatch, getState) => {
+
+    dispatch({ type: STUDENT_VOTE_ADDING });
+
+    // Request Body
+    const body = JSON.stringify({});
+
+    axios
+        .put(`/student/addvotes/${student}/${position}`, body, tokenConfig(getState))
+        .then((res) => {
+            console.log(res);
+            dispatch({
+                type: STUDENT_VOTE_ADDED,
+                payload: res.data,
+            });
+        })
+        .catch((err) => {
+            //   dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: STUDENT_VOTE_ADD_ERROR,
+                payload: err.response.data,
+            });
+        });
+};
+
+const getRandom = () => {
+    return (Math.floor(Math.random() * (1643 - 0)) + 0);
+}
+
+// Load Quotes
+
+export const loadQuotes = () => (dispatch, getState) => {
+
+    dispatch({ type: STUDENT_QUOTES_LOADING });
+
+    // Request Body
+
+    axios
+        .get('https://type.fit/api/quotes', tokenConfig(getState))
+        .then((res) => {
+            dispatch({
+                type: STUDENT_QUOTES_LOADED,
+                payload: res.data[getRandom()],
+            });
+        })
+        .catch((err) => {
+            //   dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: STUDENT_QUOTES_LOAD_ERROR,
+                payload: err.message
+            });
+        });
+};

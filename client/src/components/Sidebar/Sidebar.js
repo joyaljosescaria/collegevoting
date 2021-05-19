@@ -44,6 +44,8 @@ const Sidebar = (props) => {
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
+
+  const isStudent = props.location.pathname.split("/")[1]
   // toggles collapse between opened and closed (true/false)
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
@@ -226,7 +228,7 @@ const Sidebar = (props) => {
             <NavItem>
               <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
                 {/* <Button className="btn btn-success">Update Batch</Button> */}
-                <UpdateBatchModal/>
+                {isStudent != 'student'? <UpdateBatchModal/> : "" }
               </NavLink>
             </NavItem>
           </Nav>

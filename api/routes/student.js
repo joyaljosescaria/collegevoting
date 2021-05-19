@@ -10,9 +10,10 @@ router.post('/nomination', auth, student.nomination) //add nomination
 router.post('/register' , student.registerStudent) //register
 router.post('/loginpre' , student.studentLogin1) //Login 1
 router.post('/login' , student.studentLogin2) //Login 2
-router.put('/cast' , auth, student.castVote) //Cast vote
-router.get('/course' , auth, student.getCourse) //Cast vote
+router.get('/cast' , auth, student.castVote) //Cast vote
+router.get('/course' , student.getCourse) //Cast vote
 router.get('/position' , auth, student.getPositions) //Cast position
 router.get('/election' , auth, student.getElection) //Cast election
+router.put('/addvotes/:studentId/:positionId' , auth , student.addVote) //Add vote
 
 module.exports = router;

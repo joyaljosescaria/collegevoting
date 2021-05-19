@@ -143,9 +143,9 @@ export const tokenConfig = (getState) => {
     };
 
     // Request Body
-    const body = JSON.stringify({ name, email, course_id, batch_year_count, formData});
+    const body = JSON.stringify({ name, email, course_id, batch_year_count});
     axios
-        .post('/student/register', body, config)
+        .post('/student/register', formData , config) 
         .then((res) => {
             console.log(res);
             dispatch({

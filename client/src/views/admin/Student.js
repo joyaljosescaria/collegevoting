@@ -48,7 +48,7 @@ const Student = (props) => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={props.admin.student ? props.admin.student.profile_pic : ""}
+                        src={props.admin.student ? `http://localhost:5000/uploads/${props.admin.student.profile_pic}` : ""}
                         style={{ width: '180px', height: '180px' }}
                       />
                     </a>
@@ -86,8 +86,8 @@ const Student = (props) => {
                     {props.admin.student.course_id ? `${props.admin.student.course_id.course} - Year ${props.admin.student.batch_year_count}` : <Skeleton height="1rem" />}
                   </div>
                   <hr className="my-4" />
-                  <img src={props.admin.student ? props.admin.student.id_card : ""} className="shadow-lg" style={{ maxWidth: '100%', height: 'auto', marginBottom: '2rem' }} />
-                  <ResponsivePlayer url="https://www.youtube.com/watch?v=UuZvh8nOomw" style={{ marginTop: '20rem' }} />
+                  <img src={props.admin.student ? `http://localhost:5000/uploads/${props.admin.student.id_card}` : ""} className="shadow-lg" style={{ maxWidth: '100%', height: 'auto', marginBottom: '2rem' }} />
+                  <ResponsivePlayer url={`http://localhost:5000/uploads/${props.admin.student.id_card_selfi}`} style={{ marginTop: '20rem' }} />
                 </div>
               </CardBody>
             </Card>

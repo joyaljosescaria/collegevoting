@@ -38,6 +38,8 @@ const seedStudent = async () => {
         for (let i = 0; i < 100; i++) {
             const course = await Course.aggregate([{ $sample: { size: 1 } }])
 
+            console.log(`Course id ${i+1} : ${course[0]._id}`)
+
             const student = new Student({
                 name: faker.name.findName(),
                 course_id: course[0]._id,
@@ -115,6 +117,7 @@ const seedElectionPosition = async () => {
                 election_id: election[0]._id,
             })
             const elePos1 = await elePos.save()
+            
             console.log(`ElectionPosition seeded successfully ✌`)
         }
     } catch (err) {

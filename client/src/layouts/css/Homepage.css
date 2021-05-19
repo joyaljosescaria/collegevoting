@@ -1,0 +1,26 @@
+.bg-dark {
+    background-color: #ffffff !important;
+}
+
+.fillw{
+    background-image: linear-gradient(to right top, #051937, #0a173b, #13133e, #1d0e40, #28053f);
+    height: 100vh;
+    width: 100vw;
+}
+
+.heroo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    margin-top: 20px;
+}
+
+.txt{
+    font-size: xxx-large;
+}
+
+h6{
+    color:crimson;
+    font-size: 20px;
+}

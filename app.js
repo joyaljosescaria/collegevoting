@@ -14,6 +14,7 @@ const orderRoutes = require("./api/routes/orders");
 const adminAuthRoutes = require("./api/routes/admin-auth");
 const adminRoutes = require("./api/routes/admin");
 const studentRoutes = require("./api/routes/student");
+const publicRoutes = require("./api/routes/publics");
 
 mongoose.connect(
   process.env.MONGO_DB_URL,
@@ -31,7 +32,8 @@ app.use(bodyParser.json());
 app.use(fileUpload({
   createParentPath: true
 }));
-app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
+app.use('/uploads', express.static('uploads'));
+
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -58,6 +60,7 @@ app.use("/orders", orderRoutes);
 app.use("/admin/auth", adminAuthRoutes);
 app.use("/admin", adminRoutes);
 app.use("/student", studentRoutes);
+app.use("/publics", publicRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");

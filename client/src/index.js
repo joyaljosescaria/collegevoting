@@ -16,6 +16,10 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import StudentLayout from "layouts/Student.js";
 import StudentAuthLayout from "layouts/StudentAuth.js";
+import Homepage from "layouts/Homepage.js";
+import Liveresult from "layouts/Liveresult.js";
+import Live from "layouts/Live.js";
+import Oldresult from "layouts/Oldresult.js";
 
 import PrivateRoute from "../src/common/privateRoutes"
 import PrivateRouteS from "../src/common/privateRoutesS"
@@ -35,6 +39,10 @@ export default class App extends React.Component {
             <Route path="/auth/admin" component={(props) => <AuthLayout {...props} />} />
             <PrivateRouteS path="/student" component={(props) => <StudentLayout {...props} />} />
             <Route path="/auth/student" render={(props) => <StudentAuthLayout {...props} />} />
+            <Route exact path="/" render={(props) => <Homepage {...props} />} />
+            <Route  path="/lresult" render={(props) => <Liveresult {...props} />} />
+            <Route  exact path="/lresults" render={(props) => <Live {...props} />} />
+            <Route  path="/result" render={(props) => <Oldresult {...props} />} /> 
             {/* <Redirect from="/" to="/admin/index" /> */}
           </Switch>
         </BrowserRouter>
