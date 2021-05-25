@@ -38,19 +38,21 @@ const seedStudent = async () => {
         for (let i = 0; i < 100; i++) {
             const course = await Course.aggregate([{ $sample: { size: 1 } }])
 
-            console.log(`Course id ${i+1} : ${course[0]._id}`)
+            console.log(`Course id ${i + 1} : ${course[0]._id}`)
 
             const student = new Student({
                 name: faker.name.findName(),
                 course_id: course[0]._id,
                 batch_year_count: getRandom(1, 4),
-                unique_id: faker.random.uuid(),
-                email: faker.internet.email(),
+                unique_id: "1000"+i,
+                email: "myemail@email.com",
                 had_candidate: faker.random.boolean(),
-                profile_pic: faker.random.image(),
-                id_card: faker.random.image(),
-                id_card_selfi : faker.random.image(),
-                is_verified : faker.random.boolean()
+                profile_pic: "avatardp.png",
+                id_card: "idcard.png",
+                id_card_selfi: "videoid.mp4",
+                password: await makePassword(),
+                pass_added_time: Date.now(),
+                is_verified: faker.random.boolean()
             })
 
             const student1 = await student.save()
@@ -117,7 +119,8 @@ const seedElectionPosition = async () => {
                 election_id: election[0]._id,
             })
             const elePos1 = await elePos.save()
-            
+            const updatePosition = await Election.updateOne({ _id: election[0]._id }, { "$push": { "positions": elePos1._id } })
+
             console.log(`ElectionPosition seeded successfully ✌`)
         }
     } catch (err) {
@@ -128,13 +131,13 @@ const seedElectionPosition = async () => {
 const seedStudentPosition = async () => {
     console.log("Seeding Student Position ☘️")
     try {
-        for (let i = 0; i < 10; i++) {
-            const student = await Student.aggregate([{ $sample: { size: 1 } }])
+        for (let i = 0; i < 100; i++) {
+            const student = await Student.find({unique_id:'1000'+i})
             const position = await ElectionPosition.aggregate([{ $sample: { size: 1 } }])
             const election = await Election.aggregate([{ $sample: { size: 1 } }])
             const stuPos = new StudentPosition({
-                student_id : student[0]._id,
-                position_id : position[0]._id,
+                student_id: student[0]._id,
+                position_id: position[0]._id,
                 election_id: election[0]._id,
             })
             const stuPos1 = await stuPos.save()

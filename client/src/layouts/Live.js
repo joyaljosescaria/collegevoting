@@ -107,7 +107,7 @@ function Liveresult(props) {
                                             <th scope="col">Name</th>
                                             <th scope="col">Votes</th>
                                             <th scope="col">Election</th>
-                                            <th scope="col">Position</th>
+                                            {/* <th scope="col">Position</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -134,11 +134,11 @@ function Liveresult(props) {
                                                     </Badge>
                                                 </td>
 
-                                                <td>
+                                                {/* <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="mr-2">{cand.position}</span>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                             </>))}
                                     </tbody>
