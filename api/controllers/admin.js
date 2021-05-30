@@ -34,7 +34,7 @@ exports.getaStudent = async (req, res) => {
 // Get all unverified students
 exports.getUnverified = async (req, res) => {
     try {
-        const unverified = await Student.find({ is_verified: false , is_active: true }).populate({ path: "course_id", select: "_id course" }).lean();
+        const unverified = await Student.find({ is_verified: false, is_active: true }).populate({ path: "course_id", select: "_id course" }).lean();
         res.status(200).json({ unverified })
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -55,50 +55,56 @@ exports.verifyStudent = async (req, res) => {
 
             const verifyStudent = await Student.updateOne({ _id: student }, data)
 
-            var positions = [];
+            const getStudentinPosition = await studentPosition.find({ student_id: student })
 
-            const getAll = await Course.find({ course: "All" })
+            if (getStudentinPosition.length > 0) {
+                var positions = [];
 
-            const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
-            getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
-            const getPos2 = await Position.find({ batch_year_count: req.body.batch_year_count })
-            getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
-            const getPos3 = await Position.find({ course_id: req.params.course_id })
-            getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getAll = await Course.find({ course: "All" })
 
-            // const getPositions = await Position.find({ batch_year_count: 0 , course_id: getAll[0]._id  , batch_year_count: req.body.batch_year_count , course_id: req.body.course_id})
+                const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
+                getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getPos2 = await Position.find({ batch_year_count: req.body.batch_year_count })
+                getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getPos3 = await Position.find({ course_id: req.params.course_id })
+                getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
 
-            // console.log(getPositions)
+                // const getPositions = await Position.find({ batch_year_count: 0 , course_id: getAll[0]._id  , batch_year_count: req.body.batch_year_count , course_id: req.body.course_id})
 
-            if (positions.length > 0) {
-                positions.map(posi => {
-                    var sobj = {};
-                    sobj['student_id'] = student,
-                    sobj['position_id'] = posi.id,
-                    sobj['election_id'] = posi.electionId
-                    pos.push(sobj)
-                })
+                // console.log(getPositions)
 
-                console.log({pos})
+                if (positions.length > 0) {
+                    positions.map(posi => {
+                        var sobj = {};
+                        sobj['student_id'] = student,
+                            sobj['position_id'] = posi.id,
+                            sobj['election_id'] = posi.electionId
+                        pos.push(sobj)
+                    })
 
-                const insertPosition = await StudentPosition.insertMany(pos)
+                    console.log({ pos })
+
+                    const insertPosition = await StudentPosition.insertMany(pos)
+                }
             }
+
+
 
             res.status(200).json({ message: "Student Verified" })
 
-            // const message = {
-            //     from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-            //     to: findStudent[0].email,         // List of recipients
-            //     subject: 'Verification Completed', // Subject line
-            //     html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
-            // };
-            // transport.getSmpt().sendMail(message, function (err, info) {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            //         console.log(info);
-            //     }
-            // });
+            const message = {
+                from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
+                to: findStudent[0].email,         // List of recipients
+                subject: 'Verification Completed', // Subject line
+                html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
+            };
+            transport.getSmpt().sendMail(message, function (err, info) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(info);
+                }
+            });
 
         }
         else
@@ -124,7 +130,7 @@ exports.unVerifyStudent = async (req, res) => {
             }
 
             const unVerifyStudent = await Student.updateOne({ _id: student }, data)
-            const deleteStudentPos = await StudentPosition.deleteMany({student_id: req.params.studentId})
+            const deleteStudentPos = await StudentPosition.deleteMany({ student_id: req.params.studentId })
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
@@ -459,7 +465,7 @@ exports.rejectCandidates = async (req, res) => {
                 console.log(err)
             } else {
                 console.log(info);
-                
+
             }
         })
 

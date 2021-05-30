@@ -34,7 +34,7 @@ function Liveresult(props) {
             }
         }
         
-    }, [getLive])
+    }, [])
 
     console.log(data)
 

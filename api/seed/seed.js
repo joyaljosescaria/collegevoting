@@ -212,12 +212,12 @@ async function doAll() {
     console.log("Seeding Databases ☘")
 
     await seedAdmin()
-    await seedCourse()
-    await seedStudent()
-    await seedElection()
-    await seedElectionPosition()
-    await seedCandidate()
-    await seedStudentPosition()
+    // await seedCourse()
+    // await seedStudent()
+    // await seedElection()
+    // await seedElectionPosition()
+    // await seedCandidate()
+    // await seedStudentPosition()
 }
 
 doAll()

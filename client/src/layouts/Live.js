@@ -61,7 +61,7 @@ function Liveresult(props) {
         return () => {
           clearInterval(interval);
         }
-    }, [ props.publics.candidate])
+    }, [])
 
     console.log(data)
 
