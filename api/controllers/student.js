@@ -296,6 +296,7 @@ exports.castVote = async (req, res) => {
                 })
                 posi1 = posi
             }
+            console.log("posi1"+posi1)
 
 
             var candidates = {}

@@ -51,14 +51,14 @@ const Election = (props) => {
                       className={classnames({ active: activeTab === index.toString() })}
                       onClick={() => { toggle(index.toString()); }}
                     >
-                      {props.student.candidate[index][0].position_id.position}
+                      {props.student.candidate[index][0]?props.student.candidate[index][0].position_id.position:"Position"}
                     </NavLink>
                   </NavItem>)) : <h1>Loading...</h1>}
                 </Nav>
                 <TabContent activeTab={activeTab} className="mt-4">
                   {props.student.candidate ? props.student.candidate.map((cand, index) => (
                     <TabPane tabId={index.toString()} >
-                      <h2 className="p-2 mb-4 bg-primary text-white text-uppercase rounded ">{props.student.candidate[index][0].election_id.election}</h2>
+                      {/* <h2 className="p-2 mb-4 bg-primary text-white text-uppercase rounded ">{props.student.canidate[0][0].election_id?props.student.candidate[0][0].election_id.election:"election"}</h2> */}
                       <Row className="d-flex justify-content-center">
                         {cand.map((can) => (
                           <Col sm="6" md="4" className="mb-3">
