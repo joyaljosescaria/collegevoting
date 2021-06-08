@@ -34,7 +34,7 @@ function Liveresult(props) {
             }
         }
         
-    }, [getLive])
+    }, [props.publics.candidate])
 
     console.log(data)
 

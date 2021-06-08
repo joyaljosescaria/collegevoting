@@ -51,19 +51,19 @@ const Election = (props) => {
                       className={classnames({ active: activeTab === index.toString() })}
                       onClick={() => { toggle(index.toString()); }}
                     >
-                      {props.student.candidate[index][0]?props.student.candidate[index][0].position_id.position:"Position"}
+                      {props.student.candidate[index][0]?props.student.candidate[index][0].position_id.position:"pos"} 
                     </NavLink>
                   </NavItem>)) : <h1>Loading...</h1>}
                 </Nav>
                 <TabContent activeTab={activeTab} className="mt-4">
                   {props.student.candidate ? props.student.candidate.map((cand, index) => (
                     <TabPane tabId={index.toString()} >
-                      {/* <h2 className="p-2 mb-4 bg-primary text-white text-uppercase rounded ">{props.student.canidate[0][0].election_id?props.student.candidate[0][0].election_id.election:"election"}</h2> */}
+                      {/* <h2 className="p-2 mb-4 bg-primary text-white text-uppercase rounded ">{props.student.candidate[index][0].election_id.election}</h2> */}
                       <Row className="d-flex justify-content-center">
                         {cand.map((can) => (
                           <Col sm="6" md="4" className="mb-3">
                             <Card body className="shadow-lg">
-                              <CardImg top width="100%" style={{borderRadius:"100px"}} src="https://as1.ftcdn.net/jpg/02/45/17/20/500_F_245172081_MdhCugtp0nnFU43B8mceh0YPUAkyvul8.jpg" alt="Card image cap" />
+                              <CardImg top width="100%" style={{borderRadius:"100px"}} src={`http://localhost:5000/uploads/${can.student_id.profile_pic}`} alt="Card image cap" />
                               <CardTitle className="text-center">{can.student_id.name}</CardTitle>
                               <AddVoteModal studentId={can.student_id._id} positionId={can.position_id._id} />
                             </Card>

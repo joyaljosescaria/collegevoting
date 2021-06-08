@@ -29,7 +29,7 @@ function AddElectionModal(props) {
         <div>
             <div className="btn btn-sm btn-primary" onClick={onOpenModal}>Add Election</div>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Add Course</h2>
+                <h2 className="text-center">Add Election</h2>
                 <FormGroup>
                     <InputGroup className="input-group-alternative">
                         <Input

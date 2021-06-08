@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
-import { adminLogin } from '../../actions/adminAuth';
+import { passEmailValidation } from '../../actions/adminAuth';
 
 // reactstrap components
 import {
@@ -19,12 +19,11 @@ import {
   Col,
 } from "reactstrap";
 
-const Login = (props) => {
+const EmailValidate = (props) => {
 
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [show, setShow] = useState(false)
+
 
   useEffect(() => {
     setError(props.adminAuth.error)
@@ -32,12 +31,12 @@ const Login = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    props.adminLogin(email, password);
+    props.EmailValidate(email);
   }
 
-  if (props.adminAuth.isAuthenticated) {
-    return <Redirect to="/admin/students" />
-  }
+  //if (props.adminAuth.isAdminEmailValidated) {
+  //  return <Redirect to="/admin/changepassword" />
+ // }
 
   return (
     <>
@@ -45,7 +44,7 @@ const Login = (props) => {
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <h2 style={{ color: "#8898aa" }}>Login</h2>
+              <h2 style={{ color: "#8898aa" }}>Email Validation</h2>
             </div>
 
             <div className="text-gray-100 text-center mb-3 font-bold">
@@ -68,52 +67,15 @@ const Login = (props) => {
                   />
                 </InputGroup>
               </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type={show ? "text" : "password"}
-                    autoComplete="new-password"
-                    onChange={e => setPassword(e.target.value)}
-                  />
-                  <button type="button" style={{ backgroundColor: "white", border: "0" }} onClick={e => setShow(!show)} className="buton"><i className="fas fa-eye"></i></button>
-                </InputGroup>
-              </FormGroup>
 
               <div className="text-center">
                 <Button className="my-4" color="primary" type="submit">
-                  Sign in
+                  Validate
                 </Button>
               </div>
             </Form>
           </CardBody>
         </Card>
-        <Row className="mt-3">
-          <Col xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-                          {/* <Link to={`/admin/password`}><small>Forgot password?</small></Link> */}
-
-            </a>
-          </Col>
-          <Col className="text-right" xs="6">
-            {/* <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Create new account</small>
-            </a> */}
-          </Col>
-        </Row>
       </Col>
     </>
   );
@@ -123,4 +85,4 @@ const mapStateToProps = (state) => ({
   adminAuth: state.adminAuth,
 });
 
-export default connect(mapStateToProps, { adminLogin })(Login)
+export default connect(mapStateToProps, { passEmailValidation })(EmailValidate)

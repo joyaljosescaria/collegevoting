@@ -34,7 +34,7 @@ exports.getaStudent = async (req, res) => {
 // Get all unverified students
 exports.getUnverified = async (req, res) => {
     try {
-        const unverified = await Student.find({ is_verified: false , is_active: true }).populate({ path: "course_id", select: "_id course" }).lean();
+        const unverified = await Student.find({ is_verified: false, is_active: true }).populate({ path: "course_id", select: "_id course" }).lean();
         res.status(200).json({ unverified })
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -55,50 +55,64 @@ exports.verifyStudent = async (req, res) => {
 
             const verifyStudent = await Student.updateOne({ _id: student }, data)
 
-            var positions = [];
+            const getStudentinPosition = await StudentPosition.find({ student_id: student })
 
-            const getAll = await Course.find({ course: "All" })
+            if (!getStudentinPosition.length > 0) {
+                console.log("testing")
+                var positions = [];
 
-            const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
-            getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
-            const getPos2 = await Position.find({ batch_year_count: req.body.batch_year_count })
-            getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
-            const getPos3 = await Position.find({ course_id: req.params.course_id })
-            getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getAll = await Course.find({ course: "All" })
 
-            // const getPositions = await Position.find({ batch_year_count: 0 , course_id: getAll[0]._id  , batch_year_count: req.body.batch_year_count , course_id: req.body.course_id})
+                // const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
+                // getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                // const getPos2 = await Position.find({ batch_year_count: req.body.batch_year_count })
+                // getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                // const getPos3 = await Position.find({ course_id: req.params.course_id })
+                // getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
 
-            // console.log(getPositions)
+                const getPos1 = await Position.find({ batch_year_count: 0, course_id: getAll[0]._id })
+                getPos1.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getPos2 = await Position.find({ batch_year_count: findStudent[0].batch_year_count })
+                getPos2.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
+                const getPos3 = await Position.find({ course_id: findStudent[0].course_id })
+                getPos3.map(pos => positions.push({ "id": pos._id, "electionId": pos.election_id }))
 
-            if (positions.length > 0) {
-                positions.map(posi => {
-                    var sobj = {};
-                    sobj['student_id'] = student,
-                    sobj['position_id'] = posi.id,
-                    sobj['election_id'] = posi.electionId
-                    pos.push(sobj)
-                })
+                // const getPositions = await Position.find({ batch_year_count: 0 , course_id: getAll[0]._id  , batch_year_count: req.body.batch_year_count , course_id: req.body.course_id})
 
-                console.log({pos})
+                // console.log(getPositions)
 
-                const insertPosition = await StudentPosition.insertMany(pos)
+                if (positions.length > 0) {
+                    positions.map(posi => {
+                        var sobj = {};
+                        sobj['student_id'] = student,
+                            sobj['position_id'] = posi.id,
+                            sobj['election_id'] = posi.electionId
+                        pos.push(sobj)
+                    })
+
+                    console.log({ pos })
+
+                    const insertPosition = await StudentPosition.insertMany(pos)
+                }
             }
+
+
 
             res.status(200).json({ message: "Student Verified" })
 
-            // const message = {
-            //     from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-            //     to: findStudent[0].email,         // List of recipients
-            //     subject: 'Verification Completed', // Subject line
-            //     html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
-            // };
-            // transport.getSmpt().sendMail(message, function (err, info) {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            //         console.log(info);
-            //     }
-            // });
+            const message = {
+                from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
+                to: findStudent[0].email,         // List of recipients
+                subject: 'Verification Completed', // Subject line
+                html: `${findStudent[0].name} your profile has been verified. Your unique ID is ${findStudent[0].unique_id}.` // Plain text body
+            };
+            transport.getSmpt().sendMail(message, function (err, info) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(info);
+                }
+            });
 
         }
         else
@@ -124,7 +138,7 @@ exports.unVerifyStudent = async (req, res) => {
             }
 
             const unVerifyStudent = await Student.updateOne({ _id: student }, data)
-            const deleteStudentPos = await StudentPosition.deleteMany({student_id: req.params.studentId})
+            const deleteStudentPos = await StudentPosition.deleteMany({ student_id: req.params.studentId })
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
@@ -306,8 +320,11 @@ exports.createElectionPosition = async (req, res) => {
         else if (req.body.batch_year_count == 0) {
             getValidStudents = await Student.find({ is_active: true, course_id: req.body.course_id }).select('_id')
         }
-        else {
+        else if (req.body.course_id == getCourseId._id) {
             getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count }).select('_id')
+        }
+        else {
+            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count , course_id: req.body.course_id}).select('_id')
         }
 
         if (getValidStudents.length > 0) {
@@ -344,7 +361,8 @@ exports.editElectionPosition = async (req, res) => {
         }
 
         const editPosition = await Position.updateOne({ _id: req.params.positionId }, position)
-        const removeStudentPosition = await StudentPosition.deleteMany({ _id: req.params.positionId })
+        const removeStudentPosition = await StudentPosition.deleteMany({ position_id: req.params.positionId })
+        console.log(removeStudentPosition)
         const getCourseId = await Course.findOne({ 'course': 'All' })
 
         // Get all the students who can vote for this position and place in Student Position
@@ -354,8 +372,11 @@ exports.editElectionPosition = async (req, res) => {
         else if (req.body.batch_year_count == 0) {
             getValidStudents = await Student.find({ is_active: true, course_id: req.body.course_id }).select('_id')
         }
-        else {
+        else if (req.body.course_id == getCourseId._id) {
             getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count }).select('_id')
+        }
+        else {
+            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count , course_id: req.body.course_id}).select('_id')
         }
 
         if (getValidStudents.length > 0) {
@@ -459,7 +480,7 @@ exports.rejectCandidates = async (req, res) => {
                 console.log(err)
             } else {
                 console.log(info);
-                
+
             }
         })
 
@@ -518,21 +539,60 @@ exports.deleteStudent = async (req, res) => {
 
 exports.updateBatch = async (req, res) => {
     try {
+
+        const batchYear = await Student.find({"batch_year_count" : {$ne : 4}} , 'batch_year_count')
+
         const deleteElection = await Election.deleteMany({})
         const deleteElectionPos = await Position.deleteMany({})
         const deleteStdPos = await StudentPosition.deleteMany({})
         const deleteCandidate = await Candidate.deleteMany({})
 
-        const updateBatch = await Student.updateMany({ batch_year_count: 1 }, { batch_year_count: 2 });
-        const updateBatch1 = await Student.updateMany({ batch_year_count: 2 }, { batch_year_count: 3 });
-        const updateBatch2 = await Student.updateMany({ batch_year_count: 3 }, { batch_year_count: 4 });
+        batchYear.map(async (batch , index) => {
+            if(batch.batch_year_count == 1 )
+            {
+                const updateBatch = await Student.updateOne({ _id: batch._id }, { batch_year_count: 2 });
+            }
+            else if(batch.batch_year_count == 2)
+            {
+                const updateBatch1 = await Student.updateOne({ _id: batch._id }, { batch_year_count: 3 });
+            }
+            else
+            {
+                const updateBatch2 = await Student.updateOne({ _id: batch._id }, { batch_year_count: 4 });
+            }
+        })
+       
 
         const deleteBatch = await Student.updateMany({ batch_year_count: 4 }, { is_active: false });
 
         res.status(200).json({ message: "Batch Updated" })
 
     } catch (err) {
-
+        res.status(500).json({message: err.message})
     }
 }
+
+// start nomination
+
+exports.toggleNomination = async (req, res) => {
+    try {
+        const nomStatus = await Election.find({_id : req.params.electionId})
+        if(nomStatus.length > 0)
+        {
+            status = nomStatus[0].nomination
+            data = {
+                nomination : !status,
+            }
+            console.log(data)
+            const toggleNomination = await Election.updateOne({ _id: req.params.electionId} , data)
+            res.status(200).json({message:"Nomination Updated"})
+        }
+        else{
+            res.status(404).json({ message: "Election not found"})
+        }
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+}
+
 

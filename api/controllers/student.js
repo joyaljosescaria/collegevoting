@@ -149,7 +149,7 @@ exports.nomination = async (req, res) => {
 
 exports.getCourse = async (req, res) => {
     try {
-        const getCourse = await Course.find({})
+        const getCourse = await Course.find({is_active:true})
         res.status(200).json({getCourse})
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -302,7 +302,7 @@ exports.castVote = async (req, res) => {
             var candidates = {}
 
             for(let k= 0 ; k <posi.length ; k++) {
-                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' })
+                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false , is_verified:true }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' })
                 cand[k] = []
                 for (let i = 0; i < candi.length; i++) {
                     cand[k].push(candi[i])
@@ -329,7 +329,7 @@ exports.addVote = async (req, res) => {
         data1 = {
             isVoted: true
         }
-        const setVoted = await StudentPosition.updateOne({student_id:req.params.studentId , position_id:req.params.positionId} , data1)
+        const setVoted = await StudentPosition.updateOne({student_id:req.user.user_id , position_id:req.params.positionId} , data1)
         res.status(200).json({message:"Voted"})
     } catch (err) {
         res.status(500).json({ error: err.message })

@@ -28,6 +28,7 @@ router.get('/elections/:electionId' , auth , isAdmin , admin.getElection) //Get 
 router.put('/elections/:electionId' , auth , isAdmin , admin.editElection) //Edit elections ✅
 router.delete('/elections/:electionId' , auth , isAdmin , admin.deleteElection) //Delete Election ✅
 router.put('/election/start/:electionId' , auth , isAdmin , admin.startElection) //Start an election 
+router.put('/election/nomination/:electionId' , auth , isAdmin , admin.toggleNomination) //Toggle nomination
 
 // Election Positions
 router.get('/election/position/:electionId' , auth , isAdmin , admin.getAllPositions) //Get all positions ✅

@@ -57,7 +57,7 @@ exports.getOldResult = async (req, res) => {
             })
 
             for(let k= 0 ; k <posi.length ; k++) {
-                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election started' })
+                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election started' }).sort({created_at: -1})
                 cand[k] = []
                 for (let i = 0; i < candi.length; i++) {
                     cand[k].push(candi[i])
@@ -101,7 +101,7 @@ exports.getResult = async (req, res) => {
 
         for(let k= 0 ; k <posi.length ; k++) 
         {
-            var candi = await Candidate.find({ position_id: posi[k] , rejected:false}).populate({ path: 'student_id' , select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position'}).populate({ path: 'election_id', select: 'election' })
+            var candi = await Candidate.find({ position_id: posi[k] , rejected:false}).populate({ path: 'student_id' , select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position'}).populate({ path: 'election_id', select: 'election' }).sort('created_at')
             cand[k] = []
             for (let i = 0; i < candi.length; i++) {
                 cand[k].push(candi[i])

@@ -1,4 +1,5 @@
 
+import { validateLocaleAndSetLanguage } from 'typescript';
 import {
   ADMIN_LOGIN_SUCCESS,
   ADMIN_LOGIN_FAIL,
@@ -9,6 +10,12 @@ import {
   ADMIN_STUDENTS_LOADING,
   ADMIN_STUDENTS_LOADED,
   ADMIN_STUDENTS_LOAD_ERROR,
+  ADMIN_PASS_EMAIL_VALIDATING,
+  ADMIN_PASS_EMAIL_VALIDATED,
+  ADMIN_PASS_EMAIL_VALIDATE_ERROR,
+  ADMIN_PASS_CHANGING,
+  ADMIN_PASS_CHANGED,
+  ADMIN_PASS_CHANGE_ERROR,
 
 } from '../actions/types';
 
@@ -19,6 +26,10 @@ const initialState = {
   name: localStorage.getItem('username'),
   id: localStorage.getItem('id'),
   isAdminStudentsLoaded: false,
+  isAdminEmailValidating: false,
+  isAdminEmailValidated: false,
+  isAdminPasswordChanging:false,
+  isAdminPasswordChanged:false,
 };
 
 
@@ -49,6 +60,8 @@ export default function (state = initialState, action) {
     case ADMIN_LOGIN_FAIL:
     case ADMIN_AUTH_ERROR:
     case ADMIN_LOGOUT_SUCCESS:
+    case ADMIN_PASS_EMAIL_VALIDATE_ERROR:
+    case ADMIN_PASS_CHANGE_ERROR:
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('id');
@@ -60,7 +73,35 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         isLoading: false,
       };
+    case ADMIN_PASS_EMAIL_VALIDATED:
+      return{
+        ...state,
+        ...action.payload,
+        isAdminEmailValidating:false,
+        isAdminEmailValidated:true,
+      }
+    case ADMIN_PASS_EMAIL_VALIDATING:
+      return{
+        ...state,
+        ...action.payload,
+        isAdminEmailValidating:true,
+        isAdminEmailValidated:false,
+      }
 
+      case ADMIN_PASS_CHANGED:
+        return{
+          ...state,
+          ...action.payload,
+          isAdminPassChanging:false,
+          isAdminPassChanged:true,
+        }
+      case ADMIN_PASS_CHANGING:
+        return{
+          ...state,
+          ...action.payload,
+          isAdminPassChanging:true,
+          isAdminPassChanged:false,
+        }
     default:
       return state;
   }

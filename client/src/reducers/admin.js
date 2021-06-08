@@ -71,6 +71,9 @@ import {
     ADMIN_BATCH_UPDATING,
     ADMIN_BATCH_UPDATED,
     ADMIN_BATCH_UPDATE_ERROR,
+    ADMIN_NOMINATION_TOGGLING,
+    ADMIN_NOMINATION_TOGGLED,
+    ADMIN_NOMINATION_TOGGLE_ERROR,
 
 } from '../actions/types';
 
@@ -123,7 +126,8 @@ const initialState = {
     isAdminStudentDeleted: false,
     isAdminBatchUpdating: false,
     isAdminBatchUpdated: false,
-
+    isAdminNominationToggling: false,
+    isAdminNominationToggled: false,
 };
 
 
@@ -166,6 +170,8 @@ export default function (state = initialState, action) {
         case ADMIN_ELECTION_START_ERROR:
         case ADMIN_STUDENT_DELETE_ERROR:
         case ADMIN_BATCH_UPDATE_ERROR:
+        case ADMIN_NOMINATION_TOGGLE_ERROR:
+
             return {
                 ...state,
                 ...action.payload
@@ -467,15 +473,15 @@ export default function (state = initialState, action) {
         case ADMIN_STUDENT_DELETING:
             return {
                 ...state,
-                isAdminStudentDeleted:false,
-                isAdminStudentDeleting:true,
+                isAdminStudentDeleted: false,
+                isAdminStudentDeleting: true,
                 ...action.payload
             }
         case ADMIN_STUDENT_DELETED:
             return {
                 ...state,
-                isAdminStudentDeleted:true,
-                isAdminStudentDeleting:false,
+                isAdminStudentDeleted: true,
+                isAdminStudentDeleting: false,
                 ...action.payload
             }
         case ADMIN_BATCH_UPDATING:
@@ -490,6 +496,21 @@ export default function (state = initialState, action) {
                 ...state,
                 isAdminBatchUpdated: true,
                 isAdminBatchUpdating: false,
+                ...action.payload
+            }
+
+        case ADMIN_NOMINATION_TOGGLING:
+            return {
+                ...state,
+                isAdminNominationToggling: true,
+                isAdminNominationToggled: false,
+                ...action.payload
+            }
+        case ADMIN_NOMINATION_TOGGLED:
+            return {
+                ...state,
+                isAdminNominationToggling: false,
+                isAdminNominationToggled: true,
                 ...action.payload
             }
 

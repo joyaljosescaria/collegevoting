@@ -73,6 +73,9 @@ import {
   ADMIN_BATCH_UPDATING,
   ADMIN_BATCH_UPDATED,
   ADMIN_BATCH_UPDATE_ERROR,
+  ADMIN_NOMINATION_TOGGLING,
+  ADMIN_NOMINATION_TOGGLED,
+  ADMIN_NOMINATION_TOGGLE_ERROR,
 
 } from './types';
 
@@ -603,3 +606,28 @@ export const updateBatch = () => (dispatch, getState) => {
       });
     });
 }
+
+
+// Toggle Nomination 
+
+export const toggleNomination = (electionId) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_NOMINATION_TOGGLING });
+
+  const body = JSON.stringify({})
+
+  axios
+    .put(`/admin/election/nomination/${electionId}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_NOMINATION_TOGGLED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_NOMINATION_TOGGLE_ERROR,
+      });
+    });
+}
+

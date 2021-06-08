@@ -59,8 +59,9 @@ function VerifyModal(props) {
                                                 <img
                                                     alt="..."
                                                     className="rounded-circle"
+                                                //  src={`http://localhost:5000/uploads/.student_id.profile_pic}`} className="rounded-circle shadow-lg" style={{ width: '50px', height: '50px' }}
                                                     style={{ width: "180px", height: "180px" }}
-                                                    src={props.admin.findCandidate ? props.admin.findCandidate[0].student_id.profile_pic : ""}
+                                                    src={props.admin.findCandidate ? `http://localhost:5000/uploads/${props.admin.findCandidate[0].student_id.profile_pic}` : ""}
                                                 />
                                             </a>
                                         </div>
@@ -89,7 +90,7 @@ function VerifyModal(props) {
                                     </Button>
                                     </div>:""}
                                 </CardHeader>
-                                <CardBody className="pt-0 pt-md-4">
+                                <CardBody className="pt-0 pt-md-4 mt-5">
                                     <div className="text-center mt-5">
                                         <h3>
                                             {props.admin.findCandidate ? props.admin.findCandidate[0].student_id.name : ""}

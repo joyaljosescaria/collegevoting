@@ -110,9 +110,9 @@ const Login = (props) => {
                   </InputGroupAddon>
                   <Input type="select" name="select" id="exampleSelect" onChange={(e) => setCourse(e.target.value)}>
                     <option>Select Course</option>
-                    {/* {props.student.getCourse ? props.student.getCourse.map((course) => (
+                    {props.student.getCourse ? props.student.getCourse.map((course) => (
                       <option value={course._id}>{course.course}</option>
-                    )) : ""} */}
+                    )) : ""}
                     {/* {props.student.getCourse ? (for(let i=0;i<props.student.getCourse.length;i++)
                       {
                         

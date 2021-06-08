@@ -11,6 +11,8 @@ import routes from "routes.js";
 
 import Loginnew from "views/admin/Login.js"
 import Register from "views/admin/Register.js"
+import EmailValidate from "views/admin/EmailValidate"
+import ChangePassword from "views/admin/ChangePassword"
 
 
 const Auth = (props) => {
@@ -77,6 +79,8 @@ const Auth = (props) => {
               {/* {getRoutes(routes)} */}
               <Route exact path={"/auth/admin/register"} component={Register}/> 
               <Route path={"/auth/admin/login"} component={Loginnew} />  
+              <Route path={"/auth/admin/password"} component={EmailValidate} /> 
+              <Route path={"/auth/admin/changepassword"} component={ChangePassword} />   
               {/* <Redirect from="*" to="/admin/auth/login" /> */}
             </Switch>
           </Row>

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { getOld } from '../actions/publics';
 
+
+
 import {
     Collapse,
     Navbar,
@@ -48,6 +50,7 @@ function Liveresult(props) {
                         obj["label"] = pos.student_id.name;
                         obj["value"] = pos.votes;
                         obj["election"] = pos.election_id.election;
+                        obj["status"] = pos.election_id.started;
                         obj["positionid"] = pos.position_id._id;
                         obj["position"] = pos.position_id.position;
                         data.push(obj);
@@ -105,16 +108,20 @@ function Liveresult(props) {
                                     <thead className="thead-light">
                                         <tr>
                                             <th scope="col">Name</th>
+                                            <th scope="col"></th>
                                             <th scope="col">Votes</th>
+                                            <th scope="col"></th>
                                             <th scope="col">Election</th>
-                                            <th scope="col">Position</th>
+                                            {/* <th scope="col">Position</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {data.map((cand, index) => (
                                             <>
-                                            {index>0 && cand.positionid != data[index-1].positionid? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""}
-                                            {index==0 ? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""}
+                                            {/* {index>0 && cand.positionid != data[index-1].positionid? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""}
+                                            {index==0 ? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""} */}
+                                            {index>0 && cand.positionid != data[index-1].positionid? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}<span>{cand.status?<img style={{width:"40px"}} src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" />:""}</span></h3></td></tr>:""}
+                                            {index==0 ? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}{cand.status?<img style={{width:"40px"}}  src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" />:""}</h3></td></tr>:""}
                                             <tr>
                                                 <th scope="row">
                                                     <Media className="align-items-center">
@@ -126,7 +133,9 @@ function Liveresult(props) {
                                                         </Media>
                                                     </Media>
                                                 </th>
+                                                <td></td>
                                                 <td>{cand.value}</td>
+                                                <td></td>
                                                 <td>
                                                     <Badge color="" className="badge-dot mr-4">
 
@@ -134,11 +143,11 @@ function Liveresult(props) {
                                                     </Badge>
                                                 </td>
 
-                                                <td>
+                                                {/* <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="mr-2">{cand.position}</span>
                                                     </div>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                             </>))}
                                     </tbody>

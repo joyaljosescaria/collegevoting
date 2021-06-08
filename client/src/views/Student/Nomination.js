@@ -53,7 +53,7 @@ const Nomination = (props) => {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="select" name="select" id="exampleSelect" onChange={(e)=>setElection(e.target.value)}>
-                        <option>Select Course</option>
+                        <option>Select Election</option>
                         {props.student.getElection?props.student.getElection.map((election) => 
                             <option value={election._id}>{election.election}</option>
                         ):""}

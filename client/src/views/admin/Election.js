@@ -21,6 +21,8 @@ import AddElectionModal from "components/Modals/AddElectionModal";
 import DeleteElectionModal from "components/Modals/DeleteElectionModal";
 import EditElectionModal from "components/Modals/EditElectionModal";
 import StartElectionModal from "components/Modals/StartElectionModal";
+import ToggleNominationModal from "components/Modals/ToggleNominationModal";
+
 
 
 
@@ -28,7 +30,8 @@ const Election = (props) => {
 
   useEffect(() => {
     props.loadElections()
-  }, [loadElections, props.admin.isAdminElectionAdded, props.admin.isAdminElectionDeleted, props.admin.isAdminElectionEdited , props.admin.isAdminElectionStarted])
+    console.log("hai")
+  }, [loadElections, props.admin.isAdminElectionAdded, props.admin.isAdminElectionDeleted, props.admin.isAdminElectionEdited , props.admin.isAdminElectionStarted , props.admin.isAdminNominationToggled])
 
 
   const getDate = (date) => {
@@ -60,7 +63,7 @@ const Election = (props) => {
               <Table className="align-items-center table-dark table-flush" responsive>
                 <thead className="thead-dark">
                   <tr>
-                    <th scope="col">Course</th>
+                    <th scope="col">Election</th>
                     <th scope="col">Date</th>
                     <th scope="col">Status</th>
                     <th scope="col" />
@@ -102,6 +105,7 @@ const Election = (props) => {
                               <Link to={`/admin/election/${election._id}/candidate`} style={{color:"black"}} >View Candidates</Link>
                             </DropdownItem>
                             <StartElectionModal electionId={election._id} started={election.started}/>
+                            <ToggleNominationModal electionId={election._id} status={election.nomination} />
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>

@@ -10,6 +10,12 @@ import {
   ADMIN_STUDENTS_LOADING,
   ADMIN_STUDENTS_LOADED,
   ADMIN_STUDENTS_LOAD_ERROR,
+  ADMIN_PASS_EMAIL_VALIDATING,
+  ADMIN_PASS_EMAIL_VALIDATED,
+  ADMIN_PASS_EMAIL_VALIDATE_ERROR,
+  ADMIN_PASS_CHANGING,
+  ADMIN_PASS_CHANGED,
+  ADMIN_PASS_CHANGE_ERROR,
 
 } from './types';
 
@@ -87,9 +93,59 @@ export const loadAdminStudents = () => (dispatch, getState) => {
 // LOGOUT USER
 export const adminLogout = () => (dispatch) => {
   console.log("logout")
-  dispatch({ 
-    type: ADMIN_LOGOUT_SUCCESS 
+  dispatch({
+    type: ADMIN_LOGOUT_SUCCESS
   })
+};
+
+ //PASS EMAIL VALIDATION
+
+export const passEmailValidation = (email) => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: ADMIN_PASS_EMAIL_VALIDATING });
+
+  const body = JSON.stringify({email})
+
+  axios
+    .put('/admin/auth/forgotpassword',body , tokenConfig(getState))
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: ADMIN_PASS_EMAIL_VALIDATED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_PASS_EMAIL_VALIDATE_ERROR,
+      });
+    });
+};
+
+//PASS CHANGE PASSWORD
+
+export const changePassword = (otp, firstpass, secondpass) => (dispatch, getState) => {
+  // User Loading
+  dispatch({ type: ADMIN_PASS_CHANGING });
+
+  const body = JSON.stringify({otp, firstpass, secondpass})
+
+  axios
+    .put('/admin/auth/forgotfpassword',body , tokenConfig(getState))
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: ADMIN_PASS_CHANGED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_PASS_CHANGE_ERROR,
+      });
+    });
 };
 
 
@@ -113,3 +169,7 @@ export const tokenConfig = (getState) => {
   }
   return config;
 };
+
+
+
+

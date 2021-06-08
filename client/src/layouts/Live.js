@@ -61,7 +61,7 @@ function Liveresult(props) {
         return () => {
           clearInterval(interval);
         }
-    }, [ props.publics.candidate])
+    }, [props.publics.candidate])
 
     console.log(data)
 
@@ -99,7 +99,7 @@ function Liveresult(props) {
                         <div className="col">
                             <Card className="shadow">
                                 <CardHeader className="border-0">
-                                    <h3 className="mb-0">Election Result</h3>
+                                    <h3 className="mb-0">Election Result &nbsp; &nbsp; <img style={{width:"40px"}}  src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" /> </h3>
                                 </CardHeader>
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">

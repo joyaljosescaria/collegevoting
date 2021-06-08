@@ -184,7 +184,7 @@ exports.forgotPassword = async (req, res) => {
 
             const message = {
                 from: 't.e.s.t.a.a.p.p.p@gmail.com', // Sender address
-                to: 'alphonseksebastian1@gmail.com',         // List of recipients
+                to: email,         // List of recipients
                 subject: 'OTP for Changing Password', // Subject line
                 html: `Use <h1>${random}</h1> to change your password.` // Plain text body
             };
