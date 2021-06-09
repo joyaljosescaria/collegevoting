@@ -121,9 +121,12 @@ exports.registerStudent = async (req, res) => {
 
 exports.nomination = async (req, res) => {
     try {
-        const getStudent = await Student.findById(req.user.user_id).select('had_candidate ')
+        const getStudent = await Student.findById(req.user.user_id).select('had_candidate supli')
         if (getStudent.had_candidate) {
             res.status(500).json({ error: 'You have been participated in election once .' })
+        }
+        else if(getStudent.supli > 0) {
+            res.status(500).json({ error: 'As backlog exsits you can\'t participate in the election.'})
         }
         else {
             const nomination = new Candidate({
@@ -149,7 +152,7 @@ exports.nomination = async (req, res) => {
 
 exports.getCourse = async (req, res) => {
     try {
-        const getCourse = await Course.find({is_active:true})
+        const getCourse = await Course.find({is_active:true , course: { $ne: "All" }})
         res.status(200).json({getCourse})
     } catch (err) {
         res.status(500).json({ error: err.message })
@@ -335,3 +338,4 @@ exports.addVote = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
+

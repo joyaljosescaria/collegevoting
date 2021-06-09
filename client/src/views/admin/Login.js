@@ -100,8 +100,7 @@ const Login = (props) => {
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
-                          {/* <Link to={`/admin/password`}><small>Forgot password?</small></Link> */}
-
+              <Link to={`/admin/password`}><small>Forgot password?</small></Link>
             </a>
           </Col>
           <Col className="text-right" xs="6">

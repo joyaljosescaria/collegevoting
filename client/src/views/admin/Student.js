@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import Skeleton from '@yisheng90/react-loading';
 import { Redirect } from "react-router-dom";
-
-// import { loadAdminStudents , loadAdminStudent } from '../../actions/admin';
+import { getSuppli, updateSuppli } from '../../actions/admin';
 // import { Link } from "react-router-dom";
 
 // reactstrap components
@@ -18,6 +17,9 @@ import {
   Container,
   Row,
   Col,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
 
 // core components
@@ -29,9 +31,19 @@ import DeleteStudentModal from "components/Modals/DeleteStudentModal";
 
 const Student = (props) => {
 
+  const [suppli, setSuppli] = useState(0)
+  const [studentId , setStudentId] = useState(props.match.params.studentId)
+
+  console.log(studentId)
+
+  useEffect(() => {
+    props.getSuppli(studentId)
+  }, [getSuppli])
+
   if (props.admin.isAdminStudentUnVerified || props.admin.isAdminStudentVerified || props.admin.isAdminStudentDeleted) {
     return <Redirect to="/admin/students" />
   }
+
 
   return (
     <>
@@ -58,7 +70,7 @@ const Student = (props) => {
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div className="d-flex justify-content-between">
                   <VerifyModal course_id={props.admin.course_id} batch_year_count={props.admin.batch_year_count} />
-                  <DeleteStudentModal studentId={props.admin.student._id}/>
+                  <DeleteStudentModal studentId={props.admin.student._id} />
                 </div>
               </CardHeader>
               <CardBody className="pt-0 pt-md-4">
@@ -87,7 +99,25 @@ const Student = (props) => {
                   </div>
                   <hr className="my-4" />
                   <img src={props.admin.student ? `http://localhost:5000/uploads/${props.admin.student.id_card}` : ""} className="shadow-lg" style={{ maxWidth: '100%', height: 'auto', marginBottom: '2rem' }} />
-                  <ResponsivePlayer url={`http://localhost:5000/uploads/${props.admin.student.id_card_selfi}`} style={{ marginTop: '20rem' }} />
+                  {/* <ResponsivePlayer url={`http://localhost:5000/uploads/${props.admin.student.id_card_selfi}`} style={{ marginTop: '20rem' }} /> */}
+                  <hr className="my-4" />
+                  <FormGroup className="mb-3">
+                    <InputGroup className="input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="fas fa-file-signature" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Supplementary Count "
+                        type="text"
+                        className="text-center"
+                        onChange={e => { setSuppli(e.target.value) }}
+                        defaultValue={props.admin.getSuppliCount?props.admin.getSuppliCount[0].supli:""}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <button type="button"  className=" btn btn-success" onClick={(e) => props.updateSuppli(studentId , suppli)}>Update Supplementary Count</button>
                 </div>
               </CardBody>
             </Card>
@@ -102,4 +132,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, {})(Student)
+export default connect(mapStateToProps, { getSuppli, updateSuppli })(Student)

@@ -47,7 +47,7 @@ exports.getOldResult = async (req, res) => {
 
     try {
         
-        const getLiveElection = await Election.find({})
+        const getLiveElection = await Election.find({ started: true})
         if(getLiveElection.length  > 0)
         {
             getLiveElection.forEach((ele , index) => {
@@ -109,6 +109,25 @@ exports.getResult = async (req, res) => {
             candidate.push(cand[k])
         }
         res.status(200).json({candidate})
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.getVotePercentage = async (req, res) => {
+    try {
+        const election = await Election.find({started: true} , '_id')
+        if(election.length > 0)
+        {
+            const totalVote = await StudentPosition.countDocuments({election_id: election[0]._id})
+            const voted = await StudentPosition.countDocuments({isVoted:true , election_id: election[0]._id})
+            const per = Number(voted)/Number(totalVote)*100
+            const roundPer = per.toFixed(2)
+            res.status(200).json({roundPer , "started":true})    
+        }
+        else {
+            res.status(200).json({"started":false})
+        }
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

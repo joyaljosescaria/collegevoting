@@ -60,8 +60,8 @@ const Homepage = (props) => {
                 </blockquote>
             </div>
             <div className="links text-center mt-5">
-                <Link to="/lresults"><button className="btn btn-primary shadow-lg">Live Result</button></Link>
-                <Link to="/result"><button className="btn btn-warning  shadow-lg ml-3">All Result</button></Link>
+                {/* <Link to="/lresults"><button className="btn btn-primary shadow-lg">Live Result</button></Link> */}
+                <Link to="/result"><button className="btn btn-warning  shadow-lg ml-3">Result</button></Link>
             </div>
         </div>
     );

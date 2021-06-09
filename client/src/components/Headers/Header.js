@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import { loadAdminStudents , loadAdminStudent } from '../../actions/admin';
+import { loadAdminStudents , loadAdminStudent , getSuppli} from '../../actions/admin';
 import { Link } from "react-router-dom";
 
 // reactstrap components
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, { loadAdminStudents , loadAdminStudent})(Unverified)
+export default connect(mapStateToProps, { loadAdminStudents , loadAdminStudent , getSuppli})(Unverified)

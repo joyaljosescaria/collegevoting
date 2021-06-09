@@ -74,6 +74,12 @@ import {
     ADMIN_NOMINATION_TOGGLING,
     ADMIN_NOMINATION_TOGGLED,
     ADMIN_NOMINATION_TOGGLE_ERROR,
+    ADMIN_STUDENT_SUPLI_LOADING,
+    ADMIN_STUDENT_SUPLI_LOADED,
+    ADMIN_STUDENT_SUPLI_LOAD_ERROR,
+    ADMIN_STUDENT_SUPLI_EDITING,
+    ADMIN_STUDENT_SUPLI_EDITED,
+    ADMIN_STUDENT_SUPLI_EDIT_ERROR,
 
 } from '../actions/types';
 
@@ -128,6 +134,10 @@ const initialState = {
     isAdminBatchUpdated: false,
     isAdminNominationToggling: false,
     isAdminNominationToggled: false,
+    isAdminSuppliLoading: false,
+    isAdminSuppliLoaded: false,
+    isAdminSuppliEditing: false,
+    isAdminSuppliEdited: false,
 };
 
 
@@ -171,7 +181,8 @@ export default function (state = initialState, action) {
         case ADMIN_STUDENT_DELETE_ERROR:
         case ADMIN_BATCH_UPDATE_ERROR:
         case ADMIN_NOMINATION_TOGGLE_ERROR:
-
+        case ADMIN_STUDENT_SUPLI_LOAD_ERROR:
+        case ADMIN_STUDENT_SUPLI_EDIT_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -512,6 +523,34 @@ export default function (state = initialState, action) {
                 isAdminNominationToggling: false,
                 isAdminNominationToggled: true,
                 ...action.payload
+            }
+        case ADMIN_STUDENT_SUPLI_LOADING:
+            return {
+                ...state,
+                isAdminSuppliLoaded: false,
+                isAdminSuppliLoading: true,
+                ...action.payload,
+            }
+        case ADMIN_STUDENT_SUPLI_LOADED:
+            return {
+                ...state,
+                isAdminSuppliLoaded: true,
+                isAdminSuppliLoading: false,
+                ...action.payload,
+            }
+        case ADMIN_STUDENT_SUPLI_EDITING:
+            return {
+                ...state,
+                ...action.payload,
+                isAdminSuppliEditing: true,
+                isAdminSuppliEdited: false,
+            }
+        case ADMIN_STUDENT_SUPLI_EDITED:
+            return {
+                ...state,
+                ...action.payload,
+                isAdminSuppliEditing: false,
+                isAdminSuppliEdited: true,
             }
 
         default:

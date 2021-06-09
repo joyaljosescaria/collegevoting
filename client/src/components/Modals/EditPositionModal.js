@@ -27,9 +27,9 @@ function EditPositionModal(props) {
         e.preventDefault();
     }
 
-    useEffect(() => {
-        props.getAllCourse()
-    }, [getAllCourse])
+    // useEffect(() => {
+    //     props.getAllCourse()
+    // }, [getAllCourse])
 
     return (
         <div>
@@ -60,7 +60,7 @@ function EditPositionModal(props) {
                             style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
                         >
                             <option value=''>Select Course</option>
-                            {props.admin.getAllCourse ? props.admin.getAllCourse.map((course) => <option key={course._id} value={course._id}>{course.course}</option>) : <option value=''>Loading Courses</option>}
+                            {props.admin.getAllCourses1 ? props.admin.getAllCourses1.map((course) => <option key={course._id} value={course._id}>{course.course}</option>) : <option value=''>Loading Courses</option>}
 
                         </Input>
                     </InputGroup>

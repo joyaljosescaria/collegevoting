@@ -8,7 +8,7 @@ import {
     InputGroup,
     Input,
 } from 'reactstrap'
-import { addPosition, getAllCourse } from '../../actions/admin';
+import { addPosition } from '../../actions/admin';
 
 
 function AddPositionModal(props) {
@@ -25,10 +25,6 @@ function AddPositionModal(props) {
         props.addPosition(position, batch_year_count, course_id, props.electionId)
         e.preventDefault();
     }
-
-    useEffect(() => {
-        props.getAllCourse()
-    }, [getAllCourse])
 
     return (
         <div>
@@ -53,7 +49,7 @@ function AddPositionModal(props) {
                             style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
                         >
                             <option value=''>Select Course</option>
-                            {props.admin.getAllCourse ? props.admin.getAllCourse.map((course) => <option key={course._id} value={course._id}>{course.course}</option>) : <option value=''>Loading Courses</option>}
+                            {props.admin.getAllCourses1 ? props.admin.getAllCourses1.map((course) => <option key={course._id} value={course._id}>{course.course}</option>) : <option value=''>Loading Courses</option>}
 
                         </Input>
                     </InputGroup>
@@ -66,7 +62,7 @@ function AddPositionModal(props) {
                             style={{ width: "15rem", border: "1px solid  #4d90fea3" }}
                         >
                             <option value=''>Select Batch Year</option>
-                            <option value='0'>0</option>
+                            <option value='0'>All</option>
                             <option value='1'>1</option>
                             <option value='2'>2</option>
                             <option value='3'>3</option>
@@ -105,4 +101,4 @@ const mapStateToProps = (state) => ({
     admin: state.admin,
 });
 
-export default connect(mapStateToProps, { addPosition, getAllCourse })(AddPositionModal)
+export default connect(mapStateToProps, { addPosition })(AddPositionModal)

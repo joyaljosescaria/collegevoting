@@ -76,7 +76,12 @@ import {
   ADMIN_NOMINATION_TOGGLING,
   ADMIN_NOMINATION_TOGGLED,
   ADMIN_NOMINATION_TOGGLE_ERROR,
-
+  ADMIN_STUDENT_SUPLI_LOADING,
+  ADMIN_STUDENT_SUPLI_LOADED,
+  ADMIN_STUDENT_SUPLI_LOAD_ERROR,
+  ADMIN_STUDENT_SUPLI_EDITING,
+  ADMIN_STUDENT_SUPLI_EDITED,
+  ADMIN_STUDENT_SUPLI_EDIT_ERROR,
 } from './types';
 
 import { tokenConfig } from './adminAuth'
@@ -144,10 +149,10 @@ export const loadAdminStudent = (studentId) => (dispatch, getState) => {
 }
 
 // verify student
-export const verifyStudent = (studentId , course_id , batch_year_count ) => (dispatch, getState) => {
+export const verifyStudent = (studentId, course_id, batch_year_count) => (dispatch, getState) => {
   dispatch({ type: ADMIN_STUDENT_VERIFYING });
 
-  const body = JSON.stringify({course_id , batch_year_count})
+  const body = JSON.stringify({ course_id, batch_year_count })
 
   axios
     .put(`/admin/verifystudent/${studentId}`, body, tokenConfig(getState))
@@ -195,6 +200,25 @@ export const getAllCourse = () => (dispatch, getState) => {
 
   axios
     .get(`/admin/courses`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_COURSES_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_COURSES_LOAD_ERROR,
+      });
+    });
+}
+
+export const getAllCourse1 = () => (dispatch, getState) => {
+  dispatch({ type: ADMIN_COURSES_LOADING });
+
+  axios
+    .get(`/admin/courses1`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: ADMIN_COURSES_LOADED,
@@ -627,6 +651,51 @@ export const toggleNomination = (electionId) => (dispatch, getState) => {
       // dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: ADMIN_NOMINATION_TOGGLE_ERROR,
+      });
+    });
+}
+
+// Get Suppli
+
+export const getSuppli = (sid) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_STUDENT_SUPLI_LOADING });
+
+  axios
+    .get(`/admin/student/views/${sid}`, tokenConfig(getState))
+    .then((res) => {
+      console.log("loading")
+      dispatch({
+        type: ADMIN_STUDENT_SUPLI_LOADED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_STUDENT_SUPLI_LOAD_ERROR,
+      });
+    });
+}
+
+// Update Suppli
+
+export const updateSuppli = (sid, suplicount) => (dispatch, getState) => {
+  dispatch({ type: ADMIN_STUDENT_SUPLI_EDITING });
+
+  const body = JSON.stringify({ suplicount : suplicount })
+
+  axios
+    .put(`/admin/student/updates/${sid}`, body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: ADMIN_STUDENT_SUPLI_EDITED,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: ADMIN_STUDENT_SUPLI_EDIT_ERROR,
       });
     });
 }

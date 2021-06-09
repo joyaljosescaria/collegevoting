@@ -29,7 +29,7 @@ import { tokenConfig } from './studentAuth'
 
 // get course
 
-export const getCourse = () => (dispatch, getState) => {
+export const getCourse = (ctype) => (dispatch, getState) => {
 
     dispatch({ type: STUDENT_COURSE_SELECTING });
 
@@ -37,7 +37,7 @@ export const getCourse = () => (dispatch, getState) => {
     // const body = JSON.stringify({ email, unique_id });
 
     axios
-        .get('/student/course', tokenConfig(getState))
+        .get(`/student/course`, tokenConfig(getState))
         .then((res) => {
             console.log(res);
             dispatch({

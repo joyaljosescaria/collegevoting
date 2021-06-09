@@ -7,5 +7,6 @@ router.get("/live" , publics.getLiveResult)
 router.get("/old" , publics.getOldResult) 
 router.get("/elections" , publics.getAllElection)
 router.get("/result/:electionId" , publics.getResult)
+router.get("/voteper" , publics.getVotePercentage)
 
 module.exports = router;

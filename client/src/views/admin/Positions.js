@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import { loadPositions } from '../../actions/admin';
-import { Link , useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import {
   Card,
@@ -21,14 +21,20 @@ import AddPositionModal from "components/Modals/AddPositionModal";
 import EditPositionModal from "components/Modals/EditPositionModal";
 import DeletePositionModal from "components/Modals/DeletePositionModal";
 
+import { addPosition, getAllCourse1 } from '../../actions/admin';
+
+
 const Position = (props) => {
 
   var { electionId } = useParams();
 
   useEffect(() => {
     props.loadPositions(electionId)
-  }, [loadPositions , props.admin.isAdminPositionAdded, props.admin.isAdminPositionDeleted, props.admin.isAdminPositionEdited])
+  }, [loadPositions, props.admin.isAdminPositionAdded, props.admin.isAdminPositionDeleted, props.admin.isAdminPositionEdited])
 
+  useEffect(() => {
+    props.getAllCourse1()
+  }, [loadPositions])
 
   const getDate = (date) => {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -53,7 +59,7 @@ const Position = (props) => {
               <CardHeader className="border-0 bg-transparent">
                 <div className="d-flex justify-content-between">
                   <h3 className="mb-0 text-white">Positions</h3>
-                  <AddPositionModal electionId={electionId}/>
+                  <AddPositionModal electionId={electionId} />
                 </div>
               </CardHeader>
               <Table className="align-items-center table-dark table-flush" responsive>
@@ -92,8 +98,8 @@ const Position = (props) => {
                             <i className="fas fa-ellipsis-v" />
                           </DropdownToggle>
                           <DropdownMenu className="dropdown-menu-arrow" left persist>
-                            <EditPositionModal electionId={electionId} course={position.course_id._id} batch={position.batch_year_count} position={position.position} positionId={position._id}/>
-                            <DeletePositionModal electionId={electionId} positionId={position._id}/>
+                            <EditPositionModal electionId={electionId} course={position.course_id._id} batch={position.batch_year_count} position={position.position} positionId={position._id} />
+                            <DeletePositionModal electionId={electionId} positionId={position._id} />
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>
@@ -113,4 +119,4 @@ const mapStateToProps = (state) => ({
   admin: state.admin,
 });
 
-export default connect(mapStateToProps, { loadPositions })(Position)
+export default connect(mapStateToProps, { loadPositions , getAllCourse1 })(Position)

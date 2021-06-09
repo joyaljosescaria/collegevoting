@@ -215,13 +215,23 @@ exports.deleteCourse = async (req, res) => {
 exports.getAllCourse = async (req, res) => {
     try {
 
-        const getAllCourse = await Course.find({ is_active: true })
+        const getAllCourse = await Course.find({ is_active: true, course: { $ne: "All" } })
         res.status(200).json({ getAllCourse })
-
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+exports.getAllCourses1 = async (req, res) => {
+    try {
+        const getAllCourses1 = await Course.find({ is_active: true })
+        res.status(200).json({ getAllCourses1 })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
+
+
 
 // Create Election
 exports.createElection = async (req, res) => {
@@ -324,7 +334,7 @@ exports.createElectionPosition = async (req, res) => {
             getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count }).select('_id')
         }
         else {
-            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count , course_id: req.body.course_id}).select('_id')
+            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count, course_id: req.body.course_id }).select('_id')
         }
 
         if (getValidStudents.length > 0) {
@@ -376,7 +386,7 @@ exports.editElectionPosition = async (req, res) => {
             getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count }).select('_id')
         }
         else {
-            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count , course_id: req.body.course_id}).select('_id')
+            getValidStudents = await Student.find({ is_active: true, batch_year_count: req.body.batch_year_count, course_id: req.body.course_id }).select('_id')
         }
 
         if (getValidStudents.length > 0) {
@@ -540,35 +550,32 @@ exports.deleteStudent = async (req, res) => {
 exports.updateBatch = async (req, res) => {
     try {
 
-        const batchYear = await Student.find({"batch_year_count" : {$ne : 4}} , 'batch_year_count')
+        const batchYear = await Student.find({ "batch_year_count": { $ne: 4 } }, 'batch_year_count')
 
         const deleteElection = await Election.deleteMany({})
         const deleteElectionPos = await Position.deleteMany({})
         const deleteStdPos = await StudentPosition.deleteMany({})
         const deleteCandidate = await Candidate.deleteMany({})
 
-        batchYear.map(async (batch , index) => {
-            if(batch.batch_year_count == 1 )
-            {
+        batchYear.map(async (batch, index) => {
+            if (batch.batch_year_count == 1) {
                 const updateBatch = await Student.updateOne({ _id: batch._id }, { batch_year_count: 2 });
             }
-            else if(batch.batch_year_count == 2)
-            {
+            else if (batch.batch_year_count == 2) {
                 const updateBatch1 = await Student.updateOne({ _id: batch._id }, { batch_year_count: 3 });
             }
-            else
-            {
+            else {
                 const updateBatch2 = await Student.updateOne({ _id: batch._id }, { batch_year_count: 4 });
             }
         })
-       
+
 
         const deleteBatch = await Student.updateMany({ batch_year_count: 4 }, { is_active: false });
 
         res.status(200).json({ message: "Batch Updated" })
 
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({ message: err.message })
     }
 }
 
@@ -576,23 +583,44 @@ exports.updateBatch = async (req, res) => {
 
 exports.toggleNomination = async (req, res) => {
     try {
-        const nomStatus = await Election.find({_id : req.params.electionId})
-        if(nomStatus.length > 0)
-        {
+        const nomStatus = await Election.find({ _id: req.params.electionId })
+        if (nomStatus.length > 0) {
             status = nomStatus[0].nomination
             data = {
-                nomination : !status,
+                nomination: !status,
             }
             console.log(data)
-            const toggleNomination = await Election.updateOne({ _id: req.params.electionId} , data)
-            res.status(200).json({message:"Nomination Updated"})
+            const toggleNomination = await Election.updateOne({ _id: req.params.electionId }, data)
+            res.status(200).json({ message: "Nomination Updated" })
         }
-        else{
-            res.status(404).json({ message: "Election not found"})
+        else {
+            res.status(404).json({ message: "Election not found" })
         }
     } catch (err) {
-        res.status(500).json({error: err.message})
+        res.status(500).json({ error: err.message })
     }
 }
 
+exports.getSuppliCount = async (req, res) => {
+    console.log("hai")
+    try {
+        const getSuppliCount = await Student.find({ _id: req.params.studentId }, 'supli')
+        res.status(200).json({ getSuppliCount })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
 
+exports.editSuppliCount = async (req, res) => {
+    try {
+        console.log(req.body.suplicount)
+        data = {
+            supli: req.body.suplicount
+        }
+
+        const updateSuppli = await Student.updateOne({ _id: req.params.studentId }, data)
+        res.status(200).json({ message: "Suppli Updated Succesfully" })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
