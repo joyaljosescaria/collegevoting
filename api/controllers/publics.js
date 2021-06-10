@@ -47,7 +47,7 @@ exports.getOldResult = async (req, res) => {
 
     try {
         
-        const getLiveElection = await Election.find({ started: true})
+        const getLiveElection = await Election.find({ started: false})
         if(getLiveElection.length  > 0)
         {
             getLiveElection.forEach((ele , index) => {

@@ -26,6 +26,9 @@ const Login = (props) => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [name, setName] = useState('')
+  const [hname, setHname] = useState('')
+  const [phone, setPhone] = useState('')
+  const [register_no, setRno] = useState('')
   const [course_id, setCourse] = useState('')
   const [batch_year_count, setBatchYearCount] = useState('')
   const [file1, setFile1] = useState('')
@@ -38,19 +41,21 @@ const Login = (props) => {
     props.getCourse()
     setError(props.studentAuth.error)
 
-  }, [getCourse , props.studentAuth.error])
+  }, [getCourse, props.studentAuth.error])
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const formData = new FormData();
     formData.append('profile_pic', file1);
     formData.append('id_card', file2);
-    formData.append('id_card_selfi', file3);
     formData.append('name', name);
     formData.append('email', email);
     formData.append('course_id', course_id);
+    formData.append('hname', hname);
+    formData.append('phone', phone);
+    formData.append('register_no', register_no);
     formData.append('batch_year_count', batch_year_count);
-    props.studentRegister(name ,email, course_id , batch_year_count, formData);
+    props.studentRegister(name, email, course_id, batch_year_count, hname, phone, register_no, formData);
   }
 
   if (props.studentAuth.isStudentRegestered) {
@@ -98,6 +103,51 @@ const Login = (props) => {
                     type="email"
                     autoComplete="email"
                     onChange={e => setEmail(e.target.value)}
+                  />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-lock-circle-open" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    placeholder="Register No."
+                    type="text"
+                    autoComplete=""
+                    onChange={e => setRno(e.target.value)}
+                  />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-lock-circle-open" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    placeholder="Phone No."
+                    type="text"
+                    autoComplete=""
+                    onChange={e => setPhone(e.target.value)}
+                  />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-lock-circle-open" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    placeholder="House Name"
+                    type="text"
+                    autoComplete=""
+                    onChange={e => setHname(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
@@ -158,7 +208,7 @@ const Login = (props) => {
                   <Input type="file" name="file" id="exampleFile" onChange={(e) => { setFile2(e.target.files[0]) }} />
                 </InputGroup>
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -168,7 +218,7 @@ const Login = (props) => {
                   <Label for="exampleFile">ID Card Selfi</Label>
                   <Input type="file" name="file" id="exampleFile" onChange={(e) => { setFile3(e.target.files[0]) }} />
                 </InputGroup>
-              </FormGroup>
+              </FormGroup> */}
 
 
               <div className="text-center">
@@ -186,7 +236,7 @@ const Login = (props) => {
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
-              <small>Forgot password?</small>
+              {/* <small>Forgot password?</small> */}
             </a>
           </Col>
           <Col className="text-right" xs="6">

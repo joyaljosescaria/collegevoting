@@ -22,7 +22,12 @@ import {
     STUDENT_QUOTES_LOADING,
     STUDENT_QUOTES_LOADED,
     STUDENT_QUOTES_LOAD_ERROR,
-
+    PUBLIC_VOTE_PERCENTAGE_LOADING,
+    PUBLIC_VOTE_PERCENTAGE_LOADED,
+    PUBLIC_VOTE_PERCENTAGE_LOAD_ERROR,
+    STUDENT_SELFI_UPLOADING,
+    STUDENT_SELFI_UPLOADED,
+    STUDENT_SELFI_UPLOAD_ERROR,
 } from './types';
 
 import { tokenConfig } from './studentAuth'
@@ -184,6 +189,35 @@ export const addVote = (student, position) => (dispatch, getState) => {
         });
 };
 
+// upload selfi 
+
+export const uploadSelfi = (uniqueId , image1) => (dispatch, getState) => {
+
+    dispatch({ type: STUDENT_SELFI_UPLOADING });
+
+    // Request Body
+    const body = JSON.stringify({image1: image1});
+
+    console.log(image1);
+
+    axios
+        .put(`/student/upload/${uniqueId}`, body, tokenConfig(getState))
+        .then((res) => {
+            console.log(res);
+            dispatch({
+                type: STUDENT_SELFI_UPLOADED,
+                payload: res.data,
+            });
+        })
+        .catch((err) => {
+            //   dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: STUDENT_SELFI_UPLOAD_ERROR,
+                payload: err.response.data,
+            });
+        });
+};
+
 const getRandom = () => {
     return (Math.floor(Math.random() * (1643 - 0)) + 0);
 }
@@ -212,3 +246,29 @@ export const loadQuotes = () => (dispatch, getState) => {
             });
         });
 };
+
+export const getPerc = () => (dispatch) => {
+
+    dispatch({ type: PUBLIC_VOTE_PERCENTAGE_LOADING });
+
+    // Request Body
+    // const body = JSON.stringify({ email, unique_id });
+
+    axios
+        .get('/publics/voteper')
+        .then((res) => {
+            console.log(res);
+            dispatch({
+                type: PUBLIC_VOTE_PERCENTAGE_LOADED,
+                payload: res.data,
+            });
+        })
+        .catch((err) => {
+            //   dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: PUBLIC_VOTE_PERCENTAGE_LOAD_ERROR,
+                payload: err.response.data,
+            });
+        });
+};
+

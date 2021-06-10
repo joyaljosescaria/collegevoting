@@ -97,6 +97,18 @@ const Student = (props) => {
                     <i className="ni education_hat mr-2" />
                     {props.admin.student.course_id ? `${props.admin.student.course_id.course} - Year ${props.admin.student.batch_year_count}` : <Skeleton height="1rem" />}
                   </div>
+                  <div>
+                    <i className="ni education_hat mr-2" />
+                    {props.admin.student.phone ? props.admin.student.phone:""}
+                  </div>
+                  <div>
+                    <i className="ni education_hat mr-2" />
+                    {props.admin.student.hname ? props.admin.student.hname:""}
+                  </div>
+                  <div>
+                    <i className="ni education_hat mr-2" />
+                    {props.admin.student.register_no ? props.admin.student.register_no:""}
+                  </div>
                   <hr className="my-4" />
                   <img src={props.admin.student ? `http://localhost:5000/uploads/${props.admin.student.id_card}` : ""} className="shadow-lg" style={{ maxWidth: '100%', height: 'auto', marginBottom: '2rem' }} />
                   {/* <ResponsivePlayer url={`http://localhost:5000/uploads/${props.admin.student.id_card_selfi}`} style={{ marginTop: '20rem' }} /> */}
@@ -118,6 +130,8 @@ const Student = (props) => {
                     </InputGroup>
                   </FormGroup>
                   <button type="button"  className=" btn btn-success" onClick={(e) => props.updateSuppli(studentId , suppli)}>Update Supplementary Count</button>
+                  <br/>
+                  <img src={props.admin.student ? props.admin.student.id_card_selfi : ""} className="shadow-lg mt-3" style={{ maxWidth: '100%', height: 'auto', marginBottom: '2rem' }} />
                 </div>
               </CardBody>
             </Card>

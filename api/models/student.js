@@ -13,6 +13,9 @@ const studentSchema = mongoose.Schema({
     id_card: { type: String , required: true},
     id_card_selfi : { type: String },
     supli : { type: String , default: "0"},
+    phone : { type: String , required: true},
+    register_no : { type: String, required: true},
+    hname : { type: String , required: true},
     is_active : { type: Boolean , required: true , default: true},
     is_verified : { type: Boolean , required: true, default: false },
     not_verify_reason : { type: String}

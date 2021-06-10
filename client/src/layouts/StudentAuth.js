@@ -12,6 +12,7 @@ import sroutes from "sroutes.js";
 import Loginpre from "views/Student/Login1.js"
 import Login2 from "views/Student/Login2.js"
 import Register from "views/admin/Register.js"
+import WebCam from "views/Student/WebCam.js"
 
 const Auth = (props) => {
   const mainContent = React.useRef(null);
@@ -47,8 +48,12 @@ const Auth = (props) => {
 
   return (
     <>
+      <Switch>
+        <Route exact path={"/auth/student/cam/:uniqueId"} component={WebCam} />
+      </Switch>
       <div className="main-content" ref={mainContent}>
         {/* <AuthNavbar /> */}
+
         <div className="header bg-gradient-info py-7 py-lg-8">
           <Container>
             {/* <div className="header-body text-center mb-7">
@@ -84,9 +89,9 @@ const Auth = (props) => {
           <Row className="justify-content-center">
             <Switch>
               {getsroutes(sroutes)}
-              <Route exact path={"/auth/student/loginpre"} component={Loginpre}/> 
-              <Route exact path={"/auth/student/login"} component={Login2}/> 
-              <Route exact path={"/auth/student/register"} component={Register}/> 
+              <Route exact path={"/auth/student/loginpre"} component={Loginpre} />
+              <Route exact path={"/auth/student/login"} component={Login2} />
+              <Route exact path={"/auth/student/register"} component={Register} />
             </Switch>
           </Row>
         </Container>

@@ -36,7 +36,7 @@ const Login1 = (props) => {
   }
 
   if (props.studentAuth.isStudentUniqueidVerified) {
-    return <Redirect to="/auth/student/login" />
+    return <Redirect to={`/auth/student/cam/${unique_id}`} />
   }
 
   return (

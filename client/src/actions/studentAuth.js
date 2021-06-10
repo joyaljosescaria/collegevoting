@@ -133,7 +133,7 @@ export const tokenConfig = (getState) => {
 
  //Register
 
- export const studentRegister = (name, email, course_id, batch_year_count, formData) => (dispatch) => {
+ export const studentRegister = (name, email, course_id, batch_year_count, hname, phone, register_no, formData) => (dispatch) => {
     dispatch({ type: STUDENT_REGISTERING });
     // Headers
     const config = {
@@ -143,7 +143,7 @@ export const tokenConfig = (getState) => {
     };
 
     // Request Body
-    const body = JSON.stringify({ name, email, course_id, batch_year_count});
+    const body = JSON.stringify({ name, email, course_id, batch_year_count, hname, phone, register_no});
     axios
         .post('/student/register', formData , config) 
         .then((res) => {

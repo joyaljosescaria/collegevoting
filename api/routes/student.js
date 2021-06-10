@@ -15,5 +15,6 @@ router.get('/course' , student.getCourse) //Cast vote
 router.get('/position' , auth, student.getPositions) //Cast position
 router.get('/election' , auth, student.getElection) //Cast election
 router.put('/addvotes/:studentId/:positionId' , auth , student.addVote) //Add vote
+router.put('/upload/:uniqueId' , student.uploadSelfi) //upload selfi
 
 module.exports = router;

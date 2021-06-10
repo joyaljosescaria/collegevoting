@@ -20,7 +20,12 @@ import {
     STUDENT_QUOTES_LOADING,
     STUDENT_QUOTES_LOADED,
     STUDENT_QUOTES_LOAD_ERROR,
-
+    PUBLIC_VOTE_PERCENTAGE_LOADING,
+    PUBLIC_VOTE_PERCENTAGE_LOADED,
+    PUBLIC_VOTE_PERCENTAGE_LOAD_ERROR,
+    STUDENT_SELFI_UPLOADING,
+    STUDENT_SELFI_UPLOADED,
+    STUDENT_SELFI_UPLOAD_ERROR,
 } from '../actions/types';
 
 const initialState = {
@@ -39,7 +44,10 @@ const initialState = {
     isStudentVoteAdding: false,
     isQuotesLoaded: false,
     isQuotesLoading: false,
-
+    isVotePercentLoaded: false,
+    isVotePercentLoading: false,
+    isSelfiUploading: false,
+    isSelfiUploaded: false,
 };
 
 
@@ -67,6 +75,8 @@ export default function (state = initialState, action) {
         case STUDENT_CANDIDATE_LOAD_ERROR:
         case STUDENT_VOTE_ADD_ERROR:
         case STUDENT_QUOTES_LOAD_ERROR:
+        case PUBLIC_VOTE_PERCENTAGE_LOAD_ERROR:
+        case STUDENT_SELFI_UPLOAD_ERROR:
             return {
                 ...state,
                 ...action.payload
@@ -145,17 +155,44 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 isQuotesLoaded: false,
-                isQuotesLoading:true,
+                isQuotesLoading: true,
                 ...action.payload
             }
         case STUDENT_QUOTES_LOADED:
             return {
                 ...state,
                 isQuotesLoaded: true,
-                isQuotesLoading:false,
+                isQuotesLoading: false,
                 ...action.payload
             }
-
+        case PUBLIC_VOTE_PERCENTAGE_LOADING:
+            return {
+                ...state,
+                isVotePercentLoading: true,
+                isVotePercentLoaded: false,
+                ...action.payload
+            }
+        case PUBLIC_VOTE_PERCENTAGE_LOADED:
+            return {
+                ...state,
+                isVotePercentLoading: false,
+                isVotePercentLoaded: true,
+                ...action.payload
+            }
+        case STUDENT_SELFI_UPLOADING:
+            return {
+                ...state,
+                isSelfiUploaded: false,
+                isSelfiUploading: true,
+                ...action.payload
+            }
+        case STUDENT_SELFI_UPLOADED:
+            return {
+                ...state,
+                isSelfiUploaded: true,
+                isSelfiUploading: false,
+                ...action.payload
+            }
         default:
             return state;
     }

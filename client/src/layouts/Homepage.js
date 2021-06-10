@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { loadQuotes } from '../actions/student.js'
+import { loadQuotes, getPerc } from '../actions/student.js'
 
 import {
     Collapse,
@@ -9,6 +9,7 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
+    Progress
 } from 'reactstrap';
 
 import './css/Homepage.css'
@@ -19,6 +20,10 @@ const Homepage = (props) => {
     React.useEffect(() => {
         props.loadQuotes()
     }, [loadQuotes])
+
+    React.useEffect(() => {
+        props.getPerc()
+    }, [getPerc])
 
     const toggle = () => setIsOpen(!isOpen);
 
@@ -59,9 +64,11 @@ const Homepage = (props) => {
                     <footer class="blockquote-footer"><cite title="Source Title">{props.students.author ? props.students.author === null ? "Unknown" : props.students.author : ""}</cite></footer>
                 </blockquote>
             </div>
-            <div className="links text-center mt-5">
-                {/* <Link to="/lresults"><button className="btn btn-primary shadow-lg">Live Result</button></Link> */}
-                <Link to="/result"><button className="btn btn-warning  shadow-lg ml-3">Result</button></Link>
+            <div className="links text-center mt-5 container">
+                {props.students.started ? 
+                <Progress animated color="success" value={props.students.roundPer ? props.students.roundPer : 0 } style={{height:'20px'}} >{props.students.roundPer ? props.students.roundPer : 0 } % of Votes</Progress>
+                :
+                <Link to="/result"><button className="btn btn-warning  shadow-lg ml-3">Result</button></Link>}
             </div>
         </div>
     );
@@ -72,4 +79,4 @@ const mapStateToProps = (state) => ({
     students: state.students
 });
 
-export default connect(mapStateToProps, { loadQuotes })(Homepage)
+export default connect(mapStateToProps, { loadQuotes, getPerc })(Homepage)
