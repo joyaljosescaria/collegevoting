@@ -12,7 +12,7 @@ import sroutes from "sroutes.js";
 import Loginpre from "views/Student/Login1.js"
 import Login2 from "views/Student/Login2.js"
 import Register from "views/admin/Register.js"
-import WebCam from "views/Student/WebCam.js"
+import WebCam1 from "views/Student/WebCam1.js"
 
 const Auth = (props) => {
   const mainContent = React.useRef(null);
@@ -49,7 +49,6 @@ const Auth = (props) => {
   return (
     <>
       <Switch>
-        <Route exact path={"/auth/student/cam/:uniqueId"} component={WebCam} />
       </Switch>
       <div className="main-content" ref={mainContent}>
         {/* <AuthNavbar /> */}
@@ -90,6 +89,7 @@ const Auth = (props) => {
             <Switch>
               {getsroutes(sroutes)}
               <Route exact path={"/auth/student/loginpre"} component={Loginpre} />
+              <Route exact path={"/auth/student/cam/:uniqueId"} component={WebCam1} />
               <Route exact path={"/auth/student/login"} component={Login2} />
               <Route exact path={"/auth/student/register"} component={Register} />
             </Switch>
