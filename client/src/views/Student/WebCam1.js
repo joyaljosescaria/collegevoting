@@ -55,7 +55,7 @@ const WebcamCapture = (props) => {
             <Col lg="5" md="7">
                 <Card className="bg-secondary shadow border-0">
                     <CardBody className="px-lg-5 py-lg-5">
-                        <div className="container">
+                        <div className="container" style={{display:"grid" , placeContent:'center'}}>
                             {src == '' ? <Webcam
                                 style={{ border: '2px solid #2dce89', marginTop: '20px', borderRadius: '10px' }}
                                 className="text-center"
