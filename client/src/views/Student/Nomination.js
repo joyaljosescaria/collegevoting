@@ -7,6 +7,7 @@ import { getElection, getPositions } from '../../actions/student';
 import HeaderSpace from "components/Headers/HeaderSpace.js";
 import Lost from "./Lost/Lost"
 
+
 import {
   Card,
   Container,
@@ -20,6 +21,8 @@ import {
 } from 'reactstrap'
 import SubmitNominationModal from "components/Modals/SubmitNominationModal";
 
+
+
 const Nomination = (props) => {
 
   const [election, setElection] = useState('')
@@ -29,6 +32,7 @@ const Nomination = (props) => {
     props.getElection()
     props.getPositions()
   }, [])
+
 
   if (props.student.isNominationAdded) {
     return <Redirect to="/student/index" />

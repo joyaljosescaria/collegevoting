@@ -19,7 +19,7 @@ function SubmitNominationModal(props) {
                 Submit Nomination
             </Button>
             <Modal open={open} onClose={onCloseModal} center>
-                <h2 className="text-center">Delete Election</h2>
+                <h2 className="text-center">Add Nomination</h2>
                 <p>
                     Are you sure you want to submit nomination?
                 </p>

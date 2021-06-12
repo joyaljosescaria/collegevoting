@@ -34,6 +34,7 @@ const Election = (props) => {
   }, [loadElections, props.admin.isAdminElectionAdded, props.admin.isAdminElectionDeleted, props.admin.isAdminElectionEdited , props.admin.isAdminElectionStarted , props.admin.isAdminNominationToggled])
 
 
+  
   const getDate = (date) => {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     var date = new Date(date);

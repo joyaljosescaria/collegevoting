@@ -4,6 +4,9 @@ import { loadCanidate } from '../../actions/student';
 
 import HeaderSpace from "components/Headers/HeaderSpace.js";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Card,
   Container,
@@ -32,15 +35,22 @@ const Election = (props) => {
     if (activeTab !== tab) setActiveTab(tab);
   }
 
+  const notify = () =>{toast("Wow so easy!")
+   console.log("tost")
+}
+
   useEffect(() => {
     props.loadCanidate()
+    notify()
   }, [props.student.isStudentVoteAdded])
+
 
   return (
     <>
       <HeaderSpace />
       {/* Page content */}
       <Container className="mt--7" fluid>
+      <ToastContainer />
         <Row>
           <div className="col">
             <Card className="shadow border-0 p-3 ">
