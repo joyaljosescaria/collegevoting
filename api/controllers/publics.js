@@ -14,17 +14,16 @@ exports.getLiveResult = async (req, res) => {
     var cand = {}
 
     try {
-        const getLiveElection = await Election.find({ started: true})
-        if(getLiveElection.length  > 0)
-        {
-            getLiveElection.map((ele , index) => {
-                ele.positions.map((pos , index) => {
+        const getLiveElection = await Election.find({ started: true })
+        if (getLiveElection.length > 0) {
+            getLiveElection.map((ele, index) => {
+                ele.positions.map((pos, index) => {
                     posi.push(pos)
                 })
             })
 
-            for(let k= 0 ; k <posi.length ; k++) {
-                var candi = await Candidate.find({ position_id: posi[k]   }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' })
+            for (let k = 0; k < posi.length; k++) {
+                var candi = await Candidate.find({ position_id: posi[k] }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' })
                 cand[k] = []
                 for (let i = 0; i < candi.length; i++) {
                     cand[k].push(candi[i])
@@ -33,10 +32,10 @@ exports.getLiveResult = async (req, res) => {
                 console.log(cand[k])
             }
 
-            res.status(200).json({candidate})
+            res.status(200).json({ candidate })
         }
     } catch (err) {
-        res.status(500).json({ error: err.message})
+        res.status(500).json({ error: err.message })
     }
 }
 
@@ -44,54 +43,76 @@ exports.getOldResult = async (req, res) => {
     var posi = []
     var candidate1 = []
     var cand = {}
+    var win = []
 
     try {
-        
-        const getLiveElection = await Election.find({ started: false})
-        if(getLiveElection.length  > 0)
-        {
-            getLiveElection.forEach((ele , index) => {
-                ele.positions.map((pos , index) => {
+
+        const getLiveElection = await Election.find({ started: false })
+        if (getLiveElection.length > 0) {
+            getLiveElection.forEach((ele, index) => {
+                ele.positions.map((pos, index) => {
                     posi.push(pos)
                 })
             })
 
-            for(let k= 0 ; k <posi.length ; k++) {
-                var candi = await Candidate.find({ position_id: posi[k]  , rejected:false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election started' }).sort({created_at: -1})
+            for (let k = 0; k < posi.length; k++) {
+                var candi = await Candidate.find({ position_id: posi[k], rejected: false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election started' }).sort({ created_at: -1 }).lean();
                 cand[k] = []
+
+                var id = "";
+                var votes = 0;
+
+                for (let j = 0; j < candi.length; j++) {
+                    if (candi[j].votes > votes) {
+                        votes = candi[j].votes;
+                        id = candi[j]._id;
+                    }
+                }
+
+                win.push(id)
+
                 for (let i = 0; i < candi.length; i++) {
-                    cand[k].push(candi[i])
+                    if (candi[i]._id == win[k]) {
+                        console.log("hai")
+                        candi[i].winner = true;
+                        cand[k].push(candi[i])
+                    }
+                    else {
+                        console.log("hello")
+                        candi[i].winner = false;
+                        cand[k].push(candi[i])
+                    }
+                    console.log(candi[i])
                 }
                 candidate1.push(cand[k])
-                console.log(cand[k])
+                // console.log(cand[k])
             }
 
-            res.status(200).json({candidate1})
+            res.status(200).json({ candidate1, win })
         }
-        res.status(404).json({ error : "No election"})
+        res.status(404).json({ error: "No election" })
     } catch (err) {
-        res.status(500).json({ error: err.message})
+        res.status(500).json({ error: err.message })
     }
 }
 
 exports.getAllElection = async (req, res) => {
     try {
         const getAllElection = await Election.find({})
-        res.status(200).json({getAllElection})
+        res.status(200).json({ getAllElection })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
 
 exports.getResult = async (req, res) => {
-    var posi = [] 
+    var posi = []
     var candidate = []
     // var cand = {}
 
     try {
-        const getElection = await Election.find({_id: req.params.electionId})
-        if(getElection.length > 0) 
-        {
+        const getElection = await Election.find({ _id: req.params.electionId })
+        if (getElection.length > 0) {
             getElection.map(ele => {
                 ele.positions.map((pos) => {
                     posi.push(pos)
@@ -99,16 +120,15 @@ exports.getResult = async (req, res) => {
             })
         }
 
-        for(let k= 0 ; k <posi.length ; k++) 
-        {
-            var candi = await Candidate.find({ position_id: posi[k] , rejected:false}).populate({ path: 'student_id' , select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position'}).populate({ path: 'election_id', select: 'election' }).sort('created_at')
+        for (let k = 0; k < posi.length; k++) {
+            var candi = await Candidate.find({ position_id: posi[k], rejected: false }).populate({ path: 'student_id', select: 'name profile_pic' }).populate({ path: 'position_id', select: 'position' }).populate({ path: 'election_id', select: 'election' }).sort('created_at')
             cand[k] = []
             for (let i = 0; i < candi.length; i++) {
                 cand[k].push(candi[i])
             }
             candidate.push(cand[k])
         }
-        res.status(200).json({candidate})
+        res.status(200).json({ candidate })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -116,17 +136,16 @@ exports.getResult = async (req, res) => {
 
 exports.getVotePercentage = async (req, res) => {
     try {
-        const election = await Election.find({started: true} , '_id')
-        if(election.length > 0)
-        {
-            const totalVote = await StudentPosition.countDocuments({election_id: election[0]._id})
-            const voted = await StudentPosition.countDocuments({isVoted:true , election_id: election[0]._id})
-            const per = Number(voted)/Number(totalVote)*100
+        const election = await Election.find({ started: true }, '_id')
+        if (election.length > 0) {
+            const totalVote = await StudentPosition.countDocuments({ election_id: election[0]._id })
+            const voted = await StudentPosition.countDocuments({ isVoted: true, election_id: election[0]._id })
+            const per = Number(voted) / Number(totalVote) * 100
             const roundPer = per.toFixed(2)
-            res.status(200).json({roundPer , "started":true})    
+            res.status(200).json({ roundPer, "started": true })
         }
         else {
-            res.status(200).json({"started":false})
+            res.status(200).json({ "started": false })
         }
     } catch (err) {
         res.status(500).json({ error: err.message })

@@ -142,6 +142,7 @@ export default function (state = initialState, action) {
                 ...state,
                 isStudentVoteAdding: true,
                 isStudentVoteAdded: false,
+                messagev:"",
                 ...action.payload
             }
         case STUDENT_VOTE_ADDED:

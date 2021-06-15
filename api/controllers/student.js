@@ -338,7 +338,7 @@ exports.castVote = async (req, res) => {
 
 exports.addVote = async (req, res) => {
     try {
-        const getVotesCont = await Candidate.find({ student_id: req.params.studentId, position_id: req.params.positionId }).select('votes')
+        const getVotesCont = await Candidate.find({ student_id: req.params.studentId, position_id: req.params.positionId }).select('votes position_id').populate({ path: 'position_id', select: 'position' })
         console.log(getVotesCont)
         data = {
             votes: Number(getVotesCont[0].votes) + 1
@@ -348,7 +348,7 @@ exports.addVote = async (req, res) => {
             isVoted: true
         }
         const setVoted = await StudentPosition.updateOne({ student_id: req.user.user_id, position_id: req.params.positionId }, data1)
-        res.status(200).json({ message: "Voted" })
+        res.status(200).json({ messagev: `Vote for ${getVotesCont[0].position_id.position} added succesfully` })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

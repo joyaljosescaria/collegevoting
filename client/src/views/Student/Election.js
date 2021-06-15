@@ -35,22 +35,34 @@ const Election = (props) => {
     if (activeTab !== tab) setActiveTab(tab);
   }
 
-  const notify = () =>{toast("Wow so easy!")
-   console.log("tost")
-}
+  const notify = () => {
+    toast.success(props.student.messagev ? props.student.messagev : "Vote succesfull", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
 
   useEffect(() => {
     props.loadCanidate()
-    notify()
   }, [props.student.isStudentVoteAdded])
 
+  useEffect(() => {
+    if (props.student.messagev) {
+      notify()
+    }
+  }, [props.student.isStudentVoteAdded])
 
   return (
     <>
       <HeaderSpace />
       {/* Page content */}
       <Container className="mt--7" fluid>
-      <ToastContainer />
+        <ToastContainer />
         <Row>
           <div className="col">
             <Card className="shadow border-0 p-3 ">
@@ -61,7 +73,7 @@ const Election = (props) => {
                       className={classnames({ active: activeTab === index.toString() })}
                       onClick={() => { toggle(index.toString()); }}
                     >
-                      {props.student.candidate[index][0]?props.student.candidate[index][0].position_id.position:"pos"} 
+                      {props.student.candidate[index][0] ? props.student.candidate[index][0].position_id.position : "pos"}
                     </NavLink>
                   </NavItem>)) : <h1>Loading...</h1>}
                 </Nav>
@@ -73,7 +85,7 @@ const Election = (props) => {
                         {cand.map((can) => (
                           <Col sm="6" md="4" className="mb-3">
                             <Card body className="shadow-lg">
-                              <CardImg top width="100%" style={{borderRadius:"100px"}} src={`http://localhost:5000/uploads/${can.student_id.profile_pic}`} alt="Card image cap" />
+                              <CardImg top width="100%" style={{ borderRadius: "100px" }} src={`http://localhost:5000/uploads/${can.student_id.profile_pic}`} alt="Card image cap" />
                               <CardTitle className="text-center">{can.student_id.name}</CardTitle>
                               <AddVoteModal studentId={can.student_id._id} positionId={can.position_id._id} />
                             </Card>

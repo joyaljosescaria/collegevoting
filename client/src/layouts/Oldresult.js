@@ -37,8 +37,8 @@ function Liveresult(props) {
 
     const toggle = () => setIsOpen(!isOpen);
 
-    const [data , setData] = useState([])
-    
+    const [data, setData] = useState([])
+
     useEffect(() => {
         function mainf() {
             props.getOld()
@@ -49,6 +49,8 @@ function Liveresult(props) {
                         var obj = {};
                         obj["label"] = pos.student_id.name;
                         obj["value"] = pos.votes;
+                        obj["idc"] = pos._id;
+                        obj["winner"] = pos.winner;
                         obj["election"] = pos.election_id.election;
                         obj["status"] = pos.election_id.started;
                         obj["positionid"] = pos.position_id._id;
@@ -62,9 +64,9 @@ function Liveresult(props) {
         mainf()
         const interval = setInterval(() => mainf(), 60000)
         return () => {
-          clearInterval(interval);
+            clearInterval(interval);
         }
-    }, [ props.publics.candidate1])
+    }, [props.publics.candidate1])
 
     console.log(data)
 
@@ -118,37 +120,30 @@ function Liveresult(props) {
                                     <tbody>
                                         {data.map((cand, index) => (
                                             <>
-                                            {/* {index>0 && cand.positionid != data[index-1].positionid? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""}
+                                                {/* {index>0 && cand.positionid != data[index-1].positionid? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""}
                                             {index==0 ? <tr><td colspan="4"><h3 className="text-center">{cand.position}</h3></td></tr>:""} */}
-                                            {index>0 && cand.positionid != data[index-1].positionid? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}<span>{cand.status?<img style={{width:"40px"}} src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" />:""}</span></h3></td></tr>:""}
-                                            {index==0 ? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}{cand.status?<img style={{width:"40px"}}  src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" />:""}</h3></td></tr>:""}
-                                            <tr>
-                                                <th scope="row">
-                                                    <Media className="align-items-center">
+                                                {index > 0 && cand.positionid != data[index - 1].positionid ? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}<span>{cand.status ? <img style={{ width: "40px" }} src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" /> : ""}</span></h3></td></tr> : ""}
+                                                {index == 0 ? <tr className="text-center"><td colspan="4"><h3 className=" text-uppercase">{cand.position}{cand.status ? <img style={{ width: "40px" }} src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Logo" /> : ""}</h3></td></tr> : ""}
+                                                <tr>
+                                                    <th scope="row">
+                                                        <Media className="align-items-center">
 
-                                                        <Media>
-                                                            <span className="mb-0 text-sm">
-                                                                {cand.label}
-                                                            </span>
+                                                            <Media>
+                                                                <span className="mb-0 text-sm">
+                                                                    {cand.label} {cand.winner ? <img style={{ width: "40px" }} src="https://i.pinimg.com/originals/69/e0/6a/69e06a096ec5e14eefa1b7ff72fddf7f.gif" alt="Winner" /> : ""}
+                                                                </span>
+                                                            </Media>
                                                         </Media>
-                                                    </Media>
-                                                </th>
-                                                <td></td>
-                                                <td>{cand.value}</td>
-                                                <td></td>
-                                                <td>
-                                                    <Badge color="" className="badge-dot mr-4">
-
-                                                        {cand.election}
-                                                    </Badge>
-                                                </td>
-
-                                                {/* <td>
-                                                    <div className="d-flex align-items-center">
-                                                        <span className="mr-2">{cand.position}</span>
-                                                    </div>
-                                                </td> */}
-                                            </tr>
+                                                    </th>
+                                                    <td></td>
+                                                    <td>{cand.value}</td>
+                                                    <td></td>
+                                                    <td>
+                                                        <Badge color="" className="badge-dot mr-4">
+                                                            {cand.election}
+                                                        </Badge>
+                                                    </td>
+                                                </tr>
                                             </>))}
                                     </tbody>
                                 </Table>
