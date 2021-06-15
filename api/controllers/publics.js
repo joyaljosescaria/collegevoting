@@ -67,7 +67,7 @@ exports.getOldResult = async (req, res) => {
                         votes = candi[j].votes;
                         id = candi[j]._id;
                     }
-                    if(candi[j].votes == votes)
+                    else if(candi[j].votes == votes)
                     {
                         id = ""
                     }
