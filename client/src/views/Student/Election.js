@@ -52,7 +52,8 @@ const Election = (props) => {
   }, [props.student.isStudentVoteAdded])
 
   useEffect(() => {
-    if (props.student.messagev) {
+    if ( props.student.messagev != "") {
+      console.log("working")
       notify()
     }
   }, [props.student.isStudentVoteAdded])

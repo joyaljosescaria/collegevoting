@@ -94,7 +94,7 @@ const Login = (props) => {
           </CardBody>
         </Card>
         <Row className="mt-3">
-          <Col xs="6">
+          {/* <Col xs="6">
             <a
               className="text-light"
               href="#pablo"
@@ -102,7 +102,7 @@ const Login = (props) => {
             >
               <Link to={`/admin/password`}><small>Forgot password?</small></Link>
             </a>
-          </Col>
+          </Col> */}
           <Col className="text-right" xs="6">
             {/* <a
               className="text-light"

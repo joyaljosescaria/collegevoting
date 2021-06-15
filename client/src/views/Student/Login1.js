@@ -98,10 +98,10 @@ const Login1 = (props) => {
           <Col xs="6">
             <a
               className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
+              href="mailto:project6evoting@gmail.com"
+              // onClick={(e) => e.preventDefault()}
             >
-              {/* <small>Forgot password?</small> */}
+              <small>Report Unauthorized Login</small>
             </a>
           </Col>
           <Col className="text-right" xs="6">

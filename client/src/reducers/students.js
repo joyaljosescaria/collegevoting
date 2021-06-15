@@ -48,6 +48,7 @@ const initialState = {
     isVotePercentLoading: false,
     isSelfiUploading: false,
     isSelfiUploaded: false,
+    messagev:"",
 };
 
 
@@ -128,6 +129,7 @@ export default function (state = initialState, action) {
                 ...state,
                 isStudentCanidateLoading: true,
                 isStudentCanidateLoaded: false,
+                messagev:"",
                 ...action.payload
             };
         case STUDENT_CANDIDATE_LOADED:
