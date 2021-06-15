@@ -67,22 +67,23 @@ exports.getOldResult = async (req, res) => {
                         votes = candi[j].votes;
                         id = candi[j]._id;
                     }
+                    if(candi[j].votes == votes)
+                    {
+                        id = ""
+                    }
                 }
 
                 win.push(id)
 
                 for (let i = 0; i < candi.length; i++) {
                     if (candi[i]._id == win[k]) {
-                        console.log("hai")
                         candi[i].winner = true;
                         cand[k].push(candi[i])
                     }
                     else {
-                        console.log("hello")
                         candi[i].winner = false;
                         cand[k].push(candi[i])
                     }
-                    console.log(candi[i])
                 }
                 candidate1.push(cand[k])
                 // console.log(cand[k])
