@@ -1,2 +1,2 @@
 # collegevoting
-A node js + react app for college e voting
+A node js + react app for college e-voting
